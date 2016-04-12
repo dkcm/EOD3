@@ -3,7 +3,7 @@
  *
  * Copyright © 2013 Daniel Kuan. All rights reserved.
  */
-package org.ikankechil.eod3.apps;
+package org.ikankechil.eod3.ui;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.ikankechil.eod3.YahooFinanceDownloader;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

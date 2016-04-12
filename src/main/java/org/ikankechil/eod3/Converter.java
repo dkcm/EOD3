@@ -12,7 +12,8 @@ import java.net.MalformedURLException;
 import java.util.Calendar;
 import java.util.List;
 
-import org.ikankechil.eod3.YahooFinanceDownloader.Frequency;
+import org.ikankechil.eod3.ui.YahooFinanceDownloader;
+import org.ikankechil.eod3.ui.YahooFinanceDownloader.Frequency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -3,7 +3,7 @@
  *
  * Copyright © 2013-2014 Daniel Kuan. All rights reserved.
  */
-package org.ikankechil.eod3;
+package org.ikankechil.eod3.io;
 
 import java.io.BufferedReader;
 import java.io.File;

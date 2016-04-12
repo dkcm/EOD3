@@ -3,7 +3,7 @@
  *
  * Copyright © 2013-2014 Daniel Kuan. All rights reserved.
  */
-package org.ikankechil.eod3.apps;
+package org.ikankechil.eod3.ui;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.ikankechil.eod3.Converter;
-import org.ikankechil.eod3.SymbolsReader;
+import org.ikankechil.eod3.io.SymbolsReader;
 import org.ikankechil.synchronous.TaskExecutor;
 import org.ikankechil.synchronous.TaskHelper;
 import org.slf4j.Logger;
