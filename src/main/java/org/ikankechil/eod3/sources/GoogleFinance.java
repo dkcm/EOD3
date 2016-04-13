@@ -1,5 +1,5 @@
 /**
- * GoogleFinance.java v0.4  21 December 2013 1:33:30 AM
+ * GoogleFinance.java v0.5  21 December 2013 1:33:30 AM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Google Finance.
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class GoogleFinance extends Source {
 
@@ -46,11 +46,13 @@ public class GoogleFinance extends Source {
   private static final String TSE_              = "TSE:";
   private static final String FRA               = "FRA:";
   private static final String EPA               = "EPA:";
+  private static final String BME               = "BME:";
   private static final String WSE               = "WSE:";
   private static final String BIT               = "BIT:";
   private static final String TPE               = "TPE:";
   private static final String STO               = "STO:";
   private static final String CPH               = "CPH:";
+  private static final String ICE               = "ICE:";
   private static final String BVMF              = "BVMF:";
 
   static final Logger         logger            = LoggerFactory.getLogger(GoogleFinance.class);
@@ -71,6 +73,7 @@ public class GoogleFinance extends Source {
     exchanges.put(FWB, FRA);
     exchanges.put(PAR, EPA);
     exchanges.put(MIB, BIT);
+    exchanges.put(BM, BME);
     exchanges.put(HKSE, HKG);
     exchanges.put(SSE, SHA);
     exchanges.put(SZSE, SHE);
@@ -81,6 +84,7 @@ public class GoogleFinance extends Source {
     exchanges.put(GPW, WSE);
     exchanges.put(SB, STO);
     exchanges.put(KFB, CPH);
+    exchanges.put(ICEX, ICE);
     exchanges.put(BOVESPA, BVMF);
 
     // Google Finance (max. 4000 lines unless with explicit start date)
@@ -165,7 +169,7 @@ public class GoogleFinance extends Source {
         final ParsePosition pos = new ParsePosition(ZERO);
         final Date date = INPUT.dateFormat.parse(line, pos);
         if (date != null) {
-          final char[] characters = new char[symbol.length() + NINE + (line.length() - pos.getIndex())];
+          final char[] characters = new char[symbol.length() + NINE + line.length() - pos.getIndex()];
           // set row name
           int i = getChars(symbol, ZERO, symbol.length(), characters, ZERO);
           characters[i] = COMMA;
