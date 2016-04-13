@@ -1,5 +1,5 @@
 /**
- * Quandl.java  v0.2  3 November 2014 4:51:49 PM
+ * Quandl.java  v0.3  3 November 2014 4:51:49 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -30,28 +30,34 @@ import org.slf4j.LoggerFactory;
  * calls per 10 minutes, and a limit of 50000 calls per day.
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class Quandl extends Source {
+  // TODO extend support for asset classes other than Equities
 
   private final String        authenticationToken;
   private final DateFormat    urlDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
   // Date-related URL parameters
-  private static final String START_DATE    = "&trim_start=";
-  private static final String END_DATE      = "&trim_end=";
+  private static final String START_DATE    = "&start_date=";
+  private static final String END_DATE      = "&end_date=";
+//  private static final String START_DATE    = "&trim_start="; // v1
+//  private static final String END_DATE      = "&trim_end=";   // v1
   private static final String FREQUENCY     = "&collapse=";
 
   // Authentication token / API key property: org.ikankechil.eod3.sources.Quandl.apiKey
-  private static final String API_KEY       = "&auth_token=";
+  private static final String API_KEY       = "&api_key=";
+//  private static final String API_KEY       = "&auth_token="; // v1
   private static final String AUTH_TOKEN    = System.getProperty(Quandl.class.getName() + ".apiKey");
 
   // other URL parameters
   private static final String CSV           = ".csv";
-  private static final String SUFFIX        = "&sort_order=desc&exclude_headers=false&transformation=none";
+  private static final String SUFFIX        = "&order=desc&exclude_column_names=false&transform=none";
+//  private static final String SUFFIX        = "&sort_order=desc&exclude_headers=false&transformation=none"; // v1
 
   // Exchange-related constants
   private static final String WIKI          = "WIKI";   // U.S. Equities
+//  private static final String CURRFX        = "CURRFX"; // FX
 
   private static final Logger logger        = LoggerFactory.getLogger(Quandl.class);
 
@@ -60,7 +66,8 @@ public class Quandl extends Source {
   }
 
   public Quandl(final String authenticationToken) {
-    super("http://www.quandl.com/api/v1/datasets/");
+    super("https://www.quandl.com/api/v3/datasets/");
+//    super("http://www.quandl.com/api/v1/datasets/"); // v1 soon to be deprecated
 //    super("http://quandl.com/api/v1/multisets.csv?sort_order=desc&exclude_headers=false&columns="); // deprecated
 
     this.authenticationToken = authenticationToken == null || authenticationToken.isEmpty() ?
@@ -72,8 +79,12 @@ public class Quandl extends Source {
     exchanges.put(NASDAQ, WIKI);
     exchanges.put(AMEX, WIKI);
     exchanges.put(LSE, LSE.toString());
+//    exchanges.put(FX, CURRFX);
+    // TODO FX has a different format from equities (i.e. Date,Rate,High (est),Low (est))
+    // either maintain a table of FX symbols or overload newTransform() with exchange
 
-    // e.g. http://www.quandl.com/api/v1/datasets/WIKI/AAPL.csv?sort_order=asc&exclude_headers=true&rows=3&trim_start=2012-11-01&trim_end=2013-11-30&column=4&collapse=quarterly&transformation=rdiff
+    // e.g. https://www.quandl.com/api/v3/datasets/WIKI/FB/data.csv?column_index=4&exclude_column_names=true&rows=3&start_date=2012-11-01&end_date=2013-11-30&order=asc&collapse=quarterly&transform=rdiff
+    //      http://www.quandl.com/api/v1/datasets/WIKI/AAPL.csv?sort_order=asc&exclude_headers=true&rows=3&trim_start=2012-11-01&trim_end=2013-11-30&column=4&collapse=quarterly&transformation=rdiff
     //      http://www.quandl.com/api/v1/datasets/WIKI/A.csv?&trim_start=1999-01-01&trim_end=2014-12-31&sort_order=desc&exclude_headers=false&transformation=none
     //      [Multi-sets deprecated] https://quandl.com/api/v1/multisets.csv?columns=FRED.GDP.1,DOE.RWTC.1,WIKI.AAPL.4&collapse=annual&transformation=rdiff&rows=10
   }
@@ -87,6 +98,7 @@ public class Quandl extends Source {
     url.append(SLASH);
     appendSymbol(url, symbol);
 
+    // e.g. https://www.quandl.com/api/v3/datasets/WIKI/AAPL.csv?
     url.append(CSV).append(QUESTION);
     logger.debug("Symbol and exchange: {}", url);
   }
