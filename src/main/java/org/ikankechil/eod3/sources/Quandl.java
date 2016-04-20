@@ -1,5 +1,5 @@
 /**
- * Quandl.java  v0.3  3 November 2014 4:51:49 PM
+ * Quandl.java  v0.4  3 November 2014 4:51:49 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * calls per 10 minutes, and a limit of 50000 calls per day.
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class Quandl extends Source {
   // TODO extend support for asset classes other than Equities
@@ -58,6 +58,7 @@ public class Quandl extends Source {
   // Exchange-related constants
   private static final String WIKI          = "WIKI";   // U.S. Equities
 //  private static final String CURRFX        = "CURRFX"; // FX
+  private static final String FSE           = "FSE";
 
   private static final Logger logger        = LoggerFactory.getLogger(Quandl.class);
 
@@ -70,7 +71,7 @@ public class Quandl extends Source {
 //    super("http://www.quandl.com/api/v1/datasets/"); // v1 soon to be deprecated
 //    super("http://quandl.com/api/v1/multisets.csv?sort_order=desc&exclude_headers=false&columns="); // deprecated
 
-    this.authenticationToken = authenticationToken == null || authenticationToken.isEmpty() ?
+    this.authenticationToken = (authenticationToken == null || authenticationToken.isEmpty()) ?
                                AUTH_TOKEN :
                                authenticationToken;
 
@@ -79,6 +80,9 @@ public class Quandl extends Source {
     exchanges.put(NASDAQ, WIKI);
     exchanges.put(AMEX, WIKI);
     exchanges.put(LSE, LSE.toString());
+    exchanges.put(FWB, FSE);
+    exchanges.put(NSE, NSE.toString());
+    exchanges.put(TSE, TSE.toString());
 //    exchanges.put(FX, CURRFX);
     // TODO FX has a different format from equities (i.e. Date,Rate,High (est),Low (est))
     // either maintain a table of FX symbols or overload newTransform() with exchange

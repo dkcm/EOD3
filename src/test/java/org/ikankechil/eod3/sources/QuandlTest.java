@@ -1,5 +1,5 @@
 /**
- * QuandlTest.java	v0.3	5 April, 2015 11:25:06 pm
+ * QuandlTest.java	v0.4	5 April, 2015 11:25:06 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -23,7 +23,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class QuandlTest extends SourceTest {
 
@@ -44,6 +44,7 @@ public class QuandlTest extends SourceTest {
 //  private static final String SUFFIX        = "&sort_order=desc&exclude_headers=false&transformation=none";
 
   private static final String WIKI          = "WIKI";
+  private static final String FSE           = "FSE";
   private static final char   SLASH         = '/';
   private static final String CSV           = ".csv?";
 
@@ -54,6 +55,9 @@ public class QuandlTest extends SourceTest {
     exchanges.put(NASDAQ, WIKI);
     exchanges.put(AMEX, WIKI);
     exchanges.put(LSE, LSE.toString());
+    exchanges.put(FWB, FSE);
+    exchanges.put(NSE, NSE.toString());
+    exchanges.put(TSE, TSE.toString());
 
     originalLines.addAll(Arrays.asList("Date,Open,High,Low,Close,Volume,Ex-Dividend,Split Ratio,Adj. Open,Adj. High,Adj. Low,Adj. Close,Adj. Volume",
                                        "2015-12-04,34.11,35.025,34.0,34.935,24261345.0,0.0,1.0,34.11,35.025,34.0,34.935,24261345.0",
