@@ -1,5 +1,5 @@
 /**
- * Netfonds.java  v0.3  5 March 2014 6:05:08 PM
+ * Netfonds.java  v0.4  5 March 2014 6:05:08 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -9,6 +9,7 @@ import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.ikankechil.util.StringUtility.*;
 
 import java.util.Calendar;
+import java.util.EnumSet;
 
 import org.ikankechil.eod3.Frequencies;
 import org.ikankechil.io.TextTransform;
@@ -19,19 +20,33 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Netfonds, a Norwegian on-line broker.
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class Netfonds extends Source {
 
-  // Exchange-related constants
-  private static final String N      = ".N";
-  private static final String O      = ".O";
-  private static final String A      = ".A";
-  private static final String ST     = ".ST";
-  private static final String CPH    = ".CPH";
-  private static final String FXSB   = ".FXSB";
+  // Western European non-Scandinavian exchanges
+  private final static EnumSet<Exchanges> EU_EXCHANGES;
 
-  private static final Logger logger = LoggerFactory.getLogger(Netfonds.class);
+  // Exchange-related constants
+  private static final String             N      = ".N";
+  private static final String             O      = ".O";
+  private static final String             A      = ".A";
+  private static final String             ST     = ".ST";
+  private static final String             CPH    = ".CPH";
+  private static final String             FXSX   = ".FXSX";
+  private static final String             E_L    = "E-%sL.BTSE";
+  private static final String             E_D    = "E-%sD.BTSE";
+  private static final String             E_P    = "E-%sP.BTSE";
+  private static final String             E_A    = "E-%sA.BTSE";
+  private static final String             E_Z    = "E-%sZ.BTSE";
+  private static final String             E_M    = "E-%sM.BTSE";
+  private static final String             E_E    = "E-%sE.BTSE";
+
+  private static final Logger             logger = LoggerFactory.getLogger(Netfonds.class);
+
+  static {
+    EU_EXCHANGES = EnumSet.of(LSE, FWB, PAR, AMS, SWX, MIB, BM);
+  }
 
   public Netfonds() {
     super(Netfonds.class);
@@ -46,7 +61,34 @@ public class Netfonds extends Source {
     exchanges.put(SB, ST);
     exchanges.put(KFB, CPH);
     exchanges.put(ICEX, ICEX.toString());
-    exchanges.put(FX, FXSB);
+    exchanges.put(FX, FXSX);
+
+    // string formats for Western European non-Scandinavian exchanges
+    exchanges.put(LSE, E_L);
+    exchanges.put(FWB, E_D);
+    exchanges.put(PAR, E_P);
+    exchanges.put(AMS, E_A);
+    exchanges.put(SWX, E_Z);
+    exchanges.put(MIB, E_M);
+    exchanges.put(BM, E_E);
+
+    // Notes:
+    // 1. cannot specify a time window
+    // 2. only data from 20001121
+    // 3. FX data from 2005 (.FXSB) or 2003 (.FXSX)
+    // 4. numerous exchanges supported via BATS
+  }
+
+  @Override
+  void appendSymbolAndExchange(final StringBuilder url,
+                               final String symbol,
+                               final Exchanges exchange) {
+    if (EU_EXCHANGES.contains(exchange)) {
+      url.append(String.format(exchanges.get(exchange), symbol));
+    }
+    else {
+      super.appendSymbolAndExchange(url, symbol, exchange);
+    }
   }
 
   @Override
