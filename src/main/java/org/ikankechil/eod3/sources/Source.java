@@ -1,18 +1,24 @@
 /**
- * Source.java	v1.5  15 December 2013 8:11:20 PM
+ * Source.java	v1.6  15 December 2013 8:11:20 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.ikankechil.eod3.Frequencies;
@@ -26,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * A representation of a data source.
  *
  * @author Daniel Kuan
- * @version 1.5
+ * @version 1.6
  */
 public abstract class Source {
   // TODO Other potential sources
@@ -43,53 +49,87 @@ public abstract class Source {
   // 1. support other asset classes (e.g. Futures)
   // 2. allow for multiple base URLs for each source
 
-  private final String         base;
-  private final boolean        isRFC2396Compliant;
-  final Map<Exchanges, String> exchanges;
+  private final String                     base;
+  private final boolean                    isRFC2396Compliant;
+  final Map<Exchanges, String>             exchanges;
+
+  // Properties and constants
+  private static final String              PROPERTIES_FILE   = "eod3.properties";
+  private static final String              BASE_URL          = ".baseURL";
+
+  private static final String              UTF_8             = "UTF-8";
+  static final String                      UNSUPPORTED       = "Unsupported operation";
 
   // Other constants
-  static final String          EMPTY             = "";
-  static final char            SPACE             = ' ';
-  static final char            DOT               = '.';
-  static final char            COMMA             = ',';
-  static final char            COLON             = ':';
-  static final char            EQUAL             = '=';
-  static final char            LESS_THAN         = '<';
-  static final char            MORE_THAN         = '>';
-  static final char            SLASH             = '/';
-  static final char            QUESTION          = '?';
-  static final char            HYPHEN            = '-';
-  static final char            DOUBLE_QUOTE      = '"';
-  static final char            CLOSE_BRACE       = '}';
-  static final char            DOLLAR            = '$';
-
-  private static final String  UTF_8             = "UTF-8";
-  static final String          UNSUPPORTED       = "Unsupported operation";
+  static final String                      EMPTY             = "";
+  static final char                        SPACE             = ' ';
+  static final char                        DOT               = '.';
+  static final char                        COMMA             = ',';
+  static final char                        COLON             = ':';
+  static final char                        EQUAL             = '=';
+  static final char                        LESS_THAN         = '<';
+  static final char                        MORE_THAN         = '>';
+  static final char                        SLASH             = '/';
+  static final char                        QUESTION          = '?';
+  static final char                        HYPHEN            = '-';
+  static final char                        DOUBLE_QUOTE      = '"';
+  static final char                        CLOSE_BRACE       = '}';
+  static final char                        DOLLAR            = '$';
 
   // Numeric constants
-  static final int             ZERO              = 0;
-  static final int             ONE               = 1;
-  static final int             TWO               = 2;
-  static final int             THREE             = 3;
-  static final int             FOUR              = 4;
-  static final int             FIVE              = 5;
-  static final int             SIX               = 6;
-  static final int             SEVEN             = 7;
-  static final int             EIGHT             = 8;
-  static final int             NINE              = 9;
-  static final int             TEN               = 10;
-  static final int             FIFTEEN           = 15;
+  static final int                         ZERO              = 0;
+  static final int                         ONE               = 1;
+  static final int                         TWO               = 2;
+  static final int                         THREE             = 3;
+  static final int                         FOUR              = 4;
+  static final int                         FIVE              = 5;
+  static final int                         SIX               = 6;
+  static final int                         SEVEN             = 7;
+  static final int                         EIGHT             = 8;
+  static final int                         NINE              = 9;
+  static final int                         TEN               = 10;
+  static final int                         FIFTEEN           = 15;
 
-  static final char            DEFAULT_FREQUENCY = Frequencies.DAILY.frequency();
+  static final char                        DEFAULT_FREQUENCY = Frequencies.DAILY.frequency();
   /**
    * Start date defaults to 1 January 1970 00:00:00.000 GMT.
    */
-  static final Calendar        DEFAULT_START     = Calendar.getInstance();
+  static final Calendar                    DEFAULT_START     = Calendar.getInstance();
 
-  private static final Logger  logger            = LoggerFactory.getLogger(Source.class);
+  private static final Map<String, String> BASE_URLS         = new HashMap<>();
+
+  private static final Logger              logger            = LoggerFactory.getLogger(Source.class);
 
   static {
     DEFAULT_START.setTimeInMillis(ZERO); // 1 January 1970 00:00:00.000 GMT
+
+    // register source base URLs
+    try (final InputStream is = new FileInputStream(PROPERTIES_FILE)) {
+      final Properties properties = new Properties();
+      properties.load(is);
+
+      for (final Class<? extends Source> source : Arrays.asList(Morningstar.class,
+                                                                Netfonds.class,
+                                                                Stooq.class)) {
+        final String sourceName = source.getName();
+        final String key = sourceName + BASE_URL;
+        final String url = properties.getProperty(key, System.getProperty(key));
+
+        if (url != null && !url.isEmpty()) {
+          BASE_URLS.put(sourceName, url);
+        }
+        else {
+          logger.warn("No base URL for: {}", sourceName);
+        }
+      }
+    }
+    catch (final IOException ioE) {
+      logger.warn("Property file not found / loaded", ioE);
+    }
+  }
+
+  public Source(final Class<? extends Source> source) {
+    this(BASE_URLS.get(source.getName()));
   }
 
   public Source(final String base) {
