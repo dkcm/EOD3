@@ -1,5 +1,5 @@
 /**
- * QuoteMedia.java	v0.6	24 December 2013 1:40:26 AM
+ * QuoteMedia.java	v0.7	24 December 2013 1:40:26 AM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -10,6 +10,7 @@ import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.ikankechil.util.StringUtility.*;
 
 import java.util.Calendar;
+import java.util.EnumSet;
 
 import org.ikankechil.eod3.Frequencies;
 import org.ikankechil.io.TextTransform;
@@ -20,10 +21,12 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing QuoteMedia.
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class QuoteMedia extends Source {
 // TODO cannot seem to narrow download window!
+
+  private final int           webmasterID;
 
   private static final String SYMBOL      = "&symbol=";
 
@@ -64,18 +67,20 @@ public class QuoteMedia extends Source {
   private static final Logger logger      = LoggerFactory.getLogger(QuoteMedia.class);
 
   public QuoteMedia() {
-    this(500); // other valid webmaster IDs: 501, 96483 (american association of individual investors)
+    this(500);
   }
 
   public QuoteMedia(final int webmasterID) {
-    super("http://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=" + webmasterID + SYMBOL);
+    super(QuoteMedia.class);
+
+    this.webmasterID = webmasterID;
 
     // supported markets (see http://www.quotemedia.com/legal/tos/#times and http://www.quotemedia.com/quotetools/symbolHelp/SymbolHelp_US_Version_Default.html)
     // NYSE, NASDAQ, AMEX and NYSEARCA do not require suffices
-    exchanges.put(NYSE, EMPTY);
-    exchanges.put(NASDAQ, EMPTY);
-    exchanges.put(AMEX, EMPTY);
-    exchanges.put(NYSEARCA, EMPTY);
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA, FX)) {
+      exchanges.put(exchange, EMPTY);
+    }
+
     exchanges.put(TSX, CA);
     exchanges.put(LSE, LN);
     exchanges.put(FWB, FF);
@@ -99,27 +104,7 @@ public class QuoteMedia extends Source {
     exchanges.put(BOVESPA, BV);
     exchanges.put(BCBA, AR);
     exchanges.put(BMV, MX);
-    exchanges.put(FX, EMPTY);
 
-    // QuoteMedia
-    // http://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=500
-    //                                                             &symbol=<Stock Symbol>
-    //                                                             &startDay=02
-    //                                                             &startMonth=02
-    //                                                             &startYear=2002
-    //                                                             &endDay=02
-    //                                                             &endMonth=07
-    //                                                             &endYear=2009
-    //                                                             &isRanged=false
-    //                                                             &maxDownloadYears=1000
-    // e.g.
-    // http://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=500&symbol=IBM&maxDownloadYears=1000
-    // http://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=501&symbol=INTC&startDay=02&startMonth=02&startYear=2002&endDay=02&endMonth=07&endYear=2009&isRanged=false
-    // http://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=500&symbol=barc:ln
-    // http://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=501&symbol=$USDSGD
-    //
-    // http://app.quotemedia.com/quotetools/clientForward?targetURL=http%3A%2F%2Fwww.quotemedia.com%2Ffinance%2Fquote%2F%3Fqm_page%3D43157&targetsym=qm_symbol&targettype=&targetex=&qmpage=true&action=showHistory&symbol=AAPL&startDay=9&startMonth=11&startYear=2010&endDay=9&endMonth=0&endYear=2016
-    //
     // Notes:
     // 1. only 3 years' rolling window worth of data if maxDownloadYears parameter not supplied
     // 2. start dates ignored; maxDownloadYears can be used as an offset in conjunction with end dates
@@ -130,6 +115,7 @@ public class QuoteMedia extends Source {
   void appendSymbolAndExchange(final StringBuilder url,
                                final String symbol,
                                final Exchanges exchange) {
+    appendWebmasterID(url);
     if (exchange == FX) {
       // prepend currency pair with $ (e.g. $USDJPY)
       url.append(DOLLAR);
@@ -139,6 +125,10 @@ public class QuoteMedia extends Source {
       appendSymbol(url, symbol);
       appendExchange(url, exchange);
     }
+  }
+
+  private final void appendWebmasterID(final StringBuilder url) {
+    url.append(webmasterID).append(SYMBOL);
   }
 
   @Override

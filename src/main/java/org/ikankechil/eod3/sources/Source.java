@@ -1,5 +1,5 @@
 /**
- * Source.java	v1.6  15 December 2013 8:11:20 PM
+ * Source.java	v1.7  15 December 2013 8:11:20 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * A representation of a data source.
  *
  * @author Daniel Kuan
- * @version 1.6
+ * @version 1.7
  */
 public abstract class Source {
   // TODO Other potential sources
@@ -108,9 +108,18 @@ public abstract class Source {
       final Properties properties = new Properties();
       properties.load(is);
 
-      for (final Class<? extends Source> source : Arrays.asList(Morningstar.class,
+      for (final Class<? extends Source> source : Arrays.asList(FinancialContent.class,
+                                                                FXHistoricalData.class,
+                                                                GoogleFinance.class,
+                                                                Kdb.class,
+                                                                MoneyControl.class,
+                                                                Morningstar.class,
+                                                                MSNMoney.class,
                                                                 Netfonds.class,
-                                                                Stooq.class)) {
+                                                                QuoteMedia.class,
+                                                                StockNod.class,
+                                                                Stooq.class,
+                                                                YahooFinance.class)) {
         final String sourceName = source.getName();
         final String key = sourceName + BASE_URL;
         final String url = properties.getProperty(key, System.getProperty(key));

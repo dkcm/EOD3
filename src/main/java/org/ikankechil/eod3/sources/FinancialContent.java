@@ -1,5 +1,5 @@
 /**
- * FinancialContent.java v0.1 15 January 2016 11:36:44 AM
+ * FinancialContent.java v0.2 15 January 2016 11:36:44 AM
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -15,6 +15,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.Locale;
 
 import org.ikankechil.eod3.Frequencies;
@@ -27,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class FinancialContent extends Source {
 
@@ -43,25 +44,18 @@ public class FinancialContent extends Source {
   static final Logger         logger         = LoggerFactory.getLogger(FinancialContent.class);
 
   public FinancialContent() {
-    this("http://markets.financialcontent.com/stocks/action/gethistoricaldata?Symbol=");
-
-    // FinancialContent API
-    // e.g.
-    // http://markets.financialcontent.com/stocks/action/gethistoricaldata?Month=12&Year=2015&Symbol=sco&Range=12
+    this(FinancialContent.class);
   }
 
-  FinancialContent(final String base) {
-    super(base);
+  FinancialContent(final Class<? extends Source> source) {
+    super(source);
 
     // supported markets
     // FX, NYSE, NASDAQ, AMEX and NYSEARCA do not require suffices
     // Currency pairs need to be separated by a hyphen ('-')
-    exchanges.put(NYSE, EMPTY);
-    exchanges.put(NASDAQ, EMPTY);
-    exchanges.put(AMEX, EMPTY);
-    exchanges.put(NYSEARCA, EMPTY);
-    exchanges.put(TSX, EMPTY);
-    exchanges.put(FX, EMPTY);
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA, TSX, FX)) {
+      exchanges.put(exchange, EMPTY);
+    }
 
     today = Calendar.getInstance();
   }

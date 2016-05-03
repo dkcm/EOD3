@@ -1,5 +1,5 @@
 /**
- * MoneyControl.java  v0.1  13 November 2014 2:07:22 PM
+ * MoneyControl.java  v0.2  13 November 2014 2:07:22 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing MoneyControl.com.
  *
  * @author Daniel Kuan
- * @version
+ * @version 0.2
  */
 class MoneyControl extends Source {
 
@@ -35,7 +35,7 @@ class MoneyControl extends Source {
   private static final Logger logger        = LoggerFactory.getLogger(MoneyControl.class);
 
   public MoneyControl() {
-    super("http://www.moneycontrol.com/stocks/hist_stock_result.php?sc_id=");
+    super(MoneyControl.class);
 
     // supported markets
     // only India!
