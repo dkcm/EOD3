@@ -1,5 +1,5 @@
 /**
- * SourceTest.java	v0.2	7 January 2014 10:06:00 PM
+ * SourceTest.java	v0.3	7 January 2014 10:06:00 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -11,6 +11,7 @@ import static org.ikankechil.eod3.Interval.*;
 import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import org.junit.rules.ExpectedException;
  * JUnit test for <code>Source</code>.
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public abstract class SourceTest {
 
@@ -51,7 +52,10 @@ public abstract class SourceTest {
   private static final Calendar          FIRST_JANUARY    = getInstance();
   protected static final Calendar        DEFAULT_START    = getInstance();
 
+  protected static final File            DIRECTORY        = new File(".//./src/test/resources/" + SourceTest.class.getSimpleName());
+
   private static final String            TEST             = "Test";
+  protected static final String          HTML             = ".html";
   protected static final String          EMPTY            = "";
   protected static final String          SPACE            = " ";
   protected static final char            COLON            = ':';
