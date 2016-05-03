@@ -1,5 +1,5 @@
 /**
- * MSNMoney.java	v0.1	19 January 2016 12:36:28 am
+ * MSNMoney.java	v0.2	19 January 2016 12:36:28 am
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -20,24 +20,29 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
-public class MSNMoney extends Source {
+class MSNMoney extends Source {
 
-  private static final String DURATION = "&chartType=";
+//  private static final String DURATION = "&chartType=";
+
+  // Exchange-related constants
+  private static final String NYS    = "126.1.%s.NYS";
+  private static final String NAS    = "126.1.%s.NAS";
+  private static final String ARCX   = "%s.ARCX";
+  private static final String SES    = "%s.SES";
 
   static final Logger         logger = LoggerFactory.getLogger(MSNMoney.class);
 
   public MSNMoney() {
-    super("http://finance.services.appex.bing.com/Market.svc/ChartDataV5?isEOD=true&isCS=true&isVol=true&symbols=");
+    super(MSNMoney.class);
 
     // supported markets
-    exchanges.put(NYSE, "126.1.%s.NYS");
-    exchanges.put(NASDAQ, "126.1.%s.NAS");
-    exchanges.put(NYSEARCA, "%s.ARCX");
+    exchanges.put(NYSE, NYS);
+    exchanges.put(NASDAQ, NAS);
+    exchanges.put(NYSEARCA, ARCX);
 
-    exchanges.put(SGX, "%s.SES");
-
+    exchanges.put(SGX, SES);
 
     // e.g.
     // http://finance.services.appex.bing.com/Market.svc/ChartDataV5?symbols=126.1.WMT.NYS&chartType=max&isEOD=False&lang=en-US&isCS=true&isVol=true&callback=document.chartResponseHandler

@@ -1,5 +1,5 @@
 /**
- * GoogleFinance.java v0.5  21 December 2013 1:33:30 AM
+ * GoogleFinance.java v0.6  21 December 2013 1:33:30 AM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Google Finance.
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class GoogleFinance extends Source {
 
@@ -58,7 +58,7 @@ public class GoogleFinance extends Source {
   static final Logger         logger            = LoggerFactory.getLogger(GoogleFinance.class);
 
   public GoogleFinance() {
-    super("http://www.google.com/finance/historical?output=csv&q=");
+    super(GoogleFinance.class);
 
     // supported markets (http://www.google.com/intl/en/googlefinance/disclaimer/)
     // NYSE, NASDAQ, AMEX and NYSEARCA do not require prefixes

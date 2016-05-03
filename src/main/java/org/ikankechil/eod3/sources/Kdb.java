@@ -1,5 +1,5 @@
 /**
- * Kdb.java	v0.2	29 December 2015 4:25:33 pm
+ * Kdb.java	v0.3	29 December 2015 4:25:33 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,7 +21,7 @@ import org.ikankechil.io.TextTransformer;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class Kdb extends Source {
 
@@ -36,11 +36,7 @@ public class Kdb extends Source {
   private static final String DOWNLOAD   = "?download=csv";
 
   public Kdb() {
-    super("http://k-db.com/stocks/");
-
-    // e.g.
-    // http://k-db.com/stocks/6502-T?download=csv&year=2015
-    // http://k-db.com/stocks/6502-O?download=csv
+    super(Kdb.class);
 
     // supported exchanges
     exchanges.put(TSE, TOKYO);

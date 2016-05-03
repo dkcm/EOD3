@@ -1,5 +1,5 @@
 /**
- * FXHistoricalData.java	v0.4	28 March 2014 12:43:51 AM
+ * FXHistoricalData.java	v0.5	28 March 2014 12:43:51 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing FXHistoricalData.
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class FXHistoricalData extends Source {
 
@@ -31,19 +31,12 @@ public class FXHistoricalData extends Source {
   static final Logger         logger = LoggerFactory.getLogger(FXHistoricalData.class);
 
   public FXHistoricalData() {
-    super("http://www.fxhistoricaldata.com/download/");
+    super(FXHistoricalData.class);
 
     // supported markets
     // FX does not require a suffix
     exchanges.put(FX, EMPTY);
 
-    // FXHistoricalData API
-    // http://www.fxhistoricaldata.com/download/<Symbol>_<Frequency>.zip
-    //
-    // e.g.
-    // http://www.fxhistoricaldata.com/download/EURUSD_day.zip
-    // http://www.fxhistoricaldata.com/download/EURUSD_hour.zip
-    //
     // Notes:
     // 1. incoming data is in Zip format
     // 2. data ultimately sourced from FXCM

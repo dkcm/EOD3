@@ -1,5 +1,5 @@
 /**
- * YahooFinance.java  v0.5  15 December 2013 8:28:07 PM
+ * YahooFinance.java  v0.6  15 December 2013 8:28:07 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -20,10 +20,10 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Yahoo! Finance.
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class YahooFinance extends Source {
-  // TODO v0.6 adjust prices for splits, etc. (adjust only when close and adj. close are unequal)
+  // TODO adjust prices for splits, etc. (adjust only when close and adj. close are unequal)
 
   // Date-related URL parameters
   private static final String START_MONTH = "&a=";
@@ -62,8 +62,7 @@ public class YahooFinance extends Source {
   private static final Logger logger      = LoggerFactory.getLogger(YahooFinance.class);
 
   public YahooFinance() {
-    super("https://ichart.finance.yahoo.com/table.csv?s="); // TODO HTTP/2 support
-//    super("http://real-chart.finance.yahoo.com/table.csv?s=");
+    super(YahooFinance.class);
 
     // supported markets (see http://finance.yahoo.com/exchanges)
     // NYSE, NASDAQ, AMEX and NYSEARCA do not require suffices
