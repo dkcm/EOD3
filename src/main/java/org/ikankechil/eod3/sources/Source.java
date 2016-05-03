@@ -1,5 +1,5 @@
 /**
- * Source.java	v1.7  15 December 2013 8:11:20 PM
+ * Source.java	v1.8  15 December 2013 8:11:20 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * A representation of a data source.
  *
  * @author Daniel Kuan
- * @version 1.7
+ * @version 1.8
  */
 public abstract class Source {
   // TODO Other potential sources
@@ -114,11 +114,13 @@ public abstract class Source {
                                                                 Kdb.class,
                                                                 MoneyControl.class,
                                                                 Morningstar.class,
+                                                                MotleyFool.class,
                                                                 MSNMoney.class,
                                                                 Netfonds.class,
                                                                 QuoteMedia.class,
                                                                 StockNod.class,
                                                                 Stooq.class,
+                                                                WallStreetJournal.class,
                                                                 YahooFinance.class)) {
         final String sourceName = source.getName();
         final String key = sourceName + BASE_URL;

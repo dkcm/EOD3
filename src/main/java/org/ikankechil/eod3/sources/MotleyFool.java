@@ -1,5 +1,5 @@
 /**
- * MotleyFool.java  v0.2  6 June 2014 01:19:57 PM
+ * MotleyFool.java  v0.3  6 June 2014 01:19:57 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -27,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class MotleyFool extends Source {
 
@@ -44,22 +45,15 @@ public class MotleyFool extends Source {
   static final Logger         logger        = LoggerFactory.getLogger(MotleyFool.class);
 
   public MotleyFool() {
-    super("http://www.motleyfool.idmanagedsolutions.com/stocks/historical_quotes.idms?&BLOCKSIZE=20000&OFFSET=0&SYMBOL_");
+    super(MotleyFool.class);
 
     // supported markets (only US and UK)
-    exchanges.put(NYSE, US);
-    exchanges.put(NASDAQ, US);
-    exchanges.put(AMEX, US);
-    exchanges.put(NYSEARCA, US);
-    exchanges.put(LSE, UK);
-//    exchanges.put(TSX, TSX.toString());
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA)) {
+      exchanges.put(exchange, US);
+    }
 
-    // Motley Fool API
-    // e.g.
-    // HTML http://www.motleyfool.idmanagedsolutions.com/stocks/historical_quotes.idms?SYMBOL_US=NSH&START_DATE=2014-06-01&END_DATE=2014-06-03
-    // HTML http://www.motleyfool.idmanagedsolutions.com/stocks/historical_quotes.idms?SYMBOL_US=NSH&START_DATE=2014-01-29&END_DATE=2015-01-29&CODE_MARKET=US,@US&BLOCKSIZE=200&OFFSET=1
-    // HTML http://www.motleyfool.idmanagedsolutions.com/stocks/historical_quotes.idms?START_DATE=2015-01-02&END_DATE=2016-01-02&CODE_MARKET=US,@US&SYMBOL_US=IBM&BLOCKSIZE=100&OFFSET=1
-    //
+    exchanges.put(LSE, UK);
+
     // Notes:
     // 1. incoming data is in HTML format
   }

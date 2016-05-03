@@ -1,5 +1,5 @@
 /**
- * WallStreetJournal.java v0.3  14 May 2014 11:49:20 PM
+ * WallStreetJournal.java v0.4  14 May 2014 11:49:20 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing the Wall Street Journal.
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 class WallStreetJournal extends Source {
   // TODO Enhancements
@@ -73,13 +74,13 @@ class WallStreetJournal extends Source {
   static final Logger         logger        = LoggerFactory.getLogger(WallStreetJournal.class);
 
   public WallStreetJournal() {
-    super("http://quotes.wsj.com/cdssvco/marketwatch/dylan/v1/HistoricalPrices?pageSize=0&sortColumn=Time&sortOrder=DESC&ticker=");
+    super(WallStreetJournal.class);
 
     // supported markets
-    exchanges.put(NYSE, US);
-    exchanges.put(NASDAQ, US);
-    exchanges.put(AMEX, US);
-    exchanges.put(NYSEARCA, US);
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA, FX)) {
+      exchanges.put(exchange, US);
+    }
+
     exchanges.put(LSE, UK);
     exchanges.put(FWB, DE);
     exchanges.put(PAR, FR);
@@ -95,38 +96,7 @@ class WallStreetJournal extends Source {
     exchanges.put(OSLO, NO);
     exchanges.put(SB, SE);
     exchanges.put(KFB, DK);
-    exchanges.put(FX, US);
 
-    // Wall Street Journal API
-    // http://quotes.wsj.com/ajax/historicalprices/7/<Symbol>?instrumentType=STOCK
-    //                                                       &num_rows=1000
-    //                                                       &country=<Country Code>
-    //                                                       &exchange=<Exchange Code>
-    //                                                       &startDate=<MM/dd/yyyy>
-    //                                                       &endDate=<MM/dd/yyyy>
-    //
-    // http://quotes.wsj.com/cdssvco/marketwatch/dylan/v1/HistoricalPrices?ticker=A
-    //                                                                    &countrycode=US
-    //                                                                    &startDate=01-01-2000
-    //                                                                    &endDate=05-14-2014
-    //                                                                    &duration=P1D
-    //                                                                    &pagePos=0
-    //                                                                    &pageSize=0
-    //                                                                    &sortColumn=Time
-    //                                                                    &sortOrder=DESC
-    //                                                                    &contentType=xls
-    //
-    // e.g.
-    // http://quotes.wsj.com/ajax/historicalprices/7/GLE?country=FR&exchange=XPAR&instrumentType=STOCK&num_rows=1900&startDate=01/21/2013&endDate=12/31/2014
-    // http://quotes.wsj.com/ajax/historicalprices/7/TSLA?MOD_VIEW=page&ticker=TSLA&country=US&exchange=XNAS&instrumentType=STOCK&num_rows=244&range_days=244&startDate=05%2F01%2F2014&endDate=12%2F31%2F2014&_=1451036242782
-    // http://quotes.wsj.com/ajax/historicalprices/7/GLE?MOD_VIEW=page&ticker=GLE&country=FR&exchange=XPAR&instrumentType=STOCK&num_rows=90&range_days=90&startDate=09%2F26%2F2015&endDate=12%2F25%2F2015&_=1451058706241
-    //
-    // Excel:
-    // http://quotes.wsj.com/cdssvco/marketwatch/dylan/v1/HistoricalPrices?ticker=A&countrycode=US&startDate=01-01-2000&endDate=05-14-2014&duration=P1D&pagePos=0&pageSize=0&sortColumn=Time&sortOrder=DESC&contentType=xls
-    //
-    // XML:
-    // http://quotes.wsj.com/cdssvco/marketwatch/dylan/v1/HistoricalPrices?ticker=JCP&countrycode=US&startDate=01-18-1970&endDate=05-15-2014&duration=P1D&pageSize=0&sortColumn=Time&sortOrder=DESC
-    //
     // Notes:
     // 1. Downloads a single data point if no dates are specified
   }
