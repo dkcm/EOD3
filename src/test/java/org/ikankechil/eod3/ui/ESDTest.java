@@ -1,5 +1,5 @@
 /**
- * ESDTest.java v0.1 8 April 2015 10:41:36 AM
+ * ESDTest.java v0.2 8 April 2015 10:41:36 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class ESDTest {
 
@@ -43,7 +43,7 @@ public class ESDTest {
   private static final String I                   = "-i";
 
   private static final String OUTPUT_SYMBOLS_FILE = ESDTest.class.getSimpleName() + CSV;
-  private static final File   INPUT_DIRECTORY     = new File(".//./tst/" + ESDTest.class.getName().replace('.', '/'));
+  private static final File   INPUT_DIRECTORY     = new File(".//./src/test/resources/" + ESDTest.class.getSimpleName());
   private static final String SOURCE_DIRECTORY    = new File(INPUT_DIRECTORY,
                                                              INPUT_DIRECTORY.list()[0]).getPath();
 

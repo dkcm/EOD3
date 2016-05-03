@@ -1,5 +1,5 @@
 /**
- * SymbolsReaderTest.java	v0.1	9 January 2014 12:43:33 AM
+ * SymbolsReaderTest.java	v0.2	9 January 2014 12:43:33 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -32,12 +32,12 @@ import org.junit.rules.ExpectedException;
  * JUnit test for <code>SymbolsReader</code>.
  *
  * @author Daniel Kuan
- * @version
+ * @version 0.2
  */
 public class SymbolsReaderTest {
 
   private static final SymbolsReader            READER       = new SymbolsReader();
-  public static final File                      SYMBOLS_FILE = new File(".//./tst/" + SymbolsReaderTest.class.getName().replace('.', '/'),
+  public static final File                      SYMBOLS_FILE = new File(".//./src/test/resources/" + SymbolsReaderTest.class.getSimpleName(),
                                                                         "Symbols.csv");
 
   private static final Map<String, Set<String>> EXPECTEDS    = new HashMap<>();

@@ -1,5 +1,5 @@
 /**
- * EOD3Test.java v0.3 8 April 2015 10:41:13 AM
+ * EOD3Test.java v0.4 8 April 2015 10:41:13 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -31,7 +31,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class EOD3Test {
   // TODO scalable way to test option combinations (both legal and illegal)
@@ -44,7 +44,7 @@ public class EOD3Test {
 
   private static final DateFormat   DATE_FORMAT      = new SimpleDateFormat("yyyyMMdd", Locale.US);
 
-  private static final File         OUTPUT_DIRECTORY = new File(".//./tst/" + EOD3Test.class.getName().replace('.', '/'));
+  private static final File         OUTPUT_DIRECTORY = new File(".//./src/test/resources/" + EOD3Test.class.getSimpleName());
   private static final File         SYMBOLS_FILE     = new File(OUTPUT_DIRECTORY, "Symbols.csv");
 
   private static final String       EMPTY            = "";

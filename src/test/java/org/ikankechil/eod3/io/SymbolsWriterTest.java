@@ -1,5 +1,5 @@
 /**
- * SymbolsWriterTest.java v0.3 17 December 2014 7:37:07 PM
+ * SymbolsWriterTest.java v0.4 17 December 2014 7:37:07 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -32,12 +32,12 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class SymbolsWriterTest {
 
   private static final SymbolsWriter            WRITER       = new SymbolsWriter();
-  public static final File                      SYMBOLS_FILE = new File(".//./tst/" + SymbolsWriterTest.class.getName().replace('.', '/'),
+  public static final File                      SYMBOLS_FILE = new File(".//./src/test/resources/" + SymbolsWriterTest.class.getSimpleName(),
                                                                        "Symbols.csv");
 
   private static final Map<String, Set<String>> EXPECTEDS    = new LinkedHashMap<>();
