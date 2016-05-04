@@ -1,7 +1,7 @@
 /**
- * Morningstar.java	v0.4	26 December 2015 8:53:35 pm
+ * Morningstar.java	v0.5	26 December 2015 8:53:35 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class Morningstar extends Source {
 
@@ -49,12 +49,18 @@ public class Morningstar extends Source {
   private static final String XAMS       = "XAMS:";
   private static final String XSWX       = "XSWX:";
   private static final String XMIL       = "XMIL:";
+  private static final String XMAD       = "XMAD:";
+  private static final String XWBO       = "XWBO:";
+  private static final String XATH       = "XATH:";
+  private static final String XIST       = "XIST:";
   private static final String XOSL       = "XOSL:";
   private static final String XSTO       = "XSTO:";
   private static final String XCSE       = "XCSE:";
   private static final String XICE       = "XICE:";
+  private static final String XMIC       = "XMIC:";
   private static final String XWAR       = "XWAR:";
   private static final String XBUD       = "XBUD:";
+  private static final String XBSE       = "XBSE:";
   private static final String XSES       = "XSES:";
   private static final String XHKG       = "XHKG:";
   private static final String XSHG       = "XSHG:";
@@ -64,9 +70,15 @@ public class Morningstar extends Source {
   private static final String XNSE       = "XNSE:";
   private static final String XKRX       = "XKRX:";
   private static final String XTAI       = "XTAI:";
+  private static final String XIDX       = "XIDX:";
+  private static final String XKLS       = "XKLS:";
+  private static final String XBKK       = "XBKK:";
   private static final String XASX       = "XASX:";
+  private static final String XNZE       = "XNZE:";
+  private static final String XTAE       = "XTAE:";
   private static final String XBSP       = "XBSP:";
   private static final String XBUE       = "XBUE:";
+  private static final String XSGO       = "XSGO:";
   private static final String XMEX       = "XMEX:";
 
   private static final String ZERO_STR   = "0";
@@ -88,12 +100,18 @@ public class Morningstar extends Source {
     exchanges.put(AMS, XAMS);
     exchanges.put(SWX, XSWX);
     exchanges.put(MIB, XMIL);
+    exchanges.put(BM, XMAD);
+    exchanges.put(WB, XWBO);
+    exchanges.put(ATHEX, XATH);
+    exchanges.put(BIST, XIST);
     exchanges.put(OSLO, XOSL);
     exchanges.put(SB, XSTO);
     exchanges.put(KFB, XCSE);
     exchanges.put(ICEX, XICE);
+    exchanges.put(MOEX, XMIC);
     exchanges.put(GPW, XWAR);
     exchanges.put(BET, XBUD);
+    exchanges.put(BVB, XBSE);
     exchanges.put(SGX, XSES);
     exchanges.put(HKSE, XHKG);
     exchanges.put(SSE, XSHG);
@@ -103,9 +121,15 @@ public class Morningstar extends Source {
     exchanges.put(NSE, XNSE);
     exchanges.put(KRX, XKRX);
     exchanges.put(TWSE, XTAI);
+    exchanges.put(IDX, XIDX);
+    exchanges.put(MYX, XKLS);
+    exchanges.put(SET, XBKK);
     exchanges.put(ASX, XASX);
+    exchanges.put(NZX, XNZE);
+    exchanges.put(TASE, XTAE);
     exchanges.put(BOVESPA, XBSP);
     exchanges.put(BCBA, XBUE);
+    exchanges.put(BCS, XSGO);
     exchanges.put(BMV, XMEX);
 
     now = dateFormat.format(new Date());
