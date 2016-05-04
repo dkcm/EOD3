@@ -1,7 +1,7 @@
 /**
- * QuoteMedia.java	v0.7	24 December 2013 1:40:26 AM
+ * QuoteMedia.java	v0.8	24 December 2013 1:40:26 AM
  *
- * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2013-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing QuoteMedia.
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class QuoteMedia extends Source {
 // TODO cannot seem to narrow download window!
@@ -43,12 +43,17 @@ public class QuoteMedia extends Source {
   private static final String LN          = ":LN";
   private static final String SI          = ":SI";
   private static final String AU          = ":AU";
+  private static final String NZ          = ":NZ";
   private static final String CA          = ":CA";
   private static final String FF          = ":FF";
   private static final String HK          = ":HK";
   private static final String SH          = ":SH";
   private static final String SZ          = ":SZ";
   private static final String TK          = ":TK";
+  private static final String OK          = ":OK";
+  private static final String ID          = ":ID";
+  private static final String MY          = ":MY";
+  private static final String TH          = ":TH";
   private static final String MB          = ":MB";
   private static final String IN          = ":IN";
   private static final String KR          = ":KR";
@@ -59,9 +64,14 @@ public class QuoteMedia extends Source {
   private static final String MI          = ":MI";
   private static final String PA          = ":PA";
   private static final String AS          = ":AS";
+  private static final String MA          = ":MA";
+  private static final String VN          = ":VN";
+  private static final String AT          = ":AT";
+  private static final String RU          = ":RU";
   private static final String SM          = ":SM";
   private static final String BV          = ":BV";
   private static final String AR          = ":AR";
+  private static final String CL          = ":CL";
   private static final String MX          = ":MX";
 
   private static final Logger logger      = LoggerFactory.getLogger(QuoteMedia.class);
@@ -88,21 +98,31 @@ public class QuoteMedia extends Source {
     exchanges.put(AMS, AS);
     exchanges.put(SWX, SM);
     exchanges.put(MIB, MI);
+    exchanges.put(BM, MA);
+    exchanges.put(WB, VN);
+    exchanges.put(ATHEX, AT);
     exchanges.put(OSLO, OS);
     exchanges.put(SB, ST);
     exchanges.put(KFB, CO);
+    exchanges.put(MOEX, RU);
     exchanges.put(SGX, SI);
     exchanges.put(HKSE, HK);
     exchanges.put(SSE, SH);
     exchanges.put(SZSE, SZ);
     exchanges.put(TSE, TK);
+    exchanges.put(OSE, OK);
     exchanges.put(BSE, MB);
     exchanges.put(NSE, IN);
     exchanges.put(KRX, KR);
     exchanges.put(TWSE, TW);
+    exchanges.put(IDX, ID);
+    exchanges.put(MYX, MY);
+    exchanges.put(SET, TH);
     exchanges.put(ASX, AU);
+    exchanges.put(NZX, NZ);
     exchanges.put(BOVESPA, BV);
     exchanges.put(BCBA, AR);
+    exchanges.put(BCS, CL);
     exchanges.put(BMV, MX);
 
     // Notes:
