@@ -1,5 +1,5 @@
 /**
- * GoogleFinance.java v0.6  21 December 2013 1:33:30 AM
+ * GoogleFinance.java v0.7  21 December 2013 1:33:30 AM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Google Finance.
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class GoogleFinance extends Source {
 
@@ -45,14 +45,21 @@ public class GoogleFinance extends Source {
   private static final String BOM               = "BOM:";
   private static final String TSE_              = "TSE:";
   private static final String FRA               = "FRA:";
+  private static final String VIE               = "VIE:";
+  private static final String IST               = "IST:";
   private static final String EPA               = "EPA:";
   private static final String BME               = "BME:";
   private static final String WSE               = "WSE:";
   private static final String BIT               = "BIT:";
   private static final String TPE               = "TPE:";
+  private static final String KLSE              = "KLSE:";
+  private static final String BKK               = "BKK:";
+  private static final String NZE               = "NZE:";
   private static final String STO               = "STO:";
   private static final String CPH               = "CPH:";
   private static final String ICE               = "ICE:";
+  private static final String MCX               = "MCX:";
+  private static final String TLV               = "TLV:";
   private static final String BVMF              = "BVMF:";
 
   static final Logger         logger            = LoggerFactory.getLogger(GoogleFinance.class);
@@ -65,7 +72,7 @@ public class GoogleFinance extends Source {
     for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA)) {
       exchanges.put(exchange, EMPTY);
     }
-    for (final Exchanges exchange : EnumSet.of(AMS, SWX, SGX, NSE, KRX, ASX, BCBA, BMV)) {
+    for (final Exchanges exchange : EnumSet.of(AMS, SWX, SGX, NSE, KRX, IDX, ASX, BCBA, BMV)) {
       exchanges.put(exchange, exchange.toString() + COLON);
     }
 
@@ -74,17 +81,24 @@ public class GoogleFinance extends Source {
     exchanges.put(PAR, EPA);
     exchanges.put(MIB, BIT);
     exchanges.put(BM, BME);
+    exchanges.put(WB, VIE);
+    exchanges.put(BIST, IST);
     exchanges.put(HKSE, HKG);
     exchanges.put(SSE, SHA);
     exchanges.put(SZSE, SHE);
     exchanges.put(TSE, TYO);
     exchanges.put(BSE, BOM);
     exchanges.put(TWSE, TPE);
+    exchanges.put(MYX, KLSE);
+    exchanges.put(SET, BKK);
+    exchanges.put(NZX, NZE);
     exchanges.put(TSX, TSE_);
     exchanges.put(GPW, WSE);
     exchanges.put(SB, STO);
     exchanges.put(KFB, CPH);
     exchanges.put(ICEX, ICE);
+    exchanges.put(MOEX, MCX);
+    exchanges.put(TASE, TLV);
     exchanges.put(BOVESPA, BVMF);
 
     // Google Finance (max. 4000 lines unless with explicit start date)

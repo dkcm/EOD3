@@ -1,5 +1,5 @@
 /**
- * GoogleFinanceTest.java	v0.6	6 March 2014 2:32:24 AM
+ * GoogleFinanceTest.java	v0.7	6 March 2014 2:32:24 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -24,7 +24,7 @@ import org.junit.Test;
  * JUnit test for <code>GoogleFinance</code>.
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class GoogleFinanceTest extends SourceTest {
 
@@ -45,14 +45,21 @@ public class GoogleFinanceTest extends SourceTest {
   private static final String BOM          = "BOM:";
   private static final String TSE_         = "TSE:";
   private static final String FRA          = "FRA:";
+  private static final String VIE          = "VIE:";
+  private static final String IST          = "IST:";
   private static final String EPA          = "EPA:";
   private static final String BME          = "BME:";
   private static final String WSE          = "WSE:";
   private static final String BIT          = "BIT:";
   private static final String TPE          = "TPE:";
+  private static final String KLSE         = "KLSE:";
+  private static final String BKK          = "BKK:";
+  private static final String NZE          = "NZE:";
   private static final String STO          = "STO:";
   private static final String CPH          = "CPH:";
   private static final String ICE          = "ICE:";
+  private static final String MCX          = "MCX:";
+  private static final String TLV          = "TLV:";
   private static final String BVMF         = "BVMF:";
 
   public GoogleFinanceTest() {
@@ -68,6 +75,8 @@ public class GoogleFinanceTest extends SourceTest {
     exchanges.put(SWX, SWX.toString() + COLON);
     exchanges.put(MIB, BIT);
     exchanges.put(BM, BME);
+    exchanges.put(WB, VIE);
+    exchanges.put(BIST, IST);
     exchanges.put(SB, STO);
     exchanges.put(KFB, CPH);
     exchanges.put(ICEX, ICE);
@@ -81,7 +90,13 @@ public class GoogleFinanceTest extends SourceTest {
     exchanges.put(NSE, NSE.toString() + COLON);
     exchanges.put(KRX, KRX.toString() + COLON);
     exchanges.put(TWSE, TPE);
+    exchanges.put(IDX, IDX.toString() + COLON);
+    exchanges.put(MYX, KLSE);
+    exchanges.put(SET, BKK);
     exchanges.put(ASX, ASX.toString() + COLON);
+    exchanges.put(NZX, NZE);
+    exchanges.put(MOEX, MCX);
+    exchanges.put(TASE, TLV);
     exchanges.put(BOVESPA, BVMF);
     exchanges.put(BCBA, BCBA.toString() + COLON);
     exchanges.put(BMV, BMV.toString() + COLON);
