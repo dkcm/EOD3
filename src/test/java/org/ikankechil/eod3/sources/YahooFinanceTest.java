@@ -1,5 +1,5 @@
 /**
- * YahooFinanceTest.java  v0.5  4 March 2014 5:59:06 PM
+ * YahooFinanceTest.java  v0.6  4 March 2014 5:59:06 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -18,7 +18,7 @@ import org.ikankechil.eod3.Frequencies;
  * JUnit test for <code>YahooFinance</code>.
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class YahooFinanceTest extends SourceTest {
 
@@ -54,6 +54,7 @@ public class YahooFinanceTest extends SourceTest {
     exchanges.put(SWX, ".SW");
     exchanges.put(MIB, ".MI");
     exchanges.put(BM, ".MA");
+    exchanges.put(WB, ".VI");
     exchanges.put(SGX, ".SI");
     exchanges.put(HKSE, ".HK");
     exchanges.put(SSE, ".SS");
@@ -62,13 +63,17 @@ public class YahooFinanceTest extends SourceTest {
     exchanges.put(NSE, ".NS");
     exchanges.put(KRX, ".KS");
     exchanges.put(TWSE, ".TW");
+    exchanges.put(IDX, ".JK");
     exchanges.put(ASX, ".AX");
+    exchanges.put(NZX, ".NZ");
+    exchanges.put(TASE, ".TA");
     exchanges.put(TSX, ".TO");
     exchanges.put(OSLO, ".OL");
     exchanges.put(SB, ".ST");
     exchanges.put(KFB, ".CO");
     exchanges.put(BOVESPA, ".SA");
     exchanges.put(BCBA, ".BA");
+    exchanges.put(BCS, ".SN");
     exchanges.put(BMV, ".MX");
 
     originalLines.addAll(Arrays.asList("Date,Open,High,Low,Close,Volume,Adj Close",

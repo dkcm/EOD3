@@ -1,5 +1,5 @@
 /**
- * YahooFinance.java  v0.6  15 December 2013 8:28:07 PM
+ * YahooFinance.java  v0.7  15 December 2013 8:28:07 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -10,6 +10,7 @@ import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.ikankechil.util.StringUtility.*;
 
 import java.util.Calendar;
+import java.util.EnumSet;
 
 import org.ikankechil.eod3.Frequencies;
 import org.ikankechil.io.TextTransform;
@@ -20,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Yahoo! Finance.
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class YahooFinance extends Source {
   // TODO adjust prices for splits, etc. (adjust only when close and adj. close are unequal)
@@ -37,7 +38,9 @@ public class YahooFinance extends Source {
   // Exchange-related constants
   private static final String L           = ".L";
   private static final String SI          = ".SI";
+  private static final String JK          = ".JK";
   private static final String AX          = ".AX";
+  private static final String NZ          = ".NZ";
   private static final String TO          = ".TO";
   private static final String F           = ".F";
   private static final String PA          = ".PA";
@@ -45,6 +48,7 @@ public class YahooFinance extends Source {
   private static final String SW          = ".SW";
   private static final String MI          = ".MI";
   private static final String MA          = ".MA";
+  private static final String VI          = ".VI";
   private static final String HK          = ".HK";
   private static final String SS          = ".SS";
   private static final String SZ          = ".SZ";
@@ -55,8 +59,10 @@ public class YahooFinance extends Source {
   private static final String TW          = ".TW";
   private static final String ST          = ".ST";
   private static final String CO          = ".CO";
+  private static final String TA          = ".TA";
   private static final String SA          = ".SA";
   private static final String BA          = ".BA";
+  private static final String SN          = ".SN";
   private static final String MX          = ".MX";
 
   private static final Logger logger      = LoggerFactory.getLogger(YahooFinance.class);
@@ -66,10 +72,10 @@ public class YahooFinance extends Source {
 
     // supported markets (see http://finance.yahoo.com/exchanges)
     // NYSE, NASDAQ, AMEX and NYSEARCA do not require suffices
-    exchanges.put(NYSE, EMPTY);
-    exchanges.put(NASDAQ, EMPTY);
-    exchanges.put(AMEX, EMPTY);
-    exchanges.put(NYSEARCA, EMPTY);
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA)) {
+      exchanges.put(exchange, EMPTY);
+    }
+
     exchanges.put(LSE, L);
     exchanges.put(FWB, F);
     exchanges.put(PAR, PA);
@@ -77,6 +83,7 @@ public class YahooFinance extends Source {
     exchanges.put(SWX, SW);
     exchanges.put(MIB, MI);
     exchanges.put(BM, MA);
+    exchanges.put(WB, VI);
     exchanges.put(SGX, SI);
     exchanges.put(HKSE, HK);
     exchanges.put(SSE, SS);
@@ -85,13 +92,17 @@ public class YahooFinance extends Source {
     exchanges.put(NSE, NS);
     exchanges.put(KRX, KS);
     exchanges.put(TWSE, TW);
+    exchanges.put(IDX, JK);
     exchanges.put(ASX, AX);
+    exchanges.put(NZX, NZ);
+    exchanges.put(TASE, TA);
     exchanges.put(TSX, TO);
     exchanges.put(OSLO, OL);
     exchanges.put(SB, ST);
     exchanges.put(KFB, CO);
     exchanges.put(BOVESPA, SA);
     exchanges.put(BCBA, BA);
+    exchanges.put(BCS, SN);
     exchanges.put(BMV, MX);
 
     // build URL using Yahoo! Finance API
