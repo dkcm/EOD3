@@ -1,5 +1,5 @@
 /**
- * Exchanges.java  v0.9  13 November 2014 10:38:47 AM
+ * Exchanges.java  v0.10  13 November 2014 10:38:47 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * pseudo-exchange.
  *
  * @author Daniel Kuan
- * @version 0.9
+ * @version 0.10
  */
 public enum Exchanges {
 
@@ -44,6 +44,12 @@ public enum Exchanges {
   MIB,
   /** Bolsa de Madrid, Madrid Stock Exchange */
   BM,
+  /** Wiener Börse, Vienna Stock Exchange */
+  WB,
+  /** Athens Stock Exchange */
+  ATHEX,
+  /** Borsa İstanbul */
+  BIST,
   /** Oslo Børs */
   OSLO,
   /** Stockholmsbörsen, Stockholm Stock Exchange */
@@ -52,10 +58,16 @@ public enum Exchanges {
   KFB,
   /** Kauphöll Íslands, Iceland Stock Exchange */
   ICEX,
-  /** Warsaw Stock Exchange */
+  /** Moskovskaya Birzha, Moscow Exchange */
+  MOEX,
+  /** Giełda Papierów Wartościowych w Warszawie, Warsaw Stock Exchange */
   GPW,
   /** Budapesti Értéktőzsde, Budapest Stock Exchange */
   BET,
+  /** Burza cenných papírů Praha, Prague Stock Exchange */
+  PX,
+  /** Bursa de Valori București, Bucharest Stock Exchange */
+  BVB,
 
   // Asia-Pacific
   /** Singapore Stock Exchange */
@@ -68,6 +80,8 @@ public enum Exchanges {
   SZSE,
   /** Tokyo Stock Exchange */
   TSE,
+  /** Osaka Securities Exchange */
+  OSE,
   /** Bombay Stock Exchange */
   BSE,
   /** National Stock Exchange of India */
@@ -76,14 +90,30 @@ public enum Exchanges {
   KRX,
   /** Taiwan Stock Exchange */
   TWSE,
-  /** Australia Stock Exchange */
+  /** Bursa Efek Indonesia, Indonesia Stock Exchange */
+  IDX,
+  /** Bursa Malaysia */
+  MYX,
+  /** Stock Exchange of Thailand */
+  SET,
+
+  // Oceania
+  /** Australian Securities Exchange */
   ASX,
+  /** New Zealand Exchange */
+  NZX,
+
+  // Middle East
+  /** Tel Aviv Stock Exchange */
+  TASE,
 
   // South America
   /** Bolsa de Valores, Mercadorias & Futuros de São Paulo, Sao Paolo Stock Exchange */
   BOVESPA,
   /** Bolsa de Comercio de Buenos Aires, Buenos Aires Stock Exchange */
   BCBA,
+  /** Bolsa de Comercio de Santiago, Santiago Stock Exchange */
+  BCS,
   /** Bolsa Mexicana de Valores, Mexico Stock Exchange */
   BMV,
 
