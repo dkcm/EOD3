@@ -1,7 +1,7 @@
 /**
- * Netfonds.java  v0.4  5 March 2014 6:05:08 PM
+ * Netfonds.java  v0.5  5 March 2014 6:05:08 PM
  *
- * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2013-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -20,11 +20,11 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Netfonds, a Norwegian on-line broker.
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class Netfonds extends Source {
 
-  // Western European non-Scandinavian exchanges
+  // Western-European non-Scandinavian exchanges
   private final static EnumSet<Exchanges> EU_EXCHANGES;
 
   // Exchange-related constants
@@ -41,18 +41,19 @@ public class Netfonds extends Source {
   private static final String             E_Z    = "E-%sZ.BTSE";
   private static final String             E_M    = "E-%sM.BTSE";
   private static final String             E_E    = "E-%sE.BTSE";
+  private static final String             E_V    = "E-%sV.BTSE";
 
   private static final Logger             logger = LoggerFactory.getLogger(Netfonds.class);
 
   static {
-    EU_EXCHANGES = EnumSet.of(LSE, FWB, PAR, AMS, SWX, MIB, BM);
+    EU_EXCHANGES = EnumSet.of(LSE, FWB, PAR, AMS, SWX, MIB, BM, WB);
   }
 
   public Netfonds() {
     super(Netfonds.class);
 
     // supported markets
-    // Oslo Børs does not require a suffix
+    // Oslo BÃ¸rs does not require a suffix
     exchanges.put(NYSE, N);
     exchanges.put(NASDAQ, O);
     exchanges.put(AMEX, A);
@@ -71,6 +72,7 @@ public class Netfonds extends Source {
     exchanges.put(SWX, E_Z);
     exchanges.put(MIB, E_M);
     exchanges.put(BM, E_E);
+    exchanges.put(WB, E_V);
 
     // Notes:
     // 1. cannot specify a time window
