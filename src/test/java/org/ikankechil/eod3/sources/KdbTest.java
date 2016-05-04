@@ -1,5 +1,5 @@
 /**
- * KdbTest.java	v0.2	29 December 2015 4:36:07 pm
+ * KdbTest.java	v0.3	29 December 2015 4:36:07 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -20,7 +20,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class KdbTest extends SourceTest {
 
@@ -29,9 +29,11 @@ public class KdbTest extends SourceTest {
   private static final String DOWNLOAD   = "?download=csv";
 
   private static final String TOKYO      = "-T";
+  private static final String OSAKA      = "-O";
 
   public KdbTest() {
     exchanges.put(TSE, TOKYO);
+    exchanges.put(OSE, OSAKA);
 
     originalLines.addAll(Arrays.asList("6502-T,東証1部,東芝,日足",
                                        "日付,始値,高値,安値,終値,出来高,売買代金",

@@ -1,5 +1,5 @@
 /**
- * Kdb.java	v0.3	29 December 2015 4:25:33 pm
+ * Kdb.java	v0.4	29 December 2015 4:25:33 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,7 +21,7 @@ import org.ikankechil.io.TextTransformer;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class Kdb extends Source {
 
@@ -30,7 +30,7 @@ public class Kdb extends Source {
 
   // Exchange-related constants
   private static final String TOKYO      = "-T";
-//  private static final String OSAKA      = "-O";
+  private static final String OSAKA      = "-O";
 
   // Other URL constants
   private static final String DOWNLOAD   = "?download=csv";
@@ -40,6 +40,7 @@ public class Kdb extends Source {
 
     // supported exchanges
     exchanges.put(TSE, TOKYO);
+    exchanges.put(OSE, OSAKA);
   }
 
   @Override
