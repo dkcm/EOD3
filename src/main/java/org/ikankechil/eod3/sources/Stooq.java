@@ -1,7 +1,7 @@
 /**
- * Stooq.java v0.4  27 January 2014 PM 07:12:11 PM
+ * Stooq.java v0.5  27 January 2014 PM 07:12:11 PM
  *
- * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2013-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * portal.
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class Stooq extends Source {
 
@@ -35,10 +35,10 @@ public class Stooq extends Source {
   private static final String US         = ".us";
   private static final String UK         = ".uk";
   private static final String DE         = ".de";
+  private static final String HK         = ".hk";
   private static final String JP         = ".jp";
   private static final String HU         = ".hu";
-//  private static final String FR         = ".fr";
-  private static final String IT         = ".it";
+//  private static final String IT         = ".it";
 //  private static final String F          = ".f";  // futures
 
   static final Logger         logger     = LoggerFactory.getLogger(Stooq.class);
@@ -56,7 +56,8 @@ public class Stooq extends Source {
     exchanges.put(NYSEARCA, US);
     exchanges.put(LSE, UK);
     exchanges.put(FWB, DE);
-    exchanges.put(MIB, IT);
+//    exchanges.put(MIB, IT);
+    exchanges.put(HKSE, HK);
     exchanges.put(TSE, JP);
     exchanges.put(BET, HU);
 
