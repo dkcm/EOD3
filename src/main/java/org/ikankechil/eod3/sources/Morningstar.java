@@ -60,6 +60,7 @@ public class Morningstar extends Source {
   private static final String XMIC       = "XMIC:";
   private static final String XWAR       = "XWAR:";
   private static final String XBUD       = "XBUD:";
+  private static final String XPRA       = "XPRA:";
   private static final String XBSE       = "XBSE:";
   private static final String XSES       = "XSES:";
   private static final String XHKG       = "XHKG:";
@@ -111,6 +112,7 @@ public class Morningstar extends Source {
     exchanges.put(MOEX, XMIC);
     exchanges.put(GPW, XWAR);
     exchanges.put(BET, XBUD);
+    exchanges.put(PX, XPRA);
     exchanges.put(BVB, XBSE);
     exchanges.put(SGX, XSES);
     exchanges.put(HKSE, XHKG);
