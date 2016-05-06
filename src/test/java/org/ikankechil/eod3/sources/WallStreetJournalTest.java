@@ -1,5 +1,5 @@
 /**
- * WallStreetJournalTest.java	v0.2	6 April 2015 12:50:58 am
+ * WallStreetJournalTest.java	v0.3	6 April 2015 12:50:58 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -8,8 +8,11 @@ package org.ikankechil.eod3.sources;
 import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -26,11 +29,11 @@ import org.junit.Test;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class WallStreetJournalTest extends SourceTest {
 
-  private static final String BASE          = "http://quotes.wsj.com/cdssvco/marketwatch/dylan/v1/HistoricalPrices?pageSize=0&sortColumn=Time&sortOrder=DESC&ticker=";
+  private static final String BASE          = baseURL(WallStreetJournalTest.class);
   private static final String START_DATE    = "&startDate=";
   private static final String END_DATE      = "&endDate=";
   private static final String FREQUENCY     = "&duration=P1";
@@ -55,7 +58,7 @@ public class WallStreetJournalTest extends SourceTest {
 
   private final DateFormat    urlDateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
 
-  public WallStreetJournalTest() {
+  public WallStreetJournalTest() throws IOException {
     exchanges.put(NYSE, US);
     exchanges.put(NASDAQ, US);
     exchanges.put(AMEX, US);
@@ -77,11 +80,7 @@ public class WallStreetJournalTest extends SourceTest {
     exchanges.put(KFB, DK);
     exchanges.put(FX, US);
 
-    originalLines.addAll(Arrays.asList("2015-12-04,34.11,35.03,34.00,34.94,24484400,34.94",
-                                       "2015-12-03,34.97,34.99,34.00,34.04,29829200,34.04",
-                                       "2015-12-02,35.09,35.41,34.81,34.83,18644100,34.83",
-                                       "2015-12-01,35.00,35.20,34.71,35.09,23352200,35.09",
-                                       "2015-11-30,34.55,34.90,34.43,34.77,20131700,34.77"));
+    originalLines.addAll(Files.readAllLines(new File(DIRECTORY, getClass().getSimpleName() + HTML).toPath()));
 
     transformedLines.addAll(Arrays.asList("INTC,20151204,34.11,35.03,34.00,34.94,24484400",
                                           "INTC,20151203,34.97,34.99,34.00,34.04,29829200",
