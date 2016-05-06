@@ -1,5 +1,5 @@
 /**
- * SourceTest.java	v0.3	7 January 2014 10:06:00 PM
+ * SourceTest.java	v0.4	7 January 2014 10:06:00 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,9 +12,11 @@ import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.EnumMap;
 import java.util.List;
@@ -33,7 +35,7 @@ import org.junit.rules.ExpectedException;
  * JUnit test for <code>Source</code>.
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public abstract class SourceTest {
 
@@ -47,6 +49,8 @@ public abstract class SourceTest {
   public final ExpectedException         thrown           = ExpectedException.none();
 
   protected static final String          SYMBOL           = "INTC";
+  private static final String            FX_SYMBOL        = "EURUSD";
+  protected static final Exchanges       EXCHANGE         = NASDAQ;
   protected static final Calendar        TODAY            = getInstance();
   protected static final Calendar        YESTERDAY        = (Calendar) TODAY.clone();
   private static final Calendar          FIRST_JANUARY    = getInstance();
@@ -86,7 +90,13 @@ public abstract class SourceTest {
   @Test
   public final void cannotInstantiateWithNullBase() {
     thrown.expect(NullPointerException.class);
-    source = newInstance(null);
+    source = newInstance((String) null);
+  }
+
+  @Test
+  public final void cannotInstantiateWithNullBase2() {
+    thrown.expect(NullPointerException.class);
+    source = newInstance((Class<Source>) null);
   }
 
   @Test
@@ -102,6 +112,12 @@ public abstract class SourceTest {
 
     thrown.expect(MalformedURLException.class);
     source.url(SYMBOL);
+  }
+
+  @Test
+  public final void cannotInstantiateWithInvalidBase2() throws Exception {
+    thrown.expect(NullPointerException.class);
+    source = newInstance(Source.class);
   }
 
   @Test
@@ -248,8 +264,8 @@ public abstract class SourceTest {
   @Test
   public void urlWithSymbolAndFX() throws Exception {
     final Exchanges exchange = FX;
-    final URL expected = expectedURL(SYMBOL, exchange);
-    final URL actual = source.url(SYMBOL, exchange);
+    final URL expected = expectedURL(FX_SYMBOL, exchange);
+    final URL actual = source.url(FX_SYMBOL, exchange);
 
     assertEquals(expected, actual);
     assertNotNull(expected);
@@ -343,7 +359,9 @@ public abstract class SourceTest {
     final Object[] expecteds = exchanges.keySet().toArray();
     final Object[] actuals = source.exchanges().toArray();
 
-    assertArrayEquals(expecteds, actuals);
+    final String message = "Expected: " + Arrays.asList(expecteds) + "\tActual: " + Arrays.asList(actuals);
+
+    assertArrayEquals(message, expecteds, actuals);
   }
 
   @Test
@@ -374,32 +392,66 @@ public abstract class SourceTest {
     assertArrayEquals(transformedLines.toArray(), actuals.toArray());
   }
 
-  private static final Source newInstance(final String base) {
-    return new Source(base) {
+  @Test
+  public void connectivity() throws Exception {
+    final String symbol;
+    final Exchanges exchange;
+    // only FX available
+    if (exchanges.size() == 1 && exchanges.containsKey(FX)) {
+      symbol = FX_SYMBOL;
+      exchange = FX;
+    }
+    else {
+      symbol = SYMBOL;
+      exchange = EXCHANGE;
+    }
+    final URL url = source.url(symbol, exchange, DEFAULT_START, YESTERDAY, MONTHLY);
 
-      @Override
-      protected void appendEndDate(final StringBuilder url, final Calendar end)  { /* do nothing */ }
-
-      @Override
-      protected void appendFrequency(final StringBuilder url, final Frequencies frequency) { /* do nothing */ }
-
-      @Override
-      protected void appendStartDate(final StringBuilder url, final Calendar start) { /* do nothing */ }
-
-      @Override
-      public TextTransform newTransform(final String symbol) {
-        return new IdentityTextTransform();
-      }
-
-      @Override
-      public String directory() {
-        return SourceTest.class.getName();
-      }
-
-    };
+    try (final InputStream is = url.openStream()) {
+      assertNotNull(is);
+    }
   }
 
-  private Source newInstance()
+  private static final Source newInstance(final String base) {
+    return new MockSource(base);
+  }
+
+  private static final Source newInstance(final Class<? extends Source> base) {
+    return new MockSource(base);
+  }
+
+  private static final class MockSource extends Source {
+
+    public MockSource(final Class<? extends Source> source) {
+      super(source);
+    }
+
+    public MockSource(final String base) {
+      super(base);
+    }
+
+    @Override
+    protected void appendEndDate(final StringBuilder url, final Calendar end)  { /* do nothing */ }
+
+    @Override
+    protected void appendFrequency(final StringBuilder url, final Frequencies frequency) { /* do nothing */ }
+
+    @Override
+    protected void appendStartDate(final StringBuilder url, final Calendar start) { /* do nothing */ }
+
+    @Override
+    public TextTransform newTransform(final String symbol) {
+      return new IdentityTextTransform();
+    }
+
+    @Override
+    public String directory() {
+      return SourceTest.class.getName();
+    }
+
+  }
+
+  private final Source newInstance()
       throws ClassNotFoundException, InstantiationException, IllegalAccessException {
     return (Source) Class.forName(this.getClass().getName().replace(TEST, EMPTY)).newInstance();
   }
