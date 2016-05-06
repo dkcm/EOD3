@@ -1,5 +1,5 @@
 /**
- * SourceTest.java	v0.4	7 January 2014 10:06:00 PM
+ * SourceTest.java	v0.5	7 January 2014 10:06:00 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,6 +12,9 @@ import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -19,8 +22,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.ikankechil.eod3.Frequencies;
 import org.ikankechil.io.TextTransform;
@@ -35,46 +40,69 @@ import org.junit.rules.ExpectedException;
  * JUnit test for <code>Source</code>.
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public abstract class SourceTest {
 
-  protected Source                       source;
+  protected Source                         source;
 
-  protected final Map<Exchanges, String> exchanges        = new EnumMap<>(Exchanges.class);
-  protected final List<String>           originalLines    = new ArrayList<>();
-  protected final List<String>           transformedLines = new ArrayList<>();
+  protected final Map<Exchanges, String>   exchanges        = new EnumMap<>(Exchanges.class);
+  protected final List<String>             originalLines    = new ArrayList<>();
+  protected final List<String>             transformedLines = new ArrayList<>();
 
   @Rule
-  public final ExpectedException         thrown           = ExpectedException.none();
+  public final ExpectedException           thrown           = ExpectedException.none();
 
-  protected static final String          SYMBOL           = "INTC";
-  private static final String            FX_SYMBOL        = "EURUSD";
-  protected static final Exchanges       EXCHANGE         = NASDAQ;
-  protected static final Calendar        TODAY            = getInstance();
-  protected static final Calendar        YESTERDAY        = (Calendar) TODAY.clone();
-  private static final Calendar          FIRST_JANUARY    = getInstance();
-  protected static final Calendar        DEFAULT_START    = getInstance();
+  private static final Map<String, String> BASE_URLS        = new HashMap<>();
 
-  protected static final File            DIRECTORY        = new File(".//./src/test/resources/" + SourceTest.class.getSimpleName());
+  protected static final String            SYMBOL           = "INTC";
+  private static final String              FX_SYMBOL        = "EURUSD";
+  protected static final Exchanges         EXCHANGE         = NASDAQ;
+  protected static final Calendar          TODAY            = getInstance();
+  protected static final Calendar          YESTERDAY        = (Calendar) TODAY.clone();
+  private static final Calendar            FIRST_JANUARY    = getInstance();
+  protected static final Calendar          DEFAULT_START    = getInstance();
 
-  private static final String            TEST             = "Test";
-  protected static final String          HTML             = ".html";
-  protected static final String          EMPTY            = "";
-  protected static final String          SPACE            = " ";
-  protected static final char            COLON            = ':';
-  protected static final String          DOLLAR           = "$";
-  protected static final char            QUESTION         = '?';
-  protected static final char            HYPHEN           = '-';
+  protected static final File              DIRECTORY        = new File(".//./src/test/resources/" + SourceTest.class.getSimpleName());
+  private static final File                PROPERTIES_FILE  = new File(DIRECTORY, "eod3.properties");
+  private static final String              PACKAGE          = SourceTest.class.getPackage().getName();
 
-  public static final String             EMPTY_SYMBOL     = "Empty symbol";
+  private static final String              TEST             = "Test";
+  protected static final String            HTML             = ".html";
+  protected static final String            EMPTY            = "";
+  protected static final String            SPACE            = " ";
+  protected static final char              COLON            = ':';
+  protected static final String            DOLLAR           = "$";
+  protected static final char              QUESTION         = '?';
+  protected static final char              HYPHEN           = '-';
 
-  protected static final int             NONE             = -1;
+  public static final String               EMPTY_SYMBOL     = "Empty symbol";
 
-  static { // set dates
+  protected static final int               NONE             = -1;
+
+  static {
+    // set dates
     YESTERDAY.add(DAY_OF_MONTH, -1);
     FIRST_JANUARY.set(TODAY.get(YEAR) - 1, JANUARY, 1);
     DEFAULT_START.setTimeInMillis(0);
+
+    // set base URLs
+    try (final InputStream is = new FileInputStream(PROPERTIES_FILE)) {
+      final Properties properties = new Properties();
+      properties.load(is);
+
+      for (final String propertyName : properties.stringPropertyNames()) {
+        if (propertyName.startsWith(PACKAGE)) {
+          final String url = properties.getProperty(propertyName);
+          if (url != null && !url.isEmpty()) {
+            BASE_URLS.put(propertyName, url);
+          }
+        }
+      }
+    }
+    catch (final IOException ioE) {
+      fail("Cannot load properties file: " + ioE);
+    }
   }
 
   @Before
@@ -410,6 +438,9 @@ public abstract class SourceTest {
     try (final InputStream is = url.openStream()) {
       assertNotNull(is);
     }
+    catch (final FileNotFoundException fnfE) {
+      fail("URL no longer valid: " + fnfE);
+    }
   }
 
   private static final Source newInstance(final String base) {
@@ -454,6 +485,10 @@ public abstract class SourceTest {
   private final Source newInstance()
       throws ClassNotFoundException, InstantiationException, IllegalAccessException {
     return (Source) Class.forName(this.getClass().getName().replace(TEST, EMPTY)).newInstance();
+  }
+
+  protected static final String baseURL(final Class<? extends SourceTest> source) {
+    return BASE_URLS.get(source.getName());
   }
 
   protected abstract URL expectedURL(final String symbol) throws MalformedURLException;
