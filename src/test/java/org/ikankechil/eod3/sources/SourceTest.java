@@ -57,7 +57,6 @@ public abstract class SourceTest {
 
   protected static final String            SYMBOL           = "INTC";
   private static final String              FX_SYMBOL        = "EURUSD";
-  protected static final Exchanges         EXCHANGE         = NASDAQ;
   protected static final Calendar          TODAY            = getInstance();
   protected static final Calendar          YESTERDAY        = (Calendar) TODAY.clone();
   private static final Calendar            FIRST_JANUARY    = getInstance();
@@ -431,7 +430,7 @@ public abstract class SourceTest {
     }
     else {
       symbol = SYMBOL;
-      exchange = EXCHANGE;
+      exchange = NASDAQ;
     }
     final URL url = source.url(symbol, exchange, DEFAULT_START, YESTERDAY, MONTHLY);
 

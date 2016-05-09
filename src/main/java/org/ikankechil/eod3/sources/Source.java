@@ -88,6 +88,7 @@ public abstract class Source {
   static final int                         EIGHT             = 8;
   static final int                         NINE              = 9;
   static final int                         TEN               = 10;
+  static final int                         TWELVE            = 12;
   static final int                         FIFTEEN           = 15;
 
   static final char                        DEFAULT_FREQUENCY = Frequencies.DAILY.frequency();
