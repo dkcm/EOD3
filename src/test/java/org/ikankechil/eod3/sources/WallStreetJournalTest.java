@@ -1,7 +1,7 @@
 /**
- * WallStreetJournalTest.java	v0.4	6 April 2015 12:50:58 am
+ * WallStreetJournalTest.java	v0.5	6 April 2015 12:50:58 am
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -26,7 +26,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class WallStreetJournalTest extends SourceTest {
 
@@ -39,15 +39,93 @@ public class WallStreetJournalTest extends SourceTest {
   private static final String ROWS          = "&num_rows=32767";
 
   // Exchange-related constants
-  private static final String EXCHANGE      = "&exchange=";
-  private static final String XNYS          = "XNYS";
-  private static final String XNAS          = "XNAS";
+  private static final String COUNTRY       = "&country=";
+
+  private static final String US            = "US";
+  private static final String CA            = "CA";
+  private static final String UK            = "UK";
+  private static final String DE            = "DE";
+  private static final String FR            = "FR";
+  private static final String NL            = "NL";
+  private static final String CH            = "CH";
+  private static final String IT            = "IT";
+  private static final String ES            = "ES";
+  private static final String AT            = "AT";
+  private static final String GR            = "GR";
+  private static final String TR            = "TR";
+  private static final String NO            = "NO";
+  private static final String SE            = "SE";
+  private static final String DK            = "DK";
+  private static final String IS            = "IS";
+  private static final String RU            = "RU";
+  private static final String PL            = "PL";
+  private static final String HU            = "HU";
+  private static final String CZ            = "CZ";
+  private static final String RO            = "RO";
+  private static final String SG            = "SG";
+  private static final String HK            = "HK";
+  private static final String CN            = "CN";
+  private static final String JP            = "JP";
+  private static final String IN            = "IN";
+  private static final String KR            = "KR";
+  private static final String TW            = "TW";
+  private static final String ID            = "ID";
+  private static final String MY            = "MY";
+  private static final String TH            = "TH";
+  private static final String AU            = "AU";
+  private static final String NZ            = "NZ";
+  private static final String BR            = "BR";
+  private static final String AR            = "AR";
+  private static final String CL            = "CL";
+  private static final String MX            = "MX";
 
   private final DateFormat    urlDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 
   public WallStreetJournalTest() throws IOException {
-    exchanges.put(NYSE, XNYS);
-    exchanges.put(NASDAQ, XNAS);
+    exchanges.put(NYSE, US);
+    exchanges.put(NASDAQ, US);
+    exchanges.put(AMEX, US);
+    exchanges.put(NYSEARCA, US);
+    exchanges.put(TSX, CA);
+    exchanges.put(LSE, UK);
+    exchanges.put(FWB, DE);
+    exchanges.put(PAR, FR);
+    exchanges.put(AMS, NL);
+    exchanges.put(SWX, CH);
+    exchanges.put(MIB, IT);
+    exchanges.put(BM, ES);
+    exchanges.put(WB, AT);
+    exchanges.put(ATHEX, GR);
+    exchanges.put(BIST, TR);
+    exchanges.put(OSLO, NO);
+    exchanges.put(SB, SE);
+    exchanges.put(KFB, DK);
+    exchanges.put(ICEX, IS);
+    exchanges.put(MOEX, RU);
+    exchanges.put(GPW, PL);
+    exchanges.put(BET, HU);
+    exchanges.put(PX, CZ);
+    exchanges.put(BVB, RO);
+    exchanges.put(SGX, SG);
+    exchanges.put(HKSE, HK);
+    exchanges.put(SSE, CN);
+    exchanges.put(SZSE, CN);
+    exchanges.put(TSE, JP);
+    exchanges.put(OSE, JP);
+    exchanges.put(BSE, IN);
+    exchanges.put(NSE, IN);
+    exchanges.put(KRX, KR);
+    exchanges.put(TWSE, TW);
+    exchanges.put(IDX, ID);
+    exchanges.put(MYX, MY);
+    exchanges.put(SET, TH);
+    exchanges.put(ASX, AU);
+    exchanges.put(NZX, NZ);
+    exchanges.put(BOVESPA, BR);
+    exchanges.put(BCBA, AR);
+    exchanges.put(BCS, CL);
+    exchanges.put(BMV, MX);
+    exchanges.put(FX, US);
 
     originalLines.addAll(Files.readAllLines(new File(DIRECTORY, getClass().getSimpleName() + HTML).toPath()));
 
@@ -56,7 +134,9 @@ public class WallStreetJournalTest extends SourceTest {
                                           "INTC,20151202,35.0900,35.4100,34.8050,34.8300,18690000000",
                                           "INTC,20151201,35.0000,35.2000,34.7100,35.0900,23560000000",
                                           "INTC,20151130,34.5500,34.9000,34.4300,34.7700,21790000000000",
-                                          "INTC,20151127,34.5400,34.6800,34.4000,34.4600,6620000000000"));
+                                          "INTC,20151127,34.5400,34.6800,34.4000,34.4600,6620000000000",
+                                          "INTC,20151125,34.2600,34.7400,34.1400,34.4500,17.94",
+                                          "INTC,20151124,34.3300,34.4400,33.9000,34.3600,2141"));
   }
 
   @Override
@@ -71,7 +151,7 @@ public class WallStreetJournalTest extends SourceTest {
   protected URL expectedURL(final String symbol, final Exchanges exchange)
       throws MalformedURLException {
     return new URL(BASE + symbol + QUESTION +
-                   (exchanges.containsKey(exchange)? EXCHANGE + exchanges.get(exchange) : EMPTY) +
+                   (exchanges.containsKey(exchange)? COUNTRY + exchanges.get(exchange) : EMPTY) +
                    START_DATE + urlDateFormat.format(DEFAULT_START.getTime()) +
                    END_DATE + urlDateFormat.format(TODAY.getTime()) +
                    ROWS);
@@ -102,7 +182,7 @@ public class WallStreetJournalTest extends SourceTest {
                             final Calendar end)
       throws MalformedURLException {
     return new URL(BASE + symbol + QUESTION +
-                   (exchanges.containsKey(exchange)? EXCHANGE + exchanges.get(exchange) : EMPTY) +
+                   (exchanges.containsKey(exchange)? COUNTRY + exchanges.get(exchange) : EMPTY) +
                    START_DATE + urlDateFormat.format(start.getTime()) +
                    END_DATE + urlDateFormat.format(end.getTime()) +
                    ROWS);

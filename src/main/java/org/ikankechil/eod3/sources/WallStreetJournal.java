@@ -1,7 +1,7 @@
 /**
- * WallStreetJournal.java v0.5  14 May 2014 11:49:20 PM
+ * WallStreetJournal.java v0.6  14 May 2014 11:49:20 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing the Wall Street Journal.
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class WallStreetJournal extends Source {
 
@@ -36,19 +37,118 @@ public class WallStreetJournal extends Source {
 
   private static final String ROWS       = "&num_rows=" + Short.MAX_VALUE;
 
+  // Country code
+  private static final String COUNTRY    = "&country=";
+
   // Exchange-related constants
-  private static final String EXCHANGE   = "&exchange=";
-  private static final String XNYS       = "XNYS";
-  private static final String XNAS       = "XNAS";
+  private static final String US         = "US";
+  private static final String CA         = "CA";
+  private static final String UK         = "UK";
+  private static final String DE         = "DE";
+  private static final String FR         = "FR";
+  private static final String NL         = "NL";
+  private static final String CH         = "CH";
+  private static final String IT         = "IT";
+  private static final String ES         = "ES";
+  private static final String AT         = "AT";
+  private static final String GR         = "GR";
+  private static final String TR         = "TR";
+  private static final String NO         = "NO";
+  private static final String SE         = "SE";
+  private static final String DK         = "DK";
+  private static final String IS         = "IS";
+  private static final String RU         = "RU";
+  private static final String PL         = "PL";
+  private static final String HU         = "HU";
+  private static final String CZ         = "CZ";
+  private static final String RO         = "RO";
+  private static final String SG         = "SG";
+  private static final String HK         = "HK";
+  private static final String CN         = "CN";
+  private static final String JP         = "JP";
+  private static final String IN         = "IN";
+  private static final String KR         = "KR";
+  private static final String TW         = "TW";
+  private static final String ID         = "ID";
+  private static final String MY         = "MY";
+  private static final String TH         = "TH";
+  private static final String AU         = "AU";
+  private static final String NZ         = "NZ";
+  private static final String BR         = "BR";
+  private static final String AR         = "AR";
+  private static final String CL         = "CL";
+  private static final String MX         = "MX";
 
   static final Logger         logger     = LoggerFactory.getLogger(WallStreetJournal.class);
 
   public WallStreetJournal() {
     super(WallStreetJournal.class);
 
-    // supported markets
-    exchanges.put(NYSE, XNYS);
-    exchanges.put(NASDAQ, XNAS);
+    // supported markets (see http://quotes.wsj.com/company-list)
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA, FX)) {
+      exchanges.put(exchange, US);
+    }
+
+    exchanges.put(TSX, CA);
+    exchanges.put(LSE, UK);
+    exchanges.put(FWB, DE);
+    exchanges.put(PAR, FR);
+    exchanges.put(AMS, NL);
+    exchanges.put(SWX, CH);
+    exchanges.put(MIB, IT);
+    exchanges.put(BM, ES);
+    exchanges.put(WB, AT);
+    exchanges.put(ATHEX, GR);
+    exchanges.put(BIST, TR);
+    exchanges.put(OSLO, NO);
+    exchanges.put(SB, SE);
+    exchanges.put(KFB, DK);
+    exchanges.put(ICEX, IS);
+    exchanges.put(MOEX, RU);
+    exchanges.put(GPW, PL);
+    exchanges.put(BET, HU);
+    exchanges.put(PX, CZ);
+    exchanges.put(BVB, RO);
+    exchanges.put(SGX, SG);
+    exchanges.put(HKSE, HK);
+    exchanges.put(SSE, CN);
+    exchanges.put(SZSE, CN);
+    exchanges.put(TSE, JP);
+    exchanges.put(OSE, JP);
+    exchanges.put(BSE, IN);
+    exchanges.put(NSE, IN);
+    exchanges.put(KRX, KR);
+    exchanges.put(TWSE, TW);
+    exchanges.put(IDX, ID);
+    exchanges.put(MYX, MY);
+    exchanges.put(SET, TH);
+    exchanges.put(ASX, AU);
+    exchanges.put(NZX, NZ);
+    exchanges.put(BOVESPA, BR);
+    exchanges.put(BCBA, AR);
+    exchanges.put(BCS, CL);
+    exchanges.put(BMV, MX);
+
+    // Wall Street Journal API
+    // http://quotes.wsj.com/cdssvco/marketwatch/dylan/v1/HistoricalPrices?ticker=A
+    //                                                                    &countrycode=US
+    //                                                                    &startDate=01-01-2000
+    //                                                                    &endDate=05-14-2014
+    //                                                                    &duration=P1D
+    //                                                                    &pagePos=0
+    //                                                                    &pageSize=0
+    //                                                                    &sortColumn=Time
+    //                                                                    &sortOrder=DESC
+    //                                                                    &contentType=xls
+    //
+    // Excel:
+    // http://quotes.wsj.com/cdssvco/marketwatch/dylan/v1/HistoricalPrices?ticker=A&countrycode=US&startDate=01-01-2000&endDate=05-14-2014&duration=P1D&pagePos=0&pageSize=0&sortColumn=Time&sortOrder=DESC&contentType=xls
+    //
+    // XML:
+    // http://quotes.wsj.com/cdssvco/marketwatch/dylan/v1/HistoricalPrices?ticker=JCP&countrycode=US&startDate=01-18-1970&endDate=05-15-2014&duration=P1D&pageSize=0&sortColumn=Time&sortOrder=DESC
+    //
+    // Notes:
+    // 1. Downloads a single data point if no dates are specified
   }
 
   enum DateFormats {
@@ -77,7 +177,7 @@ public class WallStreetJournal extends Source {
     final String value = exchanges.get(exchange);
     // only append non-null and non-empty exchanges
     if (value != null && !value.isEmpty()) {
-      url.append(EXCHANGE).append(value);
+      url.append(COUNTRY).append(value);
     }
     else {
       logger.debug("Unsupported exchange {} requested for {}", exchange, url);
@@ -214,8 +314,9 @@ public class WallStreetJournal extends Source {
 
       private final String parseVolume(final String string) {
         final int dot = string.indexOf(DOT);
-        final int space = string.indexOf(SPACE);
-        final int current = space - dot - ONE;  // current number of decimal places
+        final int space = string.lastIndexOf(SPACE);
+        final int end = (space < ZERO) ? string.length() : space;
+        final int current = (dot < ZERO) ? ZERO : end - dot - ONE;  // current number of decimal places
 
         final int shortfall;
         final char last = string.charAt(string.length() - ONE);
@@ -240,10 +341,18 @@ public class WallStreetJournal extends Source {
             break;
         }
 
-        final StringBuilder volume = new StringBuilder(string.substring(ZERO, dot));
-        volume.append(string.substring(dot + ONE, space));
-        for (int i = ZERO; i < shortfall; ++i) {  // make up for shortfall
-          volume.append(ZERO);
+        final StringBuilder volume = new StringBuilder();
+        if (shortfall == ZERO) {
+          volume.append(string);
+        }
+        else {
+          volume.append(string.substring(ZERO, dot))
+                .append(string.substring(dot + ONE, end));
+
+          // make up for shortfall
+          for (int i = ZERO; i < shortfall; ++i) {
+            volume.append(ZERO);
+          }
         }
         return volume.toString();
       }
