@@ -1,7 +1,7 @@
 /**
- * ExchangeSymbolsDownloader.java v0.8 28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java v0.9 28 January 2015 12:27:30 am
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 
@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class ExchangeSymbolsDownloader {
 
@@ -66,15 +66,24 @@ public class ExchangeSymbolsDownloader {
   private static final String                        SI            = "SI";
   private static final String                        HK            = "HK";
   private static final String                        TYO           = "TYO";
+  private static final String                        BO            = "BO";
   private static final String                        NS            = "NS";
   private static final String                        TPE           = "TPE";
+  private static final String                        JK            = "JK";
   private static final String                        LON           = "LON";
   private static final String                        FRA           = "FRA";
+  private static final String                        EPA           = "EPA";
   private static final String                        BIT           = "BIT";
+  private static final String                        VIE           = "VIE";
+  private static final String                        IST           = "IST";
   private static final String                        OSE           = "OSE";
 //  private static final String                        STO           = "STO";
   private static final String                        ST            = "ST";
   private static final String                        CPH           = "CPH";
+  private static final String                        MCX           = "MCX";
+  private static final String                        NZE           = "NZE";
+  private static final String                        TLV           = "TLV";
+  private static final String                        BVMF          = "BVMF";
 
   // Constants
   private static final int                           ZERO          = 0;
@@ -105,6 +114,8 @@ public class ExchangeSymbolsDownloader {
       //      https://en.wikipedia.org/wiki/List_of_companies_listed_on_the_Oslo_Stock_Exchange
       //      http://query.sse.com.cn/commonQuery.do?jsonCallBack=jsonpCallback41235&isPagination=true&sqlId=COMMON_SSE_LISTEDCOMPANIES_COMPANYLIST_EN_L&pageHelp.pageSize=15&pageHelp.pageNo=6&pageHelp.beginPage=6&pageHelp.endPage=10&_=1452391535253
       //      http://www.netfonds.no/quotes/kurs.php?exchange=BTSE&sec_types=&ticks=&table=tab&sort=alphabetic
+      //      https://www.nzx.com/markets/NZSX/securities
+      //      https://www.euronext.com/sites/www.euronext.com/files/ftp/smartpoolsecuritiesumtfcsv.csv
 
       final TextTransformer commaAtFirstColumn = new TextTransformer(new SymbolsTransform(COMMA, 1));
 
@@ -122,9 +133,19 @@ public class ExchangeSymbolsDownloader {
       googles.put(NYSEARCA, NYSEARCA.toString());
       googles.put(LSE, LON);
       googles.put(FWB, FRA);
+      googles.put(PAR, EPA);
+      googles.put(AMS, AMS.toString());
+      googles.put(SWX, SWX.toString());
       googles.put(MIB, BIT);
+      googles.put(WB, VIE);
+      googles.put(BIST, IST);
+      googles.put(MOEX, MCX);
       googles.put(TSE, TYO);
+      googles.put(KRX, KRX.toString());
       googles.put(TWSE, TPE);
+      googles.put(NZX, NZE);
+      googles.put(TASE, TLV);
+      googles.put(BOVESPA, BVMF);
 //      googles.put(SB, STO); // alternative
       for (final Entry<Exchanges, String> google : googles.entrySet()) {
         SOURCES.put(google.getKey(),
@@ -137,7 +158,9 @@ public class ExchangeSymbolsDownloader {
       final Map<Exchanges, String> yahoos = new EnumMap<>(Exchanges.class);
       yahoos.put(SGX, SI);
       yahoos.put(HKSE, HK);
+      yahoos.put(BSE, BO);
       yahoos.put(NSE, NS);
+      yahoos.put(IDX, JK);
       yahoos.put(TSX, TSX.toString());
 //      yahoos.put(LSE, L); // alternative
       for (final Entry<Exchanges, String> yahoo : yahoos.entrySet()) {

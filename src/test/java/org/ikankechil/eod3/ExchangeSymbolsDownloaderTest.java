@@ -1,7 +1,7 @@
 /**
- * ExchangeSymbolsDownloaderTest.java v0.5 7 April 2015 3:51:55 PM
+ * ExchangeSymbolsDownloaderTest.java v0.6 7 April 2015 3:51:55 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 
@@ -40,7 +40,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class ExchangeSymbolsDownloaderTest { // TODO Test symbols transform
 
@@ -52,7 +52,7 @@ public class ExchangeSymbolsDownloaderTest { // TODO Test symbols transform
   private static final SymbolsTaskHelper         SYMBOLS_TASK_HELPER   = ESD.new SymbolsTaskHelper();
 
   private static final Map<String, Set<String>>  MARKETS               = new LinkedHashMap<>();
-  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { PAR, AMS, SWX, BM, GPW, BET, SSE, SZSE, BSE, KRX, BOVESPA, BCBA, BMV, FX };
+  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { BM, ATHEX, GPW, BET, PX, BVB, SSE, SZSE, OSE, MYX, SET, BCBA, BCS, BMV, FX };
   private static final String[]                  EXCHANGE_URLS         = { "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NYSE",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NASDAQ",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=AMEX",
@@ -60,17 +60,29 @@ public class ExchangeSymbolsDownloaderTest { // TODO Test symbols transform
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/TSX.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/LON.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/FRA.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/EPA.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/AMS.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/SWX.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/BIT.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/VIE.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/IST.csv",
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=OSE&sec_types=&ticks=&table=tab&sort=alphabetic",
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=ST&sec_types=&ticks=&table=tab&sort=alphabetic",
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=CPH&sec_types=&ticks=&table=tab&sort=alphabetic",
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=ICEX&sec_types=&ticks=&table=tab&sort=alphabetic",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/MCX.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/SI.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/HK.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/TYO.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/BO.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/NS.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/KRX.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/TPE.csv",
-                                                                           "http://www.asx.com.au/asx/research/ASXListedCompanies.csv"
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/JK.csv",
+                                                                           "http://www.asx.com.au/asx/research/ASXListedCompanies.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/NZE.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/TLV.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/BVMF.csv"
                                                                          };
 
   private static final String                    EMPTY                 = "";
