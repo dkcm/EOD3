@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloader.java v0.10 28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java v0.11 28 January 2015 12:27:30 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.10
+ * @version 0.11
  */
 public class ExchangeSymbolsDownloader {
 
@@ -65,15 +65,19 @@ public class ExchangeSymbolsDownloader {
   // Exchange-related constants
   private static final String                        SI            = "SI";
   private static final String                        HK            = "HK";
+  private static final String                        SS            = "SS";
+  private static final String                        SZ            = "SZ";
   private static final String                        TYO           = "TYO";
   private static final String                        BO            = "BO";
   private static final String                        NS            = "NS";
   private static final String                        TPE           = "TPE";
   private static final String                        JK            = "JK";
+  private static final String                        BKK           = "BKK";
   private static final String                        LON           = "LON";
   private static final String                        FRA           = "FRA";
   private static final String                        EPA           = "EPA";
   private static final String                        BIT           = "BIT";
+  private static final String                        MC            = "MC";
   private static final String                        VIE           = "VIE";
   private static final String                        IST           = "IST";
   private static final String                        OSE           = "OSE";
@@ -84,6 +88,7 @@ public class ExchangeSymbolsDownloader {
   private static final String                        NZE           = "NZE";
   private static final String                        TLV           = "TLV";
   private static final String                        BVMF          = "BVMF";
+  private static final String                        MX            = "MX";
 
   // Constants
   private static final int                           ZERO          = 0;
@@ -143,6 +148,7 @@ public class ExchangeSymbolsDownloader {
       googles.put(TSE, TYO);
       googles.put(KRX, KRX.toString());
       googles.put(TWSE, TPE);
+      googles.put(SET, BKK);
       googles.put(NZX, NZE);
       googles.put(TASE, TLV);
       googles.put(BOVESPA, BVMF);
@@ -156,12 +162,16 @@ public class ExchangeSymbolsDownloader {
 
       // exchanges sourced from Yahoo
       final Map<Exchanges, String> yahoos = new EnumMap<>(Exchanges.class);
+      yahoos.put(BM, MC);
       yahoos.put(SGX, SI);
       yahoos.put(HKSE, HK);
+      yahoos.put(SSE, SS);
+      yahoos.put(SZSE, SZ);
       yahoos.put(BSE, BO);
       yahoos.put(NSE, NS);
       yahoos.put(IDX, JK);
       yahoos.put(TSX, TSX.toString());
+      yahoos.put(BMV, MX);
 //      yahoos.put(LSE, L); // alternative
       for (final Entry<Exchanges, String> yahoo : yahoos.entrySet()) {
         SOURCES.put(yahoo.getKey(),
