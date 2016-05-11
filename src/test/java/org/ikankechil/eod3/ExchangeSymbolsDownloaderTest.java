@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloaderTest.java v0.6 7 April 2015 3:51:55 PM
+ * ExchangeSymbolsDownloaderTest.java v0.7 7 April 2015 3:51:55 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -40,7 +40,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class ExchangeSymbolsDownloaderTest { // TODO Test symbols transform
 
@@ -238,6 +238,15 @@ public class ExchangeSymbolsDownloaderTest { // TODO Test symbols transform
     assertTrue(actuals.containsKey(sgx));
     assertTrue(actuals.containsKey(nyse));
     assertEquals(expecteds, actuals);
+  }
+
+  @Test
+  public void downloadASX() throws Exception {
+    final Set<String> expecteds = ESD.download(new Exchanges[]{ ASX }).get(ASX.toString());
+
+    assertFalse(expecteds.isEmpty());
+    assertFalse(expecteds.contains(EMPTY));
+    assertFalse(expecteds.contains(SPACE));
   }
 
   @Test

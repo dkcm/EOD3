@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloader.java v0.9 28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java v0.10 28 January 2015 12:27:30 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.9
+ * @version 0.10
  */
 public class ExchangeSymbolsDownloader {
 
@@ -543,11 +543,12 @@ public class ExchangeSymbolsDownloader {
     public String transform(final String line) {
       String symbol = EMPTY;
       for (int column = ZERO, from = ZERO; column < targetColumn; ++column) {
-        final int to = line.charAt(from) == QUOTE ?
+        final boolean quote = line.charAt(from) == QUOTE;
+        final int to = quote ?
                        findNth(QUOTE, line, FIRST, ++from) :
                        findNth(separator, line, FIRST, from);
         symbol = line.substring(from, to);
-        from = to + 1; // move past separator
+        from = to + (quote ? 2 : 1); // move past separator
       }
       return symbol.trim();
     }
