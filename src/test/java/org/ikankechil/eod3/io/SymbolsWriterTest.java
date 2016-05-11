@@ -1,5 +1,5 @@
 /**
- * SymbolsWriterTest.java v0.4 17 December 2014 7:37:07 PM
+ * SymbolsWriterTest.java v0.5 17 December 2014 7:37:07 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -10,10 +10,12 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class SymbolsWriterTest {
 
@@ -41,6 +43,7 @@ public class SymbolsWriterTest {
                                                                        "Symbols.csv");
 
   private static final Map<String, Set<String>> EXPECTEDS    = new LinkedHashMap<>();
+  private static final Map<String, Set<String>> UNEXPECTEDS  = new LinkedHashMap<>();
   private static final Map<String, Set<String>> ACTUALS      = new LinkedHashMap<>();
 
   @Rule
@@ -48,9 +51,11 @@ public class SymbolsWriterTest {
 
   private static final String                   COMMA        = ",";
   private static final String                   EMPTY        = "";
+  private static final String                   SPACE        = " ";
 
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
+    // ought to be written
     EXPECTEDS.put("nyse", new TreeSet<>(Arrays.asList("A", "AA", "ACN", "ALG",
                                                       "B", "BZH",
                                                       "C",
@@ -58,8 +63,37 @@ public class SymbolsWriterTest {
     EXPECTEDS.put("nasdaq", new TreeSet<>(Arrays.asList("INTC", "MSFT")));
     EXPECTEDS.put("nysearca", new TreeSet<>(Arrays.asList("SPY")));
 
-    WRITER.write(EXPECTEDS, SYMBOLS_FILE);
+    EXPECTEDS.put("lse", new TreeSet<>(Arrays.asList(EMPTY, "BARC")));
+
+    // ought not to be written
+    UNEXPECTEDS.put("sgx", new HashSet<>(Arrays.asList(EMPTY)));
+    UNEXPECTEDS.put("hkse", new HashSet<>(Arrays.asList(SPACE)));
+    UNEXPECTEDS.put("sse", new HashSet<>(Arrays.asList((String) null)));
+    UNEXPECTEDS.put(EMPTY, new HashSet<>(Arrays.asList("1")));
+    UNEXPECTEDS.put(SPACE, new HashSet<>(Arrays.asList("2")));
+    UNEXPECTEDS.put(null, new HashSet<>(Arrays.asList("3")));
+
+    final Map<String, Set<String>> markets = new LinkedHashMap<>(EXPECTEDS);
+    markets.putAll(UNEXPECTEDS);
+    WRITER.write(markets, SYMBOLS_FILE);
+
     readSymbolsFile();
+
+    // remove illegal symbols from expected results
+    for (final String expected : EXPECTEDS.keySet()) {
+      if (expected == null || expected.trim().isEmpty()) {
+        EXPECTEDS.remove(expected);
+      }
+      else {
+        final Set<String> symbols = EXPECTEDS.get(expected);
+        symbols.remove(EMPTY);
+        symbols.remove(SPACE);
+        try {
+          symbols.remove(null);
+        }
+        catch (final NullPointerException npE) { /* do nothing */ }
+      }
+    }
   }
 
   private static final void readSymbolsFile() throws IOException {
@@ -90,7 +124,13 @@ public class SymbolsWriterTest {
   @Test
   public void cannotWriteToNullFile() throws Exception {
     thrown.expect(NullPointerException.class);
-    WRITER.write(EXPECTEDS, null);
+    WRITER.write(EXPECTEDS, (File) null);
+  }
+
+  @Test
+  public void cannotWriteToNullOutputStream() throws Exception {
+    thrown.expect(NullPointerException.class);
+    WRITER.write(EXPECTEDS, (OutputStream) null);
   }
 
   @Test
@@ -109,6 +149,8 @@ public class SymbolsWriterTest {
   public void fileContentsMatch() throws Exception {
     assertEquals(EXPECTEDS, ACTUALS);
     assertNotSame(EXPECTEDS, ACTUALS);
+
+    assertFalse(ACTUALS.keySet().containsAll(UNEXPECTEDS.keySet()));
   }
 
   @Test
