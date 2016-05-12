@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloader.java v0.11 28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java v0.12 28 January 2015 12:27:30 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.11
+ * @version 0.12
  */
 public class ExchangeSymbolsDownloader {
 
@@ -104,7 +104,7 @@ public class ExchangeSymbolsDownloader {
 
   private static final Map<Exchanges, SymbolsSource> SOURCES       = new EnumMap<>(Exchanges.class);
 
-  private static final Logger                        logger        = LoggerFactory.getLogger(ExchangeSymbolsDownloader.class);
+  static final Logger                                logger        = LoggerFactory.getLogger(ExchangeSymbolsDownloader.class);
 
   static { // initialise source URLs
     try {
@@ -193,6 +193,12 @@ public class ExchangeSymbolsDownloader {
                                       String.format(NETFONDS_BASE, nordic.getValue()),
                                       tabAtSecondColumn));
       }
+
+      // FX sourced from ISO
+      SOURCES.put(FX,
+                  new SymbolsSource(0,
+                                    ISO4217_BASE,
+                                    new CurrencyTextTransformer(new CurrencyTextTransform())));
     }
     catch (final MalformedURLException murlE) {
       logger.error("Bad URL", murlE);
@@ -510,6 +516,7 @@ public class ExchangeSymbolsDownloader {
     private static final String QUANDL_GOOGLE_BASE = QUANDL_BASE + "Google/%s.csv";
     private static final String NETFONDS_BASE      = "http://www.netfonds.no/quotes/kurs.php?exchange=%s&sec_types=&ticks=&table=tab&sort=alphabetic";
 //    private static final String TWSE_BASE          = "http://isin.twse.com.tw/isin/e_C_public.jsp?strMode=2";
+    private static final String ISO4217_BASE       = "http://www.currency-iso.org/dam/downloads/lists/list_one.xml";
 
     /**
      * @param skippedRows number of rows to skip
@@ -561,6 +568,56 @@ public class ExchangeSymbolsDownloader {
         from = to + (quote ? 2 : 1); // move past separator
       }
       return symbol.trim();
+    }
+
+  }
+
+  static class CurrencyTextTransform implements TextTransform {
+
+    private static final char MORE_THAN = '>';
+    private static final char LESS_THAN = '<';
+
+    @Override
+    public String transform(final String line) {
+      final int start = line.indexOf(MORE_THAN) + 1;
+      return line.substring(start, line.indexOf(LESS_THAN, start));
+    }
+
+  }
+
+  static class CurrencyTextTransformer extends TextTransformer {
+
+    private final TextTransform transform;
+
+    private static final String CCY = "<Ccy>";
+
+    public CurrencyTextTransformer(final TextTransform transform) {
+      super(transform);
+      this.transform = transform;
+    }
+
+    @Override
+    public List<String> transform(final List<String> lines) {
+      // extract currencies
+      final Set<String> currencies = new TreeSet<>();
+      for (final String line : lines) {
+        if (line.contains(CCY)) {
+          currencies.add(transform.transform(line));
+        }
+      }
+
+      // form currency pairs: base + quote
+      lines.clear();
+      for (final String base : currencies) {
+        for (final String quote : currencies) {
+          if (base != quote) {
+            lines.add(base + quote);
+          }
+        }
+      }
+
+      logger.info("{} currencies -> {} currency pairs", currencies.size(), lines.size());
+      return lines;
     }
 
   }

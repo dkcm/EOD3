@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloaderTest.java v0.8 7 April 2015 3:51:55 PM
+ * ExchangeSymbolsDownloaderTest.java v0.9 7 April 2015 3:51:55 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 
 import org.ikankechil.eod3.ExchangeSymbolsDownloader.SymbolsTaskHelper;
 import org.ikankechil.eod3.ExchangeSymbolsDownloader.SymbolsTransform;
+import org.ikankechil.eod3.io.SymbolsReader;
 import org.ikankechil.eod3.sources.Exchanges;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -40,19 +41,20 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class ExchangeSymbolsDownloaderTest {
 
-  public static final File                       DIRECTORY             = new File(".//./src/test/resources/" + ExchangeSymbolsDownloaderTest.class.getSimpleName());
-  public static final File                       SYMBOLS_FILE          = new File(DIRECTORY, "Symbols.csv");
-  public static final File                       OHLCV_DIRECTORY       = new File(DIRECTORY, "YahooFinance");
+  private static final File                      DIRECTORY             = new File(".//./src/test/resources/" + ExchangeSymbolsDownloaderTest.class.getSimpleName());
+  private static final File                      SYMBOLS_FILE          = new File(DIRECTORY, "Symbols.csv");
+  private static final File                      FX_SYMBOLS_FILE       = new File(DIRECTORY, "Symbols-FX-ISO4217.csv");
+  private static final File                      OHLCV_DIRECTORY       = new File(DIRECTORY, "YahooFinance");
 
   private static final ExchangeSymbolsDownloader ESD                   = new ExchangeSymbolsDownloader(SYMBOLS_FILE, true);
   private static final SymbolsTaskHelper         SYMBOLS_TASK_HELPER   = ESD.new SymbolsTaskHelper();
 
   private static final Map<String, Set<String>>  MARKETS               = new LinkedHashMap<>();
-  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { ATHEX, GPW, BET, PX, BVB, OSE, MYX, BCBA, BCS, FX };
+  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { ATHEX, GPW, BET, PX, BVB, OSE, MYX, BCBA, BCS };
   private static final String[]                  EXCHANGE_URLS         = { "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NYSE",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NASDAQ",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=AMEX",
@@ -87,7 +89,8 @@ public class ExchangeSymbolsDownloaderTest {
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/NZE.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/TLV.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/BVMF.csv",
-                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/MX.csv"
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/MX.csv",
+                                                                           "http://www.currency-iso.org/dam/downloads/lists/list_one.xml"
                                                                          };
 
   private static final String                    EMPTY                 = "";
@@ -246,13 +249,21 @@ public class ExchangeSymbolsDownloaderTest {
   }
 
   @Test
+  public void downloadFX() throws Exception {
+    final Map<String, Set<String>> expecteds = new SymbolsReader().read(FX_SYMBOLS_FILE);
+    final Map<String, Set<String>> actuals = ESD.download(new Exchanges[] { FX });
+
+    assertEquals(expecteds, actuals);
+  }
+
+  @Test
   public void downloadASX() throws Exception {
     final String exchange = ASX.toString();
-    final Set<String> expecteds = ESD.download(new String[]{ exchange }).get(exchange);
+    final Set<String> actuals = ESD.download(new String[] { exchange }).get(exchange);
 
-    assertFalse(expecteds.isEmpty());
-    assertFalse(expecteds.contains(EMPTY));
-    assertFalse(expecteds.contains(SPACE));
+    assertFalse(actuals.isEmpty());
+    assertFalse(actuals.contains(EMPTY));
+    assertFalse(actuals.contains(SPACE));
   }
 
   @Test
