@@ -68,6 +68,7 @@ public abstract class SourceTest {
 
   private static final String              TEST             = "Test";
   protected static final String            HTML             = ".html";
+  protected static final String            JSON             = ".json";
   protected static final String            EMPTY            = "";
   protected static final String            SPACE            = " ";
   protected static final char              COLON            = ':';
