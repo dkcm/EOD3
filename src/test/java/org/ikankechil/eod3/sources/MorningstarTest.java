@@ -1,5 +1,5 @@
 /**
- * MorningstarTest.java	v0.5	27 December 2015 9:04:44 am
+ * MorningstarTest.java	v0.6	27 December 2015 9:04:44 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -23,7 +23,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class MorningstarTest extends SourceTest {
 
@@ -41,17 +41,21 @@ public class MorningstarTest extends SourceTest {
   private static final String      XASE              = "XASE:";
   private static final String      XTSE              = "XTSE:";
   private static final String      XLON              = "XLON:";
+  private static final String      XDUB              = "XDUB";
   private static final String      XFRA              = "XFRA:";
   private static final String      XPAR              = "XPAR:";
   private static final String      XAMS              = "XAMS:";
+  private static final String      XBRU              = "XBRU";
   private static final String      XSWX              = "XSWX:";
   private static final String      XMIL              = "XMIL:";
   private static final String      XMAD              = "XMAD:";
+  private static final String      XLIS              = "XLIS";
   private static final String      XWBO              = "XWBO:";
   private static final String      XATH              = "XATH:";
   private static final String      XIST              = "XIST:";
   private static final String      XOSL              = "XOSL:";
   private static final String      XSTO              = "XSTO:";
+  private static final String      XHEL              = "XHEL";
   private static final String      XCSE              = "XCSE:";
   private static final String      XICE              = "XICE:";
   private static final String      XMIC              = "XMIC:";
@@ -74,6 +78,8 @@ public class MorningstarTest extends SourceTest {
   private static final String      XASX              = "XASX:";
   private static final String      XNZE              = "XNZE:";
   private static final String      XTAE              = "XTAE:";
+  private static final String      XJSE              = "XJSE";
+  private static final String      XCAI              = "XCAI";
   private static final String      XBSP              = "XBSP:";
   private static final String      XBUE              = "XBUE:";
   private static final String      XSGO              = "XSGO:";
@@ -88,17 +94,21 @@ public class MorningstarTest extends SourceTest {
     exchanges.put(NYSEARCA, EMPTY);
     exchanges.put(TSX, XTSE);
     exchanges.put(LSE, XLON);
+    exchanges.put(ISE, XDUB);
     exchanges.put(FWB, XFRA);
     exchanges.put(PAR, XPAR);
     exchanges.put(AMS, XAMS);
+    exchanges.put(BB, XBRU);
     exchanges.put(SWX, XSWX);
     exchanges.put(MIB, XMIL);
     exchanges.put(BM, XMAD);
+    exchanges.put(BVLP, XLIS);
     exchanges.put(WB, XWBO);
     exchanges.put(ATHEX, XATH);
     exchanges.put(BIST, XIST);
     exchanges.put(OSLO, XOSL);
     exchanges.put(SB, XSTO);
+    exchanges.put(HEX, XHEL);
     exchanges.put(KFB, XCSE);
     exchanges.put(ICEX, XICE);
     exchanges.put(MOEX, XMIC);
@@ -121,6 +131,8 @@ public class MorningstarTest extends SourceTest {
     exchanges.put(ASX, XASX);
     exchanges.put(NZX, XNZE);
     exchanges.put(TASE, XTAE);
+    exchanges.put(JSE, XJSE);
+    exchanges.put(EGX, XCAI);
     exchanges.put(BOVESPA, XBSP);
     exchanges.put(BCBA, XBUE);
     exchanges.put(BCS, XSGO);
