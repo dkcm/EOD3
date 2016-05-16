@@ -1,5 +1,5 @@
 /**
- * ExchangesTest.java v0.3 6 April 2015 2:44:12 PM
+ * ExchangesTest.java v0.4 6 April 2015 2:44:12 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,7 +16,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class ExchangesTest {
 
@@ -24,14 +24,16 @@ public class ExchangesTest {
   public final ExpectedException thrown    = ExpectedException.none();
 
   private static final String[]  EXCHANGES = { "NYSE", "NASDAQ", "AMEX", "NYSEARCA", "TSX",
-                                               "LSE",  "FWB",    "PAR",  "AMS",      "SWX",
-                                               "MIB",  "BM",     "WB",   "ATHEX",    "BIST",
+                                               "LSE",  "ISE",    "FWB",  "PAR",      "AMS",
+                                               "BB",   "SWX",    "MIB",  "BM",       "BVLP",
+                                               "WB",   "ATHEX",  "BIST",
                                                "MOEX", "GPW",    "BET",  "PX",       "BVB",
-                                               "OSLO", "SB",     "KFB",  "ICEX",
+                                               "OSLO", "SB",     "HEX",  "KFB",      "ICEX",
                                                "SGX",  "HKSE",   "SSE",  "SZSE",     "TSE",
                                                "OSE",  "BSE",    "NSE",  "KRX",      "TWSE",
                                                "IDX",  "MYX",    "SET",  "ASX",      "NZX",
                                                "TASE",
+                                               "JSE",  "EGX",
                                                "BCBA", "BCS",    "BMV",  "BOVESPA",
                                                "FX" };
   private static final String    PARA      = "PARA";

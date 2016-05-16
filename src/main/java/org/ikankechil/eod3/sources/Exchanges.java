@@ -1,5 +1,5 @@
 /**
- * Exchanges.java  v0.10  13 November 2014 10:38:47 AM
+ * Exchanges.java  v0.11  13 November 2014 10:38:47 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * pseudo-exchange.
  *
  * @author Daniel Kuan
- * @version 0.10
+ * @version 0.11
  */
 public enum Exchanges {
 
@@ -32,18 +32,24 @@ public enum Exchanges {
   // Europe
   /** London Stock Exchange */
   LSE,
+  /** Stocmhalartán na hÉireann, Irish Stock Exchange */
+  ISE,
   /** Deutsche Börse, Frankfurt Stock Exchange */
   FWB,
   /** Paris Stock Exchange / NYSE Euronext Paris */
   PAR,
   /** NYSE Euronext Amsterdam */
   AMS,
+  /** Bourse de Bruxelles, Brussels Stock Exchange */
+  BB,
   /** SIX Swiss Exchange */
   SWX,
   /** Borsa Italiana */
   MIB,
   /** Bolsa de Madrid, Madrid Stock Exchange */
   BM,
+  /** Bolsa de Valores de Lisboa e Porto, Lisbon Stock Exchange */
+  BVLP,
   /** Wiener Börse, Vienna Stock Exchange */
   WB,
   /** Athens Stock Exchange */
@@ -54,6 +60,8 @@ public enum Exchanges {
   OSLO,
   /** Stockholmsbörsen, Stockholm Stock Exchange */
   SB,
+  /** Helsingin Pörssi, Helsinki Stock Exchange */
+  HEX,
   /** Københavns Fondsbørs, Copenhagen Stock Exchange */
   KFB,
   /** Kauphöll Íslands, Iceland Stock Exchange */
@@ -106,6 +114,12 @@ public enum Exchanges {
   // Middle East
   /** Tel Aviv Stock Exchange */
   TASE,
+
+  // Africa
+  /** Johannesburg Stock Exchange */
+  JSE,
+  /** Egyptian Exchange */
+  EGX,
 
   // South America
   /** Bolsa de Valores, Mercadorias & Futuros de São Paulo, Sao Paolo Stock Exchange */
