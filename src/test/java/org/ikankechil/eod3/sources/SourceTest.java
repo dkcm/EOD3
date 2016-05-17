@@ -1,7 +1,7 @@
 /**
  * SourceTest.java	v0.5	7 January 2014 10:06:00 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -280,13 +280,14 @@ public abstract class SourceTest {
 
   @Test
   public void urlWithSymbolAndExchange() throws Exception {
-    final Exchanges exchange = NASDAQ;
-    final URL expected = expectedURL(SYMBOL, exchange);
-    final URL actual = source.url(SYMBOL, exchange);
+    for (final Exchanges exchange : exchanges.keySet()) {
+      final URL expected = expectedURL(SYMBOL, exchange);
+      final URL actual = source.url(SYMBOL, exchange);
 
-    assertEquals(expected, actual);
-    assertNotNull(expected);
-    assertNotNull(actual);
+      assertEquals(expected, actual);
+      assertNotNull(expected);
+      assertNotNull(actual);
+    }
   }
 
   @Test
@@ -332,24 +333,26 @@ public abstract class SourceTest {
 
   @Test
   public void urlWithSymbolDatesAndExchange() throws Exception {
-    final Exchanges exchange = TSX;
-    final URL expected = expectedURL(SYMBOL, exchange, YESTERDAY, TODAY);
-    final URL actual = source.url(SYMBOL, exchange, YESTERDAY, TODAY);
+    for (final Exchanges exchange : exchanges.keySet()) {
+      final URL expected = expectedURL(SYMBOL, exchange, YESTERDAY, TODAY);
+      final URL actual = source.url(SYMBOL, exchange, YESTERDAY, TODAY);
 
-    assertEquals(expected, actual);
-    assertNotNull(expected);
-    assertNotNull(actual);
+      assertEquals(expected, actual);
+      assertNotNull(expected);
+      assertNotNull(actual);
+    }
   }
 
   @Test
   public void urlWithSymbolDatesFrequencyAndExchange() throws Exception {
-    final Exchanges exchange = TSX;
-    final URL expected = expectedURL(SYMBOL, exchange, YESTERDAY, TODAY, WEEKLY);
-    final URL actual = source.url(SYMBOL, exchange, YESTERDAY, TODAY, WEEKLY);
+    for (final Exchanges exchange : exchanges.keySet()) {
+      final URL expected = expectedURL(SYMBOL, exchange, YESTERDAY, TODAY, WEEKLY);
+      final URL actual = source.url(SYMBOL, exchange, YESTERDAY, TODAY, WEEKLY);
 
-    assertEquals(expected, actual);
-    assertNotNull(expected);
-    assertNotNull(actual);
+      assertEquals(expected, actual);
+      assertNotNull(expected);
+      assertNotNull(actual);
+    }
   }
 
   @Test
