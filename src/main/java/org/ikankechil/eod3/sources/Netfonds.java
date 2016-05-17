@@ -1,5 +1,5 @@
 /**
- * Netfonds.java  v0.5  5 March 2014 6:05:08 PM
+ * Netfonds.java  v0.6  5 March 2014 6:05:08 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -10,6 +10,7 @@ import static org.ikankechil.util.StringUtility.*;
 
 import java.util.Calendar;
 import java.util.EnumSet;
+import java.util.Set;
 
 import org.ikankechil.eod3.Frequencies;
 import org.ikankechil.io.TextTransform;
@@ -20,34 +21,34 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Netfonds, a Norwegian on-line broker.
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class Netfonds extends Source {
 
   // Western-European non-Scandinavian exchanges
-  private final static EnumSet<Exchanges> EU_EXCHANGES;
+  private final static Set<Exchanges> EU_EXCHANGES = EnumSet.of(LSE, ISE, FWB, PAR, AMS, BB, SWX, MIB, BM, BVLP, WB, HEX);
 
   // Exchange-related constants
-  private static final String             N      = ".N";
-  private static final String             O      = ".O";
-  private static final String             A      = ".A";
-  private static final String             ST     = ".ST";
-  private static final String             CPH    = ".CPH";
-  private static final String             FXSX   = ".FXSX";
-  private static final String             E_L    = "E-%sL.BTSE";
-  private static final String             E_D    = "E-%sD.BTSE";
-  private static final String             E_P    = "E-%sP.BTSE";
-  private static final String             E_A    = "E-%sA.BTSE";
-  private static final String             E_Z    = "E-%sZ.BTSE";
-  private static final String             E_M    = "E-%sM.BTSE";
-  private static final String             E_E    = "E-%sE.BTSE";
-  private static final String             E_V    = "E-%sV.BTSE";
+  private static final String         N            = ".N";
+  private static final String         O            = ".O";
+  private static final String         A            = ".A";
+  private static final String         ST           = ".ST";
+  private static final String         CPH          = ".CPH";
+  private static final String         FXSB         = ".FXSB";
+  private static final String         E_L          = "E-%sL.BTSE";
+  private static final String         E_I          = "E-%sI.BTSE";
+  private static final String         E_D          = "E-%sD.BTSE";
+  private static final String         E_P          = "E-%sP.BTSE";
+  private static final String         E_A          = "E-%sA.BTSE";
+  private static final String         E_B          = "E-%sB.BTSE";
+  private static final String         E_Z          = "E-%sZ.BTSE";
+  private static final String         E_M          = "E-%sM.BTSE";
+  private static final String         E_E          = "E-%sE.BTSE";
+  private static final String         E_U          = "E-%sU.BTSE";
+  private static final String         E_V          = "E-%sV.BTSE";
+  private static final String         E_H          = "E-%sH.BTSE";
 
-  private static final Logger             logger = LoggerFactory.getLogger(Netfonds.class);
-
-  static {
-    EU_EXCHANGES = EnumSet.of(LSE, FWB, PAR, AMS, SWX, MIB, BM, WB);
-  }
+  private static final Logger         logger       = LoggerFactory.getLogger(Netfonds.class);
 
   public Netfonds() {
     super(Netfonds.class);
@@ -62,22 +63,26 @@ public class Netfonds extends Source {
     exchanges.put(SB, ST);
     exchanges.put(KFB, CPH);
     exchanges.put(ICEX, ICEX.toString());
-    exchanges.put(FX, FXSX);
+    exchanges.put(FX, FXSB);
 
     // string formats for Western European non-Scandinavian exchanges
     exchanges.put(LSE, E_L);
+    exchanges.put(ISE, E_I);
     exchanges.put(FWB, E_D);
     exchanges.put(PAR, E_P);
     exchanges.put(AMS, E_A);
+    exchanges.put(BB, E_B);
     exchanges.put(SWX, E_Z);
     exchanges.put(MIB, E_M);
     exchanges.put(BM, E_E);
+    exchanges.put(BVLP, E_U);
     exchanges.put(WB, E_V);
+    exchanges.put(HEX, E_H);
 
     // Notes:
     // 1. cannot specify a time window
     // 2. only data from 20001121
-    // 3. FX data from 2005 (.FXSB) or 2003 (.FXSX)
+    // 3. more FX pairs from .FXSB than .FXSX
     // 4. numerous exchanges supported via BATS
   }
 

@@ -1,7 +1,7 @@
 /**
- * NetfondsTest.java	v0.8	6 April 2015 12:55:23 am
+ * NetfondsTest.java	v0.9	6 April 2015 12:55:23 am
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -11,6 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.EnumSet;
+import java.util.Set;
 
 import org.ikankechil.eod3.Frequencies;
 
@@ -20,26 +22,32 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class NetfondsTest extends SourceTest {
 
-  private final String        BASE = baseURL(NetfondsTest.class);
+  private final String                BASE         = baseURL(NetfondsTest.class);
 
-  private static final String N    = ".N";
-  private static final String O    = ".O";
-  private static final String A    = ".A";
-  private static final String ST   = ".ST";
-  private static final String CPH  = ".CPH";
-  private static final String FXSX = ".FXSX";
-  private static final String E_L  = "E-%sL.BTSE";
-  private static final String E_D  = "E-%sD.BTSE";
-  private static final String E_P  = "E-%sP.BTSE";
-  private static final String E_A  = "E-%sA.BTSE";
-  private static final String E_Z  = "E-%sZ.BTSE";
-  private static final String E_M  = "E-%sM.BTSE";
-  private static final String E_E  = "E-%sE.BTSE";
-  private static final String E_V  = "E-%sV.BTSE";
+  private static final String         N            = ".N";
+  private static final String         O            = ".O";
+  private static final String         A            = ".A";
+  private static final String         ST           = ".ST";
+  private static final String         CPH          = ".CPH";
+  private static final String         FXSB         = ".FXSB";
+  private static final String         E_L          = "E-%sL.BTSE";
+  private static final String         E_I          = "E-%sI.BTSE";
+  private static final String         E_D          = "E-%sD.BTSE";
+  private static final String         E_P          = "E-%sP.BTSE";
+  private static final String         E_A          = "E-%sA.BTSE";
+  private static final String         E_B          = "E-%sB.BTSE";
+  private static final String         E_Z          = "E-%sZ.BTSE";
+  private static final String         E_M          = "E-%sM.BTSE";
+  private static final String         E_E          = "E-%sE.BTSE";
+  private static final String         E_U          = "E-%sU.BTSE";
+  private static final String         E_V          = "E-%sV.BTSE";
+  private static final String         E_H          = "E-%sH.BTSE";
+
+  private static final Set<Exchanges> EU_EXCHANGES = EnumSet.of(LSE, ISE, FWB, PAR, AMS, BB, SWX, MIB, BM, BVLP, WB, HEX);
 
   public NetfondsTest() {
     exchanges.put(NYSE, N);
@@ -48,16 +56,20 @@ public class NetfondsTest extends SourceTest {
     exchanges.put(NYSEARCA, A);
     exchanges.put(OSLO, EMPTY);
     exchanges.put(SB, ST);
+    exchanges.put(HEX, E_H);
     exchanges.put(KFB, CPH);
     exchanges.put(ICEX, ICEX.toString());
-    exchanges.put(FX, FXSX);
+    exchanges.put(FX, FXSB);
     exchanges.put(LSE, E_L);
+    exchanges.put(ISE, E_I);
     exchanges.put(FWB, E_D);
     exchanges.put(PAR, E_P);
     exchanges.put(AMS, E_A);
+    exchanges.put(BB, E_B);
     exchanges.put(SWX, E_Z);
     exchanges.put(MIB, E_M);
     exchanges.put(BM, E_E);
+    exchanges.put(BVLP, E_U);
     exchanges.put(WB, E_V);
 
     originalLines.addAll(Arrays.asList("quote_date,paper,exch,open,high,low,close,volume,value",
@@ -82,7 +94,19 @@ public class NetfondsTest extends SourceTest {
   @Override
   protected URL expectedURL(final String symbol, final Exchanges exchange)
       throws MalformedURLException {
-    return new URL(BASE + symbol + (exchanges.containsKey(exchange) ? exchanges.get(exchange) : EMPTY));
+    final StringBuilder url = new StringBuilder(BASE);
+    if (exchanges.containsKey(exchange)) {
+      if (EU_EXCHANGES.contains(exchange)) {
+        url.append(String.format(exchanges.get(exchange), symbol));
+      }
+      else {
+        url.append(symbol).append(exchanges.get(exchange));
+      }
+    }
+    else {
+      url.append(symbol);
+    }
+    return new URL(url.toString());
   }
 
   @Override
