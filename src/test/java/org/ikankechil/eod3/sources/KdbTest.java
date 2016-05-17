@@ -1,5 +1,5 @@
 /**
- * KdbTest.java	v0.3	29 December 2015 4:36:07 pm
+ * KdbTest.java	v0.4	29 December 2015 4:36:07 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -20,7 +20,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class KdbTest extends SourceTest {
 
@@ -57,9 +57,9 @@ public class KdbTest extends SourceTest {
 
   @Override
   protected URL expectedURL(final String symbol, final Exchanges exchange) throws MalformedURLException {
-    return new URL(BASE +
+    return new URL(BASE + symbol +
                    (exchanges.containsKey(exchange) ? exchanges.get(exchange) : EMPTY) +
-                   symbol + DOWNLOAD);
+                   DOWNLOAD);
   }
 
   @Override
@@ -81,9 +81,9 @@ public class KdbTest extends SourceTest {
                             final Exchanges exchange,
                             final Calendar start,
                             final Calendar end) throws MalformedURLException {
-    return new URL(BASE +
+    return new URL(BASE + symbol +
                    (exchanges.containsKey(exchange) ? exchanges.get(exchange) : EMPTY) +
-                   symbol + DOWNLOAD +
+                   DOWNLOAD +
                    START_YEAR + start.get(Calendar.YEAR));
   }
 
