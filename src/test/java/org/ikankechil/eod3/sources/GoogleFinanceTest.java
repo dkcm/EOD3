@@ -1,7 +1,7 @@
 /**
- * GoogleFinanceTest.java	v0.7	6 March 2014 2:32:24 AM
+ * GoogleFinanceTest.java	v0.8	6 March 2014 2:32:24 AM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -24,7 +24,7 @@ import org.junit.Test;
  * JUnit test for <code>GoogleFinance</code>.
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class GoogleFinanceTest extends SourceTest {
 
@@ -48,7 +48,9 @@ public class GoogleFinanceTest extends SourceTest {
   private static final String VIE          = "VIE:";
   private static final String IST          = "IST:";
   private static final String EPA          = "EPA:";
+  private static final String EBR          = "EBR:";
   private static final String BME          = "BME:";
+  private static final String ELI          = "ELI:";
   private static final String WSE          = "WSE:";
   private static final String BIT          = "BIT:";
   private static final String TPE          = "TPE:";
@@ -56,6 +58,7 @@ public class GoogleFinanceTest extends SourceTest {
   private static final String BKK          = "BKK:";
   private static final String NZE          = "NZE:";
   private static final String STO          = "STO:";
+  private static final String HEL          = "HEL:";
   private static final String CPH          = "CPH:";
   private static final String ICE          = "ICE:";
   private static final String MCX          = "MCX:";
@@ -72,12 +75,15 @@ public class GoogleFinanceTest extends SourceTest {
     exchanges.put(FWB, FRA);
     exchanges.put(PAR, EPA);
     exchanges.put(AMS, AMS.toString() + COLON);
+    exchanges.put(BB, EBR);
     exchanges.put(SWX, SWX.toString() + COLON);
     exchanges.put(MIB, BIT);
     exchanges.put(BM, BME);
+    exchanges.put(BVLP, ELI);
     exchanges.put(WB, VIE);
     exchanges.put(BIST, IST);
     exchanges.put(SB, STO);
+    exchanges.put(HEX, HEL);
     exchanges.put(KFB, CPH);
     exchanges.put(ICEX, ICE);
     exchanges.put(GPW, WSE);
@@ -97,6 +103,7 @@ public class GoogleFinanceTest extends SourceTest {
     exchanges.put(NZX, NZE);
     exchanges.put(MOEX, MCX);
     exchanges.put(TASE, TLV);
+    exchanges.put(JSE, JSE.toString() + COLON);
     exchanges.put(BOVESPA, BVMF);
     exchanges.put(BCBA, BCBA.toString() + COLON);
     exchanges.put(BMV, BMV.toString() + COLON);

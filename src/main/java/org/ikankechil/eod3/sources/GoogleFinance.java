@@ -1,7 +1,7 @@
 /**
- * GoogleFinance.java v0.7  21 December 2013 1:33:30 AM
+ * GoogleFinance.java v0.8  21 December 2013 1:33:30 AM
  *
- * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2013-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Google Finance.
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class GoogleFinance extends Source {
 
@@ -48,7 +48,9 @@ public class GoogleFinance extends Source {
   private static final String VIE               = "VIE:";
   private static final String IST               = "IST:";
   private static final String EPA               = "EPA:";
+  private static final String EBR               = "EBR:";
   private static final String BME               = "BME:";
+  private static final String ELI               = "ELI:";
   private static final String WSE               = "WSE:";
   private static final String BIT               = "BIT:";
   private static final String TPE               = "TPE:";
@@ -56,6 +58,7 @@ public class GoogleFinance extends Source {
   private static final String BKK               = "BKK:";
   private static final String NZE               = "NZE:";
   private static final String STO               = "STO:";
+  private static final String HEL               = "HEL:";
   private static final String CPH               = "CPH:";
   private static final String ICE               = "ICE:";
   private static final String MCX               = "MCX:";
@@ -72,15 +75,17 @@ public class GoogleFinance extends Source {
     for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA)) {
       exchanges.put(exchange, EMPTY);
     }
-    for (final Exchanges exchange : EnumSet.of(AMS, SWX, SGX, NSE, KRX, IDX, ASX, BCBA, BMV)) {
+    for (final Exchanges exchange : EnumSet.of(AMS, SWX, SGX, NSE, KRX, IDX, ASX, JSE, BCBA, BMV)) {
       exchanges.put(exchange, exchange.toString() + COLON);
     }
 
     exchanges.put(LSE, LON);
     exchanges.put(FWB, FRA);
     exchanges.put(PAR, EPA);
+    exchanges.put(BB, EBR);
     exchanges.put(MIB, BIT);
     exchanges.put(BM, BME);
+    exchanges.put(BVLP, ELI);
     exchanges.put(WB, VIE);
     exchanges.put(BIST, IST);
     exchanges.put(HKSE, HKG);
@@ -95,6 +100,7 @@ public class GoogleFinance extends Source {
     exchanges.put(TSX, TSE_);
     exchanges.put(GPW, WSE);
     exchanges.put(SB, STO);
+    exchanges.put(HEX, HEL);
     exchanges.put(KFB, CPH);
     exchanges.put(ICEX, ICE);
     exchanges.put(MOEX, MCX);
@@ -181,15 +187,20 @@ public class GoogleFinance extends Source {
         String result = EMPTY;
 
         final ParsePosition pos = new ParsePosition(ZERO);
-        final Date date = INPUT.dateFormat.parse(line, pos);
+        final Date date;
+        synchronized (INPUT.dateFormat) {
+          date = INPUT.dateFormat.parse(line, pos);
+        }
         if (date != null) {
           final char[] characters = new char[symbol.length() + NINE + line.length() - pos.getIndex()];
           // set row name
           int i = getChars(symbol, ZERO, symbol.length(), characters, ZERO);
           characters[i] = COMMA;
           // reformat and copy date
-          OUTPUT.dateFormat.format(date) // d-MMM-yy -> yyyyMMdd
-                           .getChars(ZERO, EIGHT, characters, ++i);
+          synchronized (OUTPUT.dateFormat) {
+            OUTPUT.dateFormat.format(date) // d-MMM-yy -> yyyyMMdd
+                             .getChars(ZERO, EIGHT, characters, ++i);
+          }
           // copy rest of line
           line.getChars(pos.getIndex(), line.length(), characters, i + EIGHT);
           result = String.valueOf(characters);
@@ -197,19 +208,6 @@ public class GoogleFinance extends Source {
         else {
           logger.warn("Invalid date: {}", line);
         }
-//        try {
-//          // reformat date
-//          String date = OUTPUT.dateFormat.format(INPUT.dateFormat.parse(line)); // d-MMM-yy -> yyyyMMdd
-//          // set row name
-//          String lineSansDate = line.substring(line.indexOf(COMMA));
-//          StringBuilder builder = new StringBuilder(symbol).append(COMMA).append(date).append(lineSansDate);
-//
-//          result = builder.toString();
-//          logger.trace("Transformed line: {}", result);
-//        }
-//        catch (ParseException pE) {
-//          logger.warn("Invalid date: {}", line, pE);
-//        }
 
         return result;
       }
