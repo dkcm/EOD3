@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloaderTest.java v0.9 7 April 2015 3:51:55 PM
+ * ExchangeSymbolsDownloaderTest.java v0.10 7 April 2015 3:51:55 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.9
+ * @version 0.10
  */
 public class ExchangeSymbolsDownloaderTest {
 
@@ -54,23 +55,27 @@ public class ExchangeSymbolsDownloaderTest {
   private static final SymbolsTaskHelper         SYMBOLS_TASK_HELPER   = ESD.new SymbolsTaskHelper();
 
   private static final Map<String, Set<String>>  MARKETS               = new LinkedHashMap<>();
-  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { ATHEX, GPW, BET, PX, BVB, OSE, MYX, BCBA, BCS };
+  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { ATHEX, GPW, BET, PX, BVB, OSE, MYX, EGX, BCBA, BCS };
   private static final String[]                  EXCHANGE_URLS         = { "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NYSE",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NASDAQ",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=AMEX",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/NYSEARCA.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/TSX.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/LON.csv",
+                                                                           "http://www.ise.ie/Market-Data-Announcements/Companies/Company-Codes/?list=full&type=SEDOL&exportTo=excel",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/FRA.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/EPA.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/AMS.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/EBR.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/SWX.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/BIT.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/MC.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/ELI.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/VIE.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/IST.csv",
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=OSE&sec_types=&ticks=&table=tab&sort=alphabetic",
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=ST&sec_types=&ticks=&table=tab&sort=alphabetic",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/HEL.csv",
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=CPH&sec_types=&ticks=&table=tab&sort=alphabetic",
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=ICEX&sec_types=&ticks=&table=tab&sort=alphabetic",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/MCX.csv",
@@ -88,6 +93,7 @@ public class ExchangeSymbolsDownloaderTest {
                                                                            "http://www.asx.com.au/asx/research/ASXListedCompanies.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/NZE.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/TLV.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/JSE.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/BVMF.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/MX.csv",
                                                                            "http://www.currency-iso.org/dam/downloads/lists/list_one.xml"
@@ -234,6 +240,20 @@ public class ExchangeSymbolsDownloaderTest {
       assertEquals("Index: " + i, EXCHANGE_URLS[i], actuals.get(i).toString());
     }
     assertEquals(EXCHANGE_URLS.length, actuals.size());
+  }
+
+  @Test
+  public void unsupportedExchanges() throws Exception {
+    // start with all exchanges
+    final Set<Exchanges> residualExchanges = EnumSet.allOf(Exchanges.class);
+    // remove supported exchanges
+    residualExchanges.removeAll(ExchangeSymbolsDownloader.urls().keySet());
+    final Object[] unsupportedExchanges = residualExchanges.toArray();
+    // remove unsupported exchanges
+    residualExchanges.removeAll(Arrays.asList(UNSUPPORTED_EXCHANGES));
+
+    assertTrue("Unsupported exchanges unaccounted for: " + residualExchanges, residualExchanges.isEmpty());
+    assertArrayEquals(UNSUPPORTED_EXCHANGES, unsupportedExchanges);
   }
 
   @Test

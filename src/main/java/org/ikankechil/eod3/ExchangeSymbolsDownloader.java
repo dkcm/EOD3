@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloader.java v0.12 28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java v0.13 28 January 2015 12:27:30 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -22,6 +22,7 @@ import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -49,7 +50,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.12
+ * @version 0.13
  */
 public class ExchangeSymbolsDownloader {
 
@@ -76,13 +77,16 @@ public class ExchangeSymbolsDownloader {
   private static final String                        LON           = "LON";
   private static final String                        FRA           = "FRA";
   private static final String                        EPA           = "EPA";
+  private static final String                        EBR           = "EBR";
   private static final String                        BIT           = "BIT";
   private static final String                        MC            = "MC";
+  private static final String                        ELI           = "ELI";
   private static final String                        VIE           = "VIE";
   private static final String                        IST           = "IST";
   private static final String                        OSE           = "OSE";
 //  private static final String                        STO           = "STO";
   private static final String                        ST            = "ST";
+  private static final String                        HEL           = "HEL";
   private static final String                        CPH           = "CPH";
   private static final String                        MCX           = "MCX";
   private static final String                        NZE           = "NZE";
@@ -132,6 +136,8 @@ public class ExchangeSymbolsDownloader {
 
       // other exchanges around the world
       SOURCES.put(ASX, new SymbolsSource(3, ASX_BASE, new TextTransformer(new SymbolsTransform(COMMA, 2))));
+      final XMLTagTextTransform xmlTagTextTransform = new XMLTagTextTransform();
+      SOURCES.put(ISE, new SymbolsSource(0, ISE_BASE, new ISETextTransformer(xmlTagTextTransform)));
 
       // exchanges sourced from Google
       final Map<Exchanges, String> googles = new EnumMap<>(Exchanges.class);
@@ -140,10 +146,13 @@ public class ExchangeSymbolsDownloader {
       googles.put(FWB, FRA);
       googles.put(PAR, EPA);
       googles.put(AMS, AMS.toString());
+      googles.put(BB, EBR);
       googles.put(SWX, SWX.toString());
       googles.put(MIB, BIT);
+      googles.put(BVLP, ELI);
       googles.put(WB, VIE);
       googles.put(BIST, IST);
+      googles.put(HEX, HEL);
       googles.put(MOEX, MCX);
       googles.put(TSE, TYO);
       googles.put(KRX, KRX.toString());
@@ -151,6 +160,7 @@ public class ExchangeSymbolsDownloader {
       googles.put(SET, BKK);
       googles.put(NZX, NZE);
       googles.put(TASE, TLV);
+      googles.put(JSE, JSE.toString());
       googles.put(BOVESPA, BVMF);
 //      googles.put(SB, STO); // alternative
       for (final Entry<Exchanges, String> google : googles.entrySet()) {
@@ -198,7 +208,7 @@ public class ExchangeSymbolsDownloader {
       SOURCES.put(FX,
                   new SymbolsSource(0,
                                     ISO4217_BASE,
-                                    new CurrencyTextTransformer(new CurrencyTextTransform())));
+                                    new CurrencyTextTransformer(xmlTagTextTransform)));
     }
     catch (final MalformedURLException murlE) {
       logger.error("Bad URL", murlE);
@@ -516,6 +526,7 @@ public class ExchangeSymbolsDownloader {
     private static final String QUANDL_GOOGLE_BASE = QUANDL_BASE + "Google/%s.csv";
     private static final String NETFONDS_BASE      = "http://www.netfonds.no/quotes/kurs.php?exchange=%s&sec_types=&ticks=&table=tab&sort=alphabetic";
 //    private static final String TWSE_BASE          = "http://isin.twse.com.tw/isin/e_C_public.jsp?strMode=2";
+    private static final String ISE_BASE           = "http://www.ise.ie/Market-Data-Announcements/Companies/Company-Codes/?list=full&type=SEDOL&exportTo=excel";
     private static final String ISO4217_BASE       = "http://www.currency-iso.org/dam/downloads/lists/list_one.xml";
 
     /**
@@ -572,7 +583,7 @@ public class ExchangeSymbolsDownloader {
 
   }
 
-  static class CurrencyTextTransform implements TextTransform {
+  static class XMLTagTextTransform implements TextTransform {
 
     private static final char MORE_THAN = '>';
     private static final char LESS_THAN = '<';
@@ -580,7 +591,7 @@ public class ExchangeSymbolsDownloader {
     @Override
     public String transform(final String line) {
       final int start = line.indexOf(MORE_THAN) + 1;
-      return line.substring(start, line.indexOf(LESS_THAN, start));
+      return line.substring(start, line.indexOf(LESS_THAN, start)).trim();
     }
 
   }
@@ -622,4 +633,39 @@ public class ExchangeSymbolsDownloader {
 
   }
 
+  static class ISETextTransformer extends TextTransformer {
+
+    private final TextTransform transform;
+
+    private static final String DATA_START_TAG = "<td class=\"equityName\">";
+    private static final String DATA_END_TAG   = "</tr>";
+
+    public ISETextTransformer(final TextTransform transform) {
+      super(transform);
+      this.transform = transform;
+    }
+
+    @Override
+    public List<String> transform(final List<String> lines) {
+      final List<String> symbols = new ArrayList<>();
+      final ListIterator<String> iterator = lines.listIterator();
+      while (iterator.hasNext()) {
+        String line = iterator.next();
+        if (line.contains(DATA_END_TAG)) {
+          iterator.previous();
+          line = iterator.previous(); // lookback
+          if (line.contains(DATA_START_TAG)) {
+            symbols.add(transform.transform(line));
+          }
+          iterator.next();
+          iterator.next();
+        }
+      }
+
+      lines.clear();
+      lines.addAll(symbols);
+      return lines;
+    }
+
+  }
 }
