@@ -1,5 +1,5 @@
 /**
- * QuoteMediaTest.java	v0.6	20 March 2014 12:46:35 AM
+ * QuoteMediaTest.java	v0.7	20 March 2014 12:46:35 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -18,7 +18,7 @@ import org.ikankechil.eod3.Frequencies;
  * JUnit test for <code>QuoteMedia</code>.
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class QuoteMediaTest extends SourceTest {
 
@@ -33,35 +33,39 @@ public class QuoteMediaTest extends SourceTest {
   private static final String MAX_YEARS   = "&maxDownloadYears=" + Short.MAX_VALUE;
 
   // Exchange-related constants
-  private static final String LN          = ":LN";
-  private static final String SI          = ":SI";
-  private static final String AU          = ":AU";
-  private static final String NZ          = ":NZ";
   private static final String CA          = ":CA";
+  private static final String LN          = ":LN";
+  private static final String IE          = ":IE";
   private static final String FF          = ":FF";
+  private static final String PA          = ":PA";
+  private static final String AS          = ":AS";
+  private static final String BR          = ":BR";
+  private static final String SM          = ":SM";
+  private static final String MI          = ":MI";
+  private static final String MA          = ":MA";
+  private static final String LS          = ":LS";
+  private static final String VN          = ":VN";
+  private static final String AT          = ":AT";
+  private static final String OS          = ":OS";
+  private static final String ST          = ":ST";
+  private static final String HI          = ":HI";
+  private static final String CO          = ":CO";
+  private static final String RU          = ":RU";
+  private static final String SI          = ":SI";
   private static final String HK          = ":HK";
   private static final String SH          = ":SH";
   private static final String SZ          = ":SZ";
   private static final String TK          = ":TK";
   private static final String OK          = ":OK";
-  private static final String ID          = ":ID";
-  private static final String MY          = ":MY";
-  private static final String TH          = ":TH";
   private static final String MB          = ":MB";
   private static final String IN          = ":IN";
   private static final String KR          = ":KR";
   private static final String TW          = ":TW";
-  private static final String OS          = ":OS";
-  private static final String ST          = ":ST";
-  private static final String CO          = ":CO";
-  private static final String MI          = ":MI";
-  private static final String PA          = ":PA";
-  private static final String AS          = ":AS";
-  private static final String MA          = ":MA";
-  private static final String VN          = ":VN";
-  private static final String AT          = ":AT";
-  private static final String RU          = ":RU";
-  private static final String SM          = ":SM";
+  private static final String ID          = ":ID";
+  private static final String MY          = ":MY";
+  private static final String TH          = ":TH";
+  private static final String AU          = ":AU";
+  private static final String NZ          = ":NZ";
   private static final String BV          = ":BV";
   private static final String AR          = ":AR";
   private static final String CL          = ":CL";
@@ -87,16 +91,20 @@ public class QuoteMediaTest extends SourceTest {
     exchanges.put(NYSEARCA, EMPTY);
     exchanges.put(TSX, CA);
     exchanges.put(LSE, LN);
+    exchanges.put(ISE, IE);
     exchanges.put(FWB, FF);
     exchanges.put(PAR, PA);
     exchanges.put(AMS, AS);
+    exchanges.put(BB, BR);
     exchanges.put(SWX, SM);
     exchanges.put(MIB, MI);
     exchanges.put(BM, MA);
+    exchanges.put(BVLP, LS);
     exchanges.put(WB, VN);
     exchanges.put(ATHEX, AT);
     exchanges.put(OSLO, OS);
     exchanges.put(SB, ST);
+    exchanges.put(HEX, HI);
     exchanges.put(KFB, CO);
     exchanges.put(MOEX, RU);
     exchanges.put(SGX, SI);
