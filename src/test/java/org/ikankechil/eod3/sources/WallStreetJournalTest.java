@@ -1,5 +1,5 @@
 /**
- * WallStreetJournalTest.java	v0.5	6 April 2015 12:50:58 am
+ * WallStreetJournalTest.java	v0.6	6 April 2015 12:50:58 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class WallStreetJournalTest extends SourceTest {
 
@@ -44,17 +44,21 @@ public class WallStreetJournalTest extends SourceTest {
   private static final String US            = "US";
   private static final String CA            = "CA";
   private static final String UK            = "UK";
+  private static final String IE            = "IE";
   private static final String DE            = "DE";
   private static final String FR            = "FR";
   private static final String NL            = "NL";
+  private static final String BE            = "BE";
   private static final String CH            = "CH";
   private static final String IT            = "IT";
   private static final String ES            = "ES";
+  private static final String PT            = "PT";
   private static final String AT            = "AT";
   private static final String GR            = "GR";
   private static final String TR            = "TR";
   private static final String NO            = "NO";
   private static final String SE            = "SE";
+  private static final String FI            = "FI";
   private static final String DK            = "DK";
   private static final String IS            = "IS";
   private static final String RU            = "RU";
@@ -74,6 +78,7 @@ public class WallStreetJournalTest extends SourceTest {
   private static final String TH            = "TH";
   private static final String AU            = "AU";
   private static final String NZ            = "NZ";
+  private static final String ZA            = "ZA";
   private static final String BR            = "BR";
   private static final String AR            = "AR";
   private static final String CL            = "CL";
@@ -88,17 +93,21 @@ public class WallStreetJournalTest extends SourceTest {
     exchanges.put(NYSEARCA, US);
     exchanges.put(TSX, CA);
     exchanges.put(LSE, UK);
+    exchanges.put(ISE, IE);
     exchanges.put(FWB, DE);
     exchanges.put(PAR, FR);
     exchanges.put(AMS, NL);
+    exchanges.put(BB, BE);
     exchanges.put(SWX, CH);
     exchanges.put(MIB, IT);
     exchanges.put(BM, ES);
+    exchanges.put(BVLP, PT);
     exchanges.put(WB, AT);
     exchanges.put(ATHEX, GR);
     exchanges.put(BIST, TR);
     exchanges.put(OSLO, NO);
     exchanges.put(SB, SE);
+    exchanges.put(HEX, FI);
     exchanges.put(KFB, DK);
     exchanges.put(ICEX, IS);
     exchanges.put(MOEX, RU);
@@ -121,6 +130,7 @@ public class WallStreetJournalTest extends SourceTest {
     exchanges.put(SET, TH);
     exchanges.put(ASX, AU);
     exchanges.put(NZX, NZ);
+    exchanges.put(JSE, ZA);
     exchanges.put(BOVESPA, BR);
     exchanges.put(BCBA, AR);
     exchanges.put(BCS, CL);
