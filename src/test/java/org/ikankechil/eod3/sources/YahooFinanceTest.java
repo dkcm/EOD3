@@ -47,6 +47,7 @@ public class YahooFinanceTest extends SourceTest {
     exchanges.put(NASDAQ, EMPTY);
     exchanges.put(AMEX, EMPTY);
     exchanges.put(NYSEARCA, EMPTY);
+    exchanges.put(TSX, ".TO");
     exchanges.put(LSE, ".L");
     exchanges.put(FWB, ".F");
     exchanges.put(PAR, ".PA");
@@ -55,6 +56,9 @@ public class YahooFinanceTest extends SourceTest {
     exchanges.put(MIB, ".MI");
     exchanges.put(BM, ".MA");
     exchanges.put(WB, ".VI");
+    exchanges.put(OSLO, ".OL");
+    exchanges.put(SB, ".ST");
+    exchanges.put(KFB, ".CO");
     exchanges.put(SGX, ".SI");
     exchanges.put(HKSE, ".HK");
     exchanges.put(SSE, ".SS");
@@ -67,10 +71,6 @@ public class YahooFinanceTest extends SourceTest {
     exchanges.put(ASX, ".AX");
     exchanges.put(NZX, ".NZ");
     exchanges.put(TASE, ".TA");
-    exchanges.put(TSX, ".TO");
-    exchanges.put(OSLO, ".OL");
-    exchanges.put(SB, ".ST");
-    exchanges.put(KFB, ".CO");
     exchanges.put(BOVESPA, ".SA");
     exchanges.put(BCBA, ".BA");
     exchanges.put(BCS, ".SN");
