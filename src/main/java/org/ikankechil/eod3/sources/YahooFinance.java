@@ -76,7 +76,6 @@ public class YahooFinance extends Source {
   private static final String BA          = ".BA";
   private static final String SN          = ".SN";
   private static final String MX          = ".MX";
-  private static final String X           = "=X";
 
   private static final Logger logger      = LoggerFactory.getLogger(YahooFinance.class);
 
@@ -129,7 +128,6 @@ public class YahooFinance extends Source {
     exchanges.put(BCBA, BA);
     exchanges.put(BCS, SN);
     exchanges.put(BMV, MX);
-    exchanges.put(FX, X);
 
     // build URL using Yahoo! Finance API
     // http://ichart.finance.yahoo.com/table.csv?s=<Stock Symbol>

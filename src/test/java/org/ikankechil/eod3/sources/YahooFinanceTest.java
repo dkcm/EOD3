@@ -87,7 +87,6 @@ public class YahooFinanceTest extends SourceTest {
     exchanges.put(BCBA, ".BA");
     exchanges.put(BCS, ".SN");
     exchanges.put(BMV, ".MX");
-    exchanges.put(FX, "=X");
 
     originalLines.addAll(Arrays.asList("Date,Open,High,Low,Close,Volume,Adj Close",
                                        "2015-12-04,34.11,35.03,34.00,34.94,24484400,34.94",
