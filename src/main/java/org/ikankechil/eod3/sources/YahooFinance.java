@@ -1,5 +1,5 @@
 /**
- * YahooFinance.java  v0.7  15 December 2013 8:28:07 PM
+ * YahooFinance.java  v0.8  15 December 2013 8:28:07 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Yahoo! Finance.
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class YahooFinance extends Source {
   // TODO adjust prices for splits, etc. (adjust only when close and adj. close are unequal)
@@ -37,18 +37,25 @@ public class YahooFinance extends Source {
 
   // Exchange-related constants
   private static final String L           = ".L";
+  private static final String IR          = ".IR";
   private static final String SI          = ".SI";
   private static final String JK          = ".JK";
+  private static final String KL          = ".KL";
+  private static final String BK          = ".BK";
   private static final String AX          = ".AX";
   private static final String NZ          = ".NZ";
   private static final String TO          = ".TO";
   private static final String F           = ".F";
   private static final String PA          = ".PA";
   private static final String AS          = ".AS";
+  private static final String BR          = ".BR";
   private static final String SW          = ".SW";
   private static final String MI          = ".MI";
   private static final String MA          = ".MA";
+  private static final String LS          = ".LS";
   private static final String VI          = ".VI";
+  private static final String AT          = ".AT";
+  private static final String IS          = ".IS";
   private static final String HK          = ".HK";
   private static final String SS          = ".SS";
   private static final String SZ          = ".SZ";
@@ -58,35 +65,51 @@ public class YahooFinance extends Source {
   private static final String KS          = ".KS";
   private static final String TW          = ".TW";
   private static final String ST          = ".ST";
+  private static final String HE          = ".HE";
   private static final String CO          = ".CO";
+  private static final String IC          = ".IC";
+  private static final String ME          = ".ME";
+  private static final String PR          = ".PR";
   private static final String TA          = ".TA";
+  private static final String CA          = ".CA";
   private static final String SA          = ".SA";
   private static final String BA          = ".BA";
   private static final String SN          = ".SN";
   private static final String MX          = ".MX";
+  private static final String X           = "=X";
 
   private static final Logger logger      = LoggerFactory.getLogger(YahooFinance.class);
 
   public YahooFinance() {
     super(YahooFinance.class);
 
-    // supported markets (see http://finance.yahoo.com/exchanges)
+    // supported markets (see https://help.yahoo.com/kb/finance/exchanges-data-providers-yahoo-finance-sln2310.html, previously: http://finance.yahoo.com/exchanges)
     // NYSE, NASDAQ, AMEX and NYSEARCA do not require suffices
     for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA)) {
       exchanges.put(exchange, EMPTY);
     }
 
+    exchanges.put(TSX, TO);
     exchanges.put(LSE, L);
+    exchanges.put(ISE, IR);
     exchanges.put(FWB, F);
     exchanges.put(PAR, PA);
     exchanges.put(AMS, AS);
+    exchanges.put(BB, BR);
     exchanges.put(SWX, SW);
     exchanges.put(MIB, MI);
     exchanges.put(BM, MA);
+    exchanges.put(BVLP, LS);
     exchanges.put(WB, VI);
+    exchanges.put(ATHEX, AT);
+    exchanges.put(BIST, IS);
     exchanges.put(OSLO, OL);
     exchanges.put(SB, ST);
+    exchanges.put(HEX, HE);
     exchanges.put(KFB, CO);
+    exchanges.put(ICEX, IC);
+    exchanges.put(MOEX, ME);
+    exchanges.put(PX, PR);
     exchanges.put(SGX, SI);
     exchanges.put(HKSE, HK);
     exchanges.put(SSE, SS);
@@ -96,14 +119,17 @@ public class YahooFinance extends Source {
     exchanges.put(KRX, KS);
     exchanges.put(TWSE, TW);
     exchanges.put(IDX, JK);
+    exchanges.put(MYX, KL);
+    exchanges.put(SET, BK);
     exchanges.put(ASX, AX);
     exchanges.put(NZX, NZ);
     exchanges.put(TASE, TA);
-    exchanges.put(TSX, TO);
+    exchanges.put(EGX, CA);
     exchanges.put(BOVESPA, SA);
     exchanges.put(BCBA, BA);
     exchanges.put(BCS, SN);
     exchanges.put(BMV, MX);
+    exchanges.put(FX, X);
 
     // build URL using Yahoo! Finance API
     // http://ichart.finance.yahoo.com/table.csv?s=<Stock Symbol>
