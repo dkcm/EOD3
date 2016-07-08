@@ -1,5 +1,5 @@
 /**
- * WallStreetJournalTest.java	v0.6	6 April 2015 12:50:58 am
+ * WallStreetJournalTest.java	v0.7	6 April 2015 12:50:58 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class WallStreetJournalTest extends SourceTest {
 
@@ -62,10 +62,15 @@ public class WallStreetJournalTest extends SourceTest {
   private static final String DK            = "DK";
   private static final String IS            = "IS";
   private static final String RU            = "RU";
+  private static final String UA            = "UA";
+  private static final String LV            = "LV";
+  private static final String EE            = "EE";
+  private static final String LT            = "LT";
   private static final String PL            = "PL";
   private static final String HU            = "HU";
   private static final String CZ            = "CZ";
   private static final String RO            = "RO";
+  private static final String SI            = "SI";
   private static final String SG            = "SG";
   private static final String HK            = "HK";
   private static final String CN            = "CN";
@@ -76,6 +81,7 @@ public class WallStreetJournalTest extends SourceTest {
   private static final String ID            = "ID";
   private static final String MY            = "MY";
   private static final String TH            = "TH";
+  private static final String PH            = "PH";
   private static final String AU            = "AU";
   private static final String NZ            = "NZ";
   private static final String ZA            = "ZA";
@@ -83,6 +89,8 @@ public class WallStreetJournalTest extends SourceTest {
   private static final String AR            = "AR";
   private static final String CL            = "CL";
   private static final String MX            = "MX";
+  private static final String CO            = "CO";
+  private static final String PE            = "PE";
 
   private final DateFormat    urlDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 
@@ -111,10 +119,15 @@ public class WallStreetJournalTest extends SourceTest {
     exchanges.put(KFB, DK);
     exchanges.put(ICEX, IS);
     exchanges.put(MOEX, RU);
+    exchanges.put(UX, UA);
+    exchanges.put(RSE, LV);
+    exchanges.put(TALSE, EE);
+    exchanges.put(VSE, LT);
     exchanges.put(GPW, PL);
     exchanges.put(BET, HU);
     exchanges.put(PX, CZ);
     exchanges.put(BVB, RO);
+    exchanges.put(LJSE, SI);
     exchanges.put(SGX, SG);
     exchanges.put(HKSE, HK);
     exchanges.put(SSE, CN);
@@ -128,6 +141,7 @@ public class WallStreetJournalTest extends SourceTest {
     exchanges.put(IDX, ID);
     exchanges.put(MYX, MY);
     exchanges.put(SET, TH);
+    exchanges.put(PSE, PH);
     exchanges.put(ASX, AU);
     exchanges.put(NZX, NZ);
     exchanges.put(JSE, ZA);
@@ -135,6 +149,8 @@ public class WallStreetJournalTest extends SourceTest {
     exchanges.put(BCBA, AR);
     exchanges.put(BCS, CL);
     exchanges.put(BMV, MX);
+    exchanges.put(BVC, CO);
+    exchanges.put(BVL, PE);
     exchanges.put(FX, US);
 
     originalLines.addAll(Files.readAllLines(new File(DIRECTORY, getClass().getSimpleName() + HTML).toPath()));
