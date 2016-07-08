@@ -1,7 +1,7 @@
 /**
  * YahooFinance.java  v0.8  15 December 2013 8:28:07 PM
  *
- * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2013-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -69,13 +69,18 @@ public class YahooFinance extends Source {
   private static final String CO          = ".CO";
   private static final String IC          = ".IC";
   private static final String ME          = ".ME";
+  private static final String RG          = ".RG";
+  private static final String TL          = ".TL";
+  private static final String VS          = ".VS";
   private static final String PR          = ".PR";
   private static final String TA          = ".TA";
   private static final String CA          = ".CA";
+  private static final String QA          = ".QA";
   private static final String SA          = ".SA";
   private static final String BA          = ".BA";
   private static final String SN          = ".SN";
   private static final String MX          = ".MX";
+  private static final String CR          = ".CR";
 
   private static final Logger logger      = LoggerFactory.getLogger(YahooFinance.class);
 
@@ -108,6 +113,9 @@ public class YahooFinance extends Source {
     exchanges.put(KFB, CO);
     exchanges.put(ICEX, IC);
     exchanges.put(MOEX, ME);
+    exchanges.put(RSE, RG);
+    exchanges.put(TALSE, TL);
+    exchanges.put(VSE, VS);
     exchanges.put(PX, PR);
     exchanges.put(SGX, SI);
     exchanges.put(HKSE, HK);
@@ -124,10 +132,12 @@ public class YahooFinance extends Source {
     exchanges.put(NZX, NZ);
     exchanges.put(TASE, TA);
     exchanges.put(EGX, CA);
+    exchanges.put(QSE, QA);
     exchanges.put(BOVESPA, SA);
     exchanges.put(BCBA, BA);
     exchanges.put(BCS, SN);
     exchanges.put(BMV, MX);
+    exchanges.put(BVC, CR);
 
     // build URL using Yahoo! Finance API
     // http://ichart.finance.yahoo.com/table.csv?s=<Stock Symbol>
