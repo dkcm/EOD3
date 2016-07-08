@@ -62,10 +62,15 @@ public class Morningstar extends Source {
   private static final String XCSE       = "XCSE:";
   private static final String XICE       = "XICE:";
   private static final String XMIC       = "XMIC:";
+  private static final String UKEX       = "UKEX:";
+  private static final String XRIS       = "XRIS:";
+  private static final String XTAL       = "XTAL:";
+  private static final String XLIT       = "XLIT:";
   private static final String XWAR       = "XWAR:";
   private static final String XBUD       = "XBUD:";
   private static final String XPRA       = "XPRA:";
   private static final String XBSE       = "XBSE:";
+  private static final String XLJU       = "XLJU:";
   private static final String XSES       = "XSES:";
   private static final String XHKG       = "XHKG:";
   private static final String XSHG       = "XSHG:";
@@ -78,6 +83,7 @@ public class Morningstar extends Source {
   private static final String XIDX       = "XIDX:";
   private static final String XKLS       = "XKLS:";
   private static final String XBKK       = "XBKK:";
+  private static final String XPHS       = "XPHS:";
   private static final String XASX       = "XASX:";
   private static final String XNZE       = "XNZE:";
   private static final String XTAE       = "XTAE:";
@@ -87,6 +93,9 @@ public class Morningstar extends Source {
   private static final String XBUE       = "XBUE:";
   private static final String XSGO       = "XSGO:";
   private static final String XMEX       = "XMEX:";
+  private static final String XBOG       = "XBOG:";
+  private static final String XCAR       = "XCAR:";
+  private static final String XLIM       = "XLIM:";
 
   private static final String ZERO_STR   = "0";
 
@@ -120,10 +129,15 @@ public class Morningstar extends Source {
     exchanges.put(KFB, XCSE);
     exchanges.put(ICEX, XICE);
     exchanges.put(MOEX, XMIC);
+    exchanges.put(UX, UKEX);
+    exchanges.put(RSE, XRIS);
+    exchanges.put(TALSE, XTAL);
+    exchanges.put(VSE, XLIT);
     exchanges.put(GPW, XWAR);
     exchanges.put(BET, XBUD);
     exchanges.put(PX, XPRA);
     exchanges.put(BVB, XBSE);
+    exchanges.put(LJSE, XLJU);
     exchanges.put(SGX, XSES);
     exchanges.put(HKSE, XHKG);
     exchanges.put(SSE, XSHG);
@@ -136,6 +150,7 @@ public class Morningstar extends Source {
     exchanges.put(IDX, XIDX);
     exchanges.put(MYX, XKLS);
     exchanges.put(SET, XBKK);
+    exchanges.put(PSE, XPHS);
     exchanges.put(ASX, XASX);
     exchanges.put(NZX, XNZE);
     exchanges.put(TASE, XTAE);
@@ -145,6 +160,9 @@ public class Morningstar extends Source {
     exchanges.put(BCBA, XBUE);
     exchanges.put(BCS, XSGO);
     exchanges.put(BMV, XMEX);
+    exchanges.put(BVC, XBOG);
+    exchanges.put(BVCA, XCAR);
+    exchanges.put(BVL, XLIM);
 
     now = dateFormat.format(new Date());
   }
