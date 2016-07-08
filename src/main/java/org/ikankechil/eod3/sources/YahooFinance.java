@@ -137,7 +137,7 @@ public class YahooFinance extends Source {
     exchanges.put(BCBA, BA);
     exchanges.put(BCS, SN);
     exchanges.put(BMV, MX);
-    exchanges.put(BVC, CR);
+    exchanges.put(BVCA, CR);
 
     // build URL using Yahoo! Finance API
     // http://ichart.finance.yahoo.com/table.csv?s=<Stock Symbol>
