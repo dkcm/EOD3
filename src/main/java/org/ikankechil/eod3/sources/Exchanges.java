@@ -1,5 +1,5 @@
 /**
- * Exchanges.java  v0.12  13 November 2014 10:38:47 AM
+ * Exchanges.java  v0.13  13 November 2014 10:38:47 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * pseudo-exchange.
  *
  * @author Daniel Kuan
- * @version 0.12
+ * @version 0.13
  */
 public enum Exchanges {
 
@@ -68,6 +68,8 @@ public enum Exchanges {
   ICEX,
   /** Moskovskaya Birzha, Moscow Exchange */
   MOEX,
+  /** Українська біржа, Ukrainian Exchange */
+  UX,
   /** Riga Stock Exchange */
   RSE,
   /** Tallinn Stock Exchange */
@@ -82,6 +84,8 @@ public enum Exchanges {
   PX,
   /** Bursa de Valori București, Bucharest Stock Exchange */
   BVB,
+  /** Ljubljanska borza, Ljubljana Stock Exchange */
+  LJSE,
 
   // Asia-Pacific
   /** Singapore Stock Exchange */
@@ -110,6 +114,8 @@ public enum Exchanges {
   MYX,
   /** Stock Exchange of Thailand */
   SET,
+  /** Philippine Stock Exchange */
+  PSE,
 
   // Oceania
   /** Australian Securities Exchange */
@@ -138,8 +144,12 @@ public enum Exchanges {
   BCS,
   /** Bolsa Mexicana de Valores, Mexico Stock Exchange */
   BMV,
-  /** Bolsa de Valores de Caracas, Caracas Stock Exchange */
+  /** Bolsa de Valores de Colombia, Colombia Stock Exchange */
   BVC,
+  /** Bolsa de Valores de Caracas, Caracas Stock Exchange */
+  BVCA,
+  /** Bolsa de Valores de Lima, Lima Stock Exchange */
+  BVL,
 
   // Foreign Exchange
   /** Foreign exchange market (included here as a pseudo-exchange) */
