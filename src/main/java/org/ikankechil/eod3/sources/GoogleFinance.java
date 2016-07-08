@@ -1,5 +1,5 @@
 /**
- * GoogleFinance.java v0.8  21 December 2013 1:33:30 AM
+ * GoogleFinance.java v0.9  21 December 2013 1:33:30 AM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Google Finance.
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class GoogleFinance extends Source {
 
@@ -62,6 +62,7 @@ public class GoogleFinance extends Source {
   private static final String CPH               = "CPH:";
   private static final String ICE               = "ICE:";
   private static final String MCX               = "MCX:";
+  private static final String TAL               = "TAL:";
   private static final String TLV               = "TLV:";
   private static final String BVMF              = "BVMF:";
 
@@ -75,7 +76,7 @@ public class GoogleFinance extends Source {
     for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA)) {
       exchanges.put(exchange, EMPTY);
     }
-    for (final Exchanges exchange : EnumSet.of(AMS, SWX, SGX, NSE, KRX, IDX, ASX, JSE, BCBA, BMV)) {
+    for (final Exchanges exchange : EnumSet.of(AMS, SWX, RSE, VSE, SGX, NSE, KRX, IDX, ASX, JSE, BCBA, BMV)) {
       exchanges.put(exchange, exchange.toString() + COLON);
     }
 
@@ -104,6 +105,7 @@ public class GoogleFinance extends Source {
     exchanges.put(KFB, CPH);
     exchanges.put(ICEX, ICE);
     exchanges.put(MOEX, MCX);
+    exchanges.put(TALSE, TAL);
     exchanges.put(TASE, TLV);
     exchanges.put(BOVESPA, BVMF);
 

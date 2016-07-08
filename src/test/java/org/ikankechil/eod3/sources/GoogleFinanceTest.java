@@ -1,5 +1,5 @@
 /**
- * GoogleFinanceTest.java	v0.8	6 March 2014 2:32:24 AM
+ * GoogleFinanceTest.java	v0.9	6 March 2014 2:32:24 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -24,7 +24,7 @@ import org.junit.Test;
  * JUnit test for <code>GoogleFinance</code>.
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class GoogleFinanceTest extends SourceTest {
 
@@ -62,6 +62,7 @@ public class GoogleFinanceTest extends SourceTest {
   private static final String CPH          = "CPH:";
   private static final String ICE          = "ICE:";
   private static final String MCX          = "MCX:";
+  private static final String TAL          = "TAL:";
   private static final String TLV          = "TLV:";
   private static final String BVMF         = "BVMF:";
 
@@ -102,6 +103,9 @@ public class GoogleFinanceTest extends SourceTest {
     exchanges.put(ASX, ASX.toString() + COLON);
     exchanges.put(NZX, NZE);
     exchanges.put(MOEX, MCX);
+    exchanges.put(RSE, RSE.toString() + COLON);
+    exchanges.put(TALSE, TAL);
+    exchanges.put(VSE, VSE.toString() + COLON);
     exchanges.put(TASE, TLV);
     exchanges.put(JSE, JSE.toString() + COLON);
     exchanges.put(BOVESPA, BVMF);
