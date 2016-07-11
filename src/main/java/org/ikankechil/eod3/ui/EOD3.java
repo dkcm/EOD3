@@ -1,7 +1,7 @@
 /**
  * EOD3.java  v1.2  1 April 2014 4:37:17 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.ui;
 
@@ -19,8 +19,6 @@ import org.ikankechil.eod3.Interval;
 import org.ikankechil.eod3.sources.Exchanges;
 import org.ikankechil.eod3.sources.Source;
 import org.ikankechil.ui.AbstractCommandLineInterface;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import joptsimple.OptionException;
 import joptsimple.OptionSet;
@@ -39,7 +37,7 @@ import joptsimple.util.DateConverter;
 public class EOD3 extends AbstractCommandLineInterface<String, List<File>> {
 
   private Converter                     converter;
-  private List<File>                    destinations;
+  private final List<File>              destinations;
   private final Source                  source;
 
   // input symbols
@@ -63,8 +61,6 @@ public class EOD3 extends AbstractCommandLineInterface<String, List<File>> {
   // properties
   private static final String           SOURCE       = Source.class.getPackage().getName();
 
-  private static final Logger           logger       = LoggerFactory.getLogger(EOD3.class);
-
   public EOD3(final Source source) {
     super("Symbols / Symbol Files", String.class);
 
@@ -72,6 +68,7 @@ public class EOD3 extends AbstractCommandLineInterface<String, List<File>> {
       throw new NullPointerException("Null source");
     }
     this.source = source;
+    destinations = new ArrayList<>();
 
     // command-line options:
     // -i input symbols file
@@ -114,7 +111,7 @@ public class EOD3 extends AbstractCommandLineInterface<String, List<File>> {
                      .ofType(Exchanges.class);
   }
 
-  public static void main(final String... arguments) throws IOException, InterruptedException {
+  public static void main(final String... arguments) throws Exception {
     // runtime-specified Source
     final String sourceName = SOURCE + DOT + System.getProperty(SOURCE);
     try {
@@ -132,7 +129,7 @@ public class EOD3 extends AbstractCommandLineInterface<String, List<File>> {
 
   @Override
   protected void start() {
-    destinations = new ArrayList<>();
+    destinations.clear();
     logger.info("Source: {}", source.getClass().getName());
     converter = new Converter(source);
   }
@@ -204,15 +201,15 @@ public class EOD3 extends AbstractCommandLineInterface<String, List<File>> {
       }
       // treat non-option arguments as symbols
       else {
-        destinations = options.has(download) ?
-                       converter.download(symbols,
-                                          options.valueOf(exchange),
-                                          interval,
-                                          outputDirectory) :  // -d -x <exchange> -o <outputDir> <symbols...>
-                       converter.convert(symbols,
-                                         options.valueOf(exchange),
-                                         interval,
-                                         outputDirectory);    // -x <exchange> -o <outputDir> <symbols...>
+        destinations.addAll(options.has(download) ?
+                            converter.download(symbols,
+                                               options.valueOf(exchange),
+                                               interval,
+                                               outputDirectory) :  // -d -x <exchange> -o <outputDir> <symbols...>
+                            converter.convert(symbols,
+                                              options.valueOf(exchange),
+                                              interval,
+                                              outputDirectory));   // -x <exchange> -o <outputDir> <symbols...>
       }
     }
   }
@@ -230,14 +227,6 @@ public class EOD3 extends AbstractCommandLineInterface<String, List<File>> {
   @Override
   protected List<File> result() {
     return destinations;
-  }
-
-  private static final void checkIllegalOptions(final OptionSet options, final OptionSpec<?>... illegalOptions) {
-    for (final OptionSpec<?> illegalOption : illegalOptions) {
-      if (options.has(illegalOption)) {
-        throw new IllegalArgumentException("Illegal option: " + illegalOption);
-      }
-    }
   }
 
   private final Interval newInterval(final OptionSet options) {

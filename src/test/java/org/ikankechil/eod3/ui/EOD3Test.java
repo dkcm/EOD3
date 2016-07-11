@@ -1,7 +1,7 @@
 /**
- * EOD3Test.java v0.4 8 April 2015 10:41:13 AM
+ * EOD3Test.java v0.5 8 April 2015 10:41:13 AM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.ui;
 
@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,7 +30,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class EOD3Test {
   // TODO scalable way to test option combinations (both legal and illegal)
@@ -50,7 +49,7 @@ public class EOD3Test {
   private static final String       EMPTY            = "";
   private static final String       SPACE            = " ";
   private static final String       CSV              = ".csv";
-  private static final char         UNDERSCORE       = '_';
+  private static final String       UNDERSCORE       = "_";
   private static final char         DASH             = '-';
 
   // properties
@@ -69,6 +68,7 @@ public class EOD3Test {
 
   // command-line parameters
   private static final String       NYSE             = "NYSE";
+  private static final String       HKSE             = "HKSE";
   private static final String       AIC              = "AIC";
 
   @BeforeClass
@@ -171,8 +171,7 @@ public class EOD3Test {
 
   private final void nonExistentDirectory(final String option) throws Exception {
     final String nonExistent = "non-existent directory";
-    thrown.expect(NoSuchFileException.class);
-    CLI.execute(option, O, nonExistent);
+    assertTrue(CLI.execute(option, O, nonExistent).isEmpty());
   }
 
   @Test
@@ -213,7 +212,7 @@ public class EOD3Test {
   }
 
   private static final void illegalOptions(final String legalOption, final String... illegalOptions)
-      throws IOException, InterruptedException {
+      throws Exception {
     for (final String illegalOption : illegalOptions) {
       final List<File> actuals = CLI.execute(legalOption,
                                              O,
@@ -333,7 +332,28 @@ public class EOD3Test {
 
   @Test
   public void convertSymbolsWithOutputDirectoryStartAndEndDates() throws Exception {
-    fail("not implemented");
+    // -x <exchange> <symbols...> -o <outputDirectory> -s <startDate> -e <endDate>
+    final Calendar start = Calendar.getInstance();
+    final Calendar end = (Calendar) start.clone();
+    start.add(Calendar.DATE, -5);
+    final String startDate = DATE_FORMAT.format(start.getTime());
+    final String endDate = DATE_FORMAT.format(end.getTime());
+
+    final List<File> actuals = CLI.execute(X,
+                                           NYSE,
+                                           AIC,
+                                           O,
+                                           OUTPUT_DIRECTORY.getPath(),
+                                           S,
+                                           startDate,
+                                           E,
+                                           endDate);
+    final File actual = actuals.get(0);
+
+    assertEquals(AIC + UNDERSCORE + startDate + DASH + endDate + UNDERSCORE + Frequencies.DAILY.frequency() + CSV,
+                 actual.getName());
+    assertEquals(1, actuals.size());
+    assertTrue(actual.delete());
   }
 
   @Test
@@ -350,7 +370,7 @@ public class EOD3Test {
   public void convertSymbolsFile() throws Exception {
     // -i <inputSymbolsFile>
     final List<File> actuals = CLI.execute(I, SYMBOLS_FILE.getPath());
-    checkDestinations(actuals);
+    checkDestinations(actuals, null, null, Frequencies.DAILY);
   }
 
   @Test
@@ -360,7 +380,7 @@ public class EOD3Test {
                                            SYMBOLS_FILE.getPath(),
                                            O,
                                            OUTPUT_DIRECTORY.getPath());
-    checkDestinations(actuals);
+    checkDestinations(actuals, null, null, Frequencies.DAILY);
   }
 
   @Test
@@ -391,21 +411,39 @@ public class EOD3Test {
                                            startDate,
                                            E,
                                            endDate);
-    checkDestinations(actuals);
+    checkDestinations(actuals, startDate, endDate, Frequencies.DAILY);
   }
 
   @Test
   public void convertSymbolsFileWithOutputDirectoryStartAndEndDates() throws Exception {
-    fail("not implemented");
+    // -i <inputSymbolsFile> -o <outputDirectory> -s <startDate> -e <endDate>
+    final Calendar start = Calendar.getInstance();
+    final Calendar end = (Calendar) start.clone();
+    start.add(Calendar.DATE, -5);
+    final String startDate = DATE_FORMAT.format(start.getTime());
+    final String endDate = DATE_FORMAT.format(end.getTime());
+
+    final List<File> actuals = CLI.execute(I,
+                                           SYMBOLS_FILE.getPath(),
+                                           O,
+                                           OUTPUT_DIRECTORY.getPath(),
+                                           S,
+                                           startDate,
+                                           E,
+                                           endDate);
+    checkDestinations(actuals, startDate, endDate, Frequencies.DAILY);
   }
 
   @Test
   public void convertSymbolsFileIgnoresExplicitExchange() throws Exception {
-    final List<File> actuals = CLI.execute(I, SYMBOLS_FILE.getPath(), X, NYSE);
-    checkDestinations(actuals);
+    final List<File> actuals = CLI.execute(I, SYMBOLS_FILE.getPath(), X, HKSE);
+    checkDestinations(actuals, null, null, Frequencies.DAILY);
   }
 
-  private static final void checkDestinations(final List<? extends File> actuals)
+  private static final void checkDestinations(final List<? extends File> actuals,
+                                              final String startDate,
+                                              final String endDate,
+                                              final Frequencies frequency)
       throws IOException {
     final File actual = actuals.get(0);
 
@@ -415,7 +453,11 @@ public class EOD3Test {
 
     final File actualExchange = new File(actual, actual.list()[0]);
     assertEquals(NYSE, actualExchange.getName());
-    assertEquals(AIC + UNDERSCORE + Frequencies.DAILY.frequency() + CSV,
+    final String expected = AIC +
+                            ((startDate != null && endDate != null) ? UNDERSCORE + startDate + DASH + endDate : EMPTY) +
+                            (frequency != null ? UNDERSCORE + frequency.frequency() : EMPTY) +
+                            CSV;
+    assertEquals(expected,
                  new File(actualExchange, actualExchange.list()[0]).getName());
 
     FileUtility.deleteFileTree(actual.toPath());
@@ -442,10 +484,114 @@ public class EOD3Test {
   }
 
   @Test
+  public void downloadSymbolsWithOutputDirectory() throws Exception {
+    final List<File> actuals = CLI.execute(D, X, NYSE, AIC, O, OUTPUT_DIRECTORY.getPath());
+    final File actual = actuals.get(0);
+
+    assertEquals(AIC + UNDERSCORE + Frequencies.DAILY.frequency() + CSV, actual.getName());
+    assertEquals(1, actuals.size());
+    assertTrue(actual.delete());
+  }
+
+  @Test
+  public void downloadSymbolsWithFrequency() throws Exception {
+    final List<File> actuals = CLI.execute(D, X, NYSE, AIC, F, Frequencies.MONTHLY.toString());
+    final File actual = actuals.get(0);
+
+    assertEquals(AIC + UNDERSCORE + Frequencies.MONTHLY.frequency() + CSV, actual.getName());
+    assertEquals(1, actuals.size());
+    assertTrue(actual.delete());
+  }
+
+  @Test
+  public void downloadSymbolsWithStartDate() throws Exception {
+    final Calendar start = Calendar.getInstance();
+    final String endDate = DATE_FORMAT.format(start.getTime());
+    start.add(Calendar.DATE, -5);
+    final String startDate = DATE_FORMAT.format(start.getTime());
+
+    final List<File> actuals = CLI.execute(D, X, NYSE, AIC, S, startDate);
+    final File actual = actuals.get(0);
+
+    assertEquals(AIC + UNDERSCORE + startDate + DASH + endDate + UNDERSCORE + Frequencies.DAILY.frequency() + CSV,
+                 actual.getName());
+    assertEquals(1, actuals.size());
+    assertTrue(actual.delete());
+  }
+
+  @Test
+  public void cannotDownloadSymbolsWithEndDateOnly() throws Exception {
+    final Calendar start = Calendar.getInstance();
+
+    final List<File> actuals = CLI.execute(D, X, NYSE, AIC, E, DATE_FORMAT.format(start.getTime()));
+
+    assertTrue(actuals.isEmpty());
+  }
+
+  @Test
+  public void downloadSymbolsWithStartAndEndDates() throws Exception {
+    final Calendar start = Calendar.getInstance();
+    final Calendar end = (Calendar) start.clone();
+    start.add(Calendar.DATE, -5);
+    final String startDate = DATE_FORMAT.format(start.getTime());
+    final String endDate = DATE_FORMAT.format(end.getTime());
+
+    final List<File> actuals = CLI.execute(D,
+                                           X,
+                                           NYSE,
+                                           AIC,
+                                           S,
+                                           startDate,
+                                           E,
+                                           endDate);
+    final File actual = actuals.get(0);
+
+    assertEquals(AIC + UNDERSCORE + startDate + DASH + endDate + UNDERSCORE + Frequencies.DAILY.frequency() + CSV,
+                 actual.getName());
+    assertEquals(1, actuals.size());
+    assertTrue(actual.delete());
+  }
+
+  @Test
+  public void downloadSymbolsWithOutputDirectoryStartAndEndDates() throws Exception {
+    final Calendar start = Calendar.getInstance();
+    final Calendar end = (Calendar) start.clone();
+    start.add(Calendar.DATE, -5);
+    final String startDate = DATE_FORMAT.format(start.getTime());
+    final String endDate = DATE_FORMAT.format(end.getTime());
+
+    final List<File> actuals = CLI.execute(D,
+                                           X,
+                                           NYSE,
+                                           AIC,
+                                           O,
+                                           OUTPUT_DIRECTORY.getPath(),
+                                           S,
+                                           startDate,
+                                           E,
+                                           endDate);
+    final File actual = actuals.get(0);
+
+    assertEquals(AIC + UNDERSCORE + startDate + DASH + endDate + UNDERSCORE + Frequencies.DAILY.frequency() + CSV,
+                 actual.getName());
+    assertEquals(1, actuals.size());
+    assertTrue(actual.delete());
+  }
+
+  @Test
+  public void downloadIgnoresSpacesAndEmptySymbols() throws Exception {
+    final List<File> actuals = CLI.execute(D, X, NYSE, EMPTY, SPACE, AIC);
+    final File actual = actuals.get(0);
+
+    assertEquals(AIC + UNDERSCORE + Frequencies.DAILY.frequency() + CSV, actual.getName());
+    assertEquals(1, actuals.size());
+    assertTrue(actual.delete());
+  }
+
+  @Test
   public void downloadSymbolsFile() throws Exception {
-    // -i <inputSymbolsFile> -d
     final List<File> actuals = CLI.execute(D, I, SYMBOLS_FILE.getPath());
-    checkDestinations(actuals);
+    checkDestinations(actuals, null, null, Frequencies.DAILY);
   }
 
   @Test
@@ -455,12 +601,64 @@ public class EOD3Test {
                                            SYMBOLS_FILE.getPath(),
                                            O,
                                            OUTPUT_DIRECTORY.getPath());
-    checkDestinations(actuals);
+    checkDestinations(actuals, null, null, Frequencies.DAILY);
+  }
+
+  @Test
+  public void cannotDownloadSymbolsFileWithEndDateOnly() throws Exception {
+    final Calendar start = Calendar.getInstance();
+
+    final List<File> actuals = CLI.execute(D,
+                                           I,
+                                           SYMBOLS_FILE.getPath(),
+                                           E,
+                                           DATE_FORMAT.format(start.getTime()));
+
+    assertTrue(actuals.isEmpty());
   }
 
   @Test
   public void downloadSymbolsFileWithStartAndEndDates() throws Exception {
-    fail("not implemented");
+    final Calendar start = Calendar.getInstance();
+    final Calendar end = (Calendar) start.clone();
+    start.add(Calendar.DATE, -5);
+    final String startDate = DATE_FORMAT.format(start.getTime());
+    final String endDate = DATE_FORMAT.format(end.getTime());
+
+    final List<File> actuals = CLI.execute(D,
+                                           I,
+                                           SYMBOLS_FILE.getPath(),
+                                           S,
+                                           startDate,
+                                           E,
+                                           endDate);
+    checkDestinations(actuals, startDate, endDate, Frequencies.DAILY);
+  }
+
+  @Test
+  public void downloadSymbolsFileWithOutputDirectoryStartAndEndDates() throws Exception {
+    final Calendar start = Calendar.getInstance();
+    final Calendar end = (Calendar) start.clone();
+    start.add(Calendar.DATE, -5);
+    final String startDate = DATE_FORMAT.format(start.getTime());
+    final String endDate = DATE_FORMAT.format(end.getTime());
+
+    final List<File> actuals = CLI.execute(D,
+                                           I,
+                                           SYMBOLS_FILE.getPath(),
+                                           O,
+                                           OUTPUT_DIRECTORY.getPath(),
+                                           S,
+                                           startDate,
+                                           E,
+                                           endDate);
+    checkDestinations(actuals, startDate, endDate, Frequencies.DAILY);
+  }
+
+  @Test
+  public void downloadSymbolsFileIgnoresExplicitExchange() throws Exception {
+    final List<File> actuals = CLI.execute(D, I, SYMBOLS_FILE.getPath(), X, HKSE);
+    checkDestinations(actuals, null, null, Frequencies.DAILY);
   }
 
 }
