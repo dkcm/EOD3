@@ -1,12 +1,11 @@
 /**
- * EOD3.java  v1.1  1 April 2014 4:37:17 PM
+ * EOD3.java  v1.2  1 April 2014 4:37:17 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.ui;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,19 +13,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import joptsimple.OptionException;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-import joptsimple.OptionSpec;
-import joptsimple.util.DateConverter;
-
 import org.ikankechil.eod3.Converter;
 import org.ikankechil.eod3.Frequencies;
 import org.ikankechil.eod3.Interval;
 import org.ikankechil.eod3.sources.Exchanges;
 import org.ikankechil.eod3.sources.Source;
+import org.ikankechil.ui.AbstractCommandLineInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import joptsimple.OptionException;
+import joptsimple.OptionSet;
+import joptsimple.OptionSpec;
+import joptsimple.util.DateConverter;
 
 /**
  * A command-line application that converts stock price data (open, high, low,
@@ -35,11 +34,12 @@ import org.slf4j.LoggerFactory;
  * <p>
  *
  * @author Daniel Kuan
- * @version 1.1
+ * @version 1.2
  */
-public class EOD3 { // TODO v1.2 allow -f with -u and -m
+public class EOD3 extends AbstractCommandLineInterface<String, List<File>> {
 
-  private final OptionParser            parser;
+  private Converter                     converter;
+  private List<File>                    destinations;
   private final Source                  source;
 
   // input symbols
@@ -66,6 +66,8 @@ public class EOD3 { // TODO v1.2 allow -f with -u and -m
   private static final Logger           logger       = LoggerFactory.getLogger(EOD3.class);
 
   public EOD3(final Source source) {
+    super("Symbols / Symbol Files", String.class);
+
     if (source == null) {
       throw new NullPointerException("Null source");
     }
@@ -81,11 +83,8 @@ public class EOD3 { // TODO v1.2 allow -f with -u and -m
     // -x exchange
     // -u update
     // -m merge output files
-    parser = new OptionParser();
 
     // Configuring command-line options
-    parser.acceptsAll(Arrays.asList("h", "?"), "Show help").forHelp();
-
     // input symbols
     inputSymbolsFile = parser.accepts("i", "Input symbols file");
 
@@ -113,9 +112,6 @@ public class EOD3 { // TODO v1.2 allow -f with -u and -m
                      .requiredUnless(inputSymbolsFile, update, merge)
                      .withRequiredArg()
                      .ofType(Exchanges.class);
-
-    // operands
-    parser.nonOptions("Symbols / Symbol Files");
   }
 
   public static void main(final String... arguments) throws IOException, InterruptedException {
@@ -134,109 +130,105 @@ public class EOD3 { // TODO v1.2 allow -f with -u and -m
     }
   }
 
-  public List<File> execute(final String... arguments) throws IOException, InterruptedException {
-    List<File> destinations = new ArrayList<>();
-
-    logger.info("Command-line option(s): {}", (Object) arguments);
+  @Override
+  protected void start() {
+    destinations = new ArrayList<>();
     logger.info("Source: {}", source.getClass().getName());
+    converter = new Converter(source);
+  }
 
-    final Converter converter = new Converter(source);
-    try {
-      final OptionSet options = parser.parse(arguments);
-
-      @SuppressWarnings("unchecked")
-      final List<String> symbols = (List<String>) options.nonOptionArguments(); // symbols / files
-
-      if (symbols.isEmpty()) {
-        // update and / or merge
-        final boolean hasUpdate = options.has(update);
-        final boolean hasMerge = options.has(merge);
-        if (hasUpdate && !hasMerge) {
-          // -o <outputDir> -u
-          // illegal: -i -d -s -e -f
-          checkIllegalOptions(options, inputSymbolsFile, download, startDate, endDate, frequency, exchange);
-          destinations.add(converter.update(options.valueOf(outputDir))); // -o <outputDir> -u
-        }
-        else if (!hasUpdate && hasMerge) {
-          // -o <outputDir> -m
-          // illegal: -i -d -s -e -f
-          checkIllegalOptions(options, inputSymbolsFile, download, startDate, endDate, frequency, exchange);
-          destinations.add(converter.merge(options.valueOf(outputDir)));  // -o <outputDir> -m
-        }
-        else if (hasUpdate && hasMerge) {
-          // -o <outputDir> -u -m
-          // illegal: -i -d -s -e -f
-          checkIllegalOptions(options, inputSymbolsFile, download, startDate, endDate, frequency, exchange);
-          final File outputParentDirectory = options.valueOf(outputDir);
-          converter.merge(outputParentDirectory);
-          converter.update(outputParentDirectory);
-          destinations.add(converter.merge(outputParentDirectory));
-        }
-        else {
-          // neither update nor merge
-          throw new IllegalArgumentException("Missing symbol(s)");
-        }
+  @Override
+  protected void workOn(final OptionSet options, final List<String> symbols)
+      throws OptionException, InterruptedException, IOException {
+    if (symbols.isEmpty()) {
+      // update and / or merge
+      final boolean hasUpdate = options.has(update);
+      final boolean hasMerge = options.has(merge);
+      if (hasUpdate && !hasMerge) {
+        // -o <outputDir> -u
+        // illegal: -i -d -s -e -f
+        checkIllegalOptions(options, inputSymbolsFile, download, startDate, endDate, frequency, exchange);
+        destinations.add(converter.update(options.valueOf(outputDir))); // -o <outputDir> -u
+      }
+      else if (!hasUpdate && hasMerge) {
+        // -o <outputDir> -m
+        // illegal: -i -d -s -e -f
+        checkIllegalOptions(options, inputSymbolsFile, download, startDate, endDate, frequency, exchange);
+        destinations.add(converter.merge(options.valueOf(outputDir)));  // -o <outputDir> -m
+      }
+      else if (hasUpdate && hasMerge) {
+        // -o <outputDir> -u -m
+        // illegal: -i -d -s -e -f
+        checkIllegalOptions(options, inputSymbolsFile, download, startDate, endDate, frequency, exchange);
+        final File outputParentDirectory = options.valueOf(outputDir);
+        converter.merge(outputParentDirectory);
+        converter.update(outputParentDirectory);
+        destinations.add(converter.merge(outputParentDirectory));
       }
       else {
-        // symbol files or symbols
-        checkIllegalOptions(options, update, merge);
-
-        final Interval interval = newInterval(options);
-        final File outputDirectory = options.valueOf(outputDir);
-
-        // treat non-option arguments as files
-        if (options.has(inputSymbolsFile)) {
-          if (options.has(exchange)) {
-            logger.info("Option ignored: {} {}", exchange, options.valueOf(exchange));
-          }
-
-          if (options.has(download)) {
-            for (final String symbolsFile : symbols) {
-              final File file = new File(symbolsFile);
-              destinations.add(converter.download(file,
-                                                  interval,
-                                                  (outputDirectory != null) ? outputDirectory         // -i -d -o <outputDir> <inputSymbolsFiles...>
-                                                                            : file.getParentFile())); // -i -d <inputSymbolsFiles...>
-            }
-          }
-          else {
-            for (final String symbolsFile : symbols) {
-              final File file = new File(symbolsFile);
-              destinations.add(converter.convert(file,
-                                                 interval,
-                                                 (outputDirectory != null) ? outputDirectory          // -i -o <outputDir> <inputSymbolsFiles...>
-                                                                           : file.getParentFile()));  // -i <inputSymbolsFiles...>
-            }
-          }
-        }
-        // treat non-option arguments as symbols
-        else {
-          destinations = options.has(download) ?
-                         converter.download(symbols,
-                                            options.valueOf(exchange),
-                                            interval,
-                                            outputDirectory) :  // -d -x <exchange> -o <outputDir> <symbols...>
-                         converter.convert(symbols,
-                                           options.valueOf(exchange),
-                                           interval,
-                                           outputDirectory);    // -x <exchange> -o <outputDir> <symbols...>
-        }
+        // neither update nor merge
+        throw new IllegalArgumentException("Missing symbol(s)");
       }
     }
-    catch (final OptionException | IllegalArgumentException | NullPointerException e) {
-      System.out.println("Command-line option(s): " + Arrays.asList(arguments));
-      System.err.println("Error: " + e.getMessage());
-      parser.printHelpOn(System.out);
-      logger.error(e.getMessage(), e);
+    else {
+      // symbol files or symbols
+      checkIllegalOptions(options, update, merge);
+
+      final Interval interval = newInterval(options);
+      final File outputDirectory = options.valueOf(outputDir);
+
+      // treat non-option arguments as files
+      if (options.has(inputSymbolsFile)) {
+        if (options.has(exchange)) {
+          logger.info("Option ignored: {} {}", exchange, options.valueOf(exchange));
+        }
+
+        if (options.has(download)) {
+          for (final String symbolsFile : symbols) {
+            final File file = new File(symbolsFile);
+            destinations.add(converter.download(file,
+                                                interval,
+                                                (outputDirectory != null) ? outputDirectory         // -i -d -o <outputDir> <inputSymbolsFiles...>
+                                                                          : file.getParentFile())); // -i -d <inputSymbolsFiles...>
+          }
+        }
+        else {
+          for (final String symbolsFile : symbols) {
+            final File file = new File(symbolsFile);
+            destinations.add(converter.convert(file,
+                                               interval,
+                                               (outputDirectory != null) ? outputDirectory          // -i -o <outputDir> <inputSymbolsFiles...>
+                                                                         : file.getParentFile()));  // -i <inputSymbolsFiles...>
+          }
+        }
+      }
+      // treat non-option arguments as symbols
+      else {
+        destinations = options.has(download) ?
+                       converter.download(symbols,
+                                          options.valueOf(exchange),
+                                          interval,
+                                          outputDirectory) :  // -d -x <exchange> -o <outputDir> <symbols...>
+                       converter.convert(symbols,
+                                         options.valueOf(exchange),
+                                         interval,
+                                         outputDirectory);    // -x <exchange> -o <outputDir> <symbols...>
+      }
     }
-    catch (final FileNotFoundException fnfE) {
-      System.err.println("Error: " + fnfE.getMessage());
-      logger.error("File not found: {}", fnfE.getMessage(), fnfE);
-    }
-    finally {
+  }
+
+  @Override
+  protected void stop() {
+    try {
       converter.stop();
     }
+    catch (final InterruptedException iE) {
+      logger.error("Could not stop gracefully", iE);
+    }
+  }
 
+  @Override
+  protected List<File> result() {
     return destinations;
   }
 
