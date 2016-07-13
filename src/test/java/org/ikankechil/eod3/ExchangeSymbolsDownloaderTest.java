@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloaderTest.java v0.10 7 April 2015 3:51:55 PM
+ * ExchangeSymbolsDownloaderTest.java v0.11 7 April 2015 3:51:55 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -9,7 +9,9 @@ import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,7 +30,6 @@ import java.util.regex.Pattern;
 
 import org.ikankechil.eod3.ExchangeSymbolsDownloader.SymbolsTaskHelper;
 import org.ikankechil.eod3.ExchangeSymbolsDownloader.SymbolsTransform;
-import org.ikankechil.eod3.io.SymbolsReader;
 import org.ikankechil.eod3.sources.Exchanges;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,7 +43,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.10
+ * @version 0.11
  */
 public class ExchangeSymbolsDownloaderTest {
 
@@ -55,7 +56,7 @@ public class ExchangeSymbolsDownloaderTest {
   private static final SymbolsTaskHelper         SYMBOLS_TASK_HELPER   = ESD.new SymbolsTaskHelper();
 
   private static final Map<String, Set<String>>  MARKETS               = new LinkedHashMap<>();
-  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { ATHEX, GPW, BET, PX, BVB, OSE, MYX, EGX, BCBA, BCS };
+  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { ATHEX, UX, GPW, PX, BVB, LJSE, OSE, MYX, PSE, EGX, QSE, BCBA, BCS, BVC, BVCA, BVL };
   private static final String[]                  EXCHANGE_URLS         = { "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NYSE",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NASDAQ",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=AMEX",
@@ -79,6 +80,10 @@ public class ExchangeSymbolsDownloaderTest {
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=CPH&sec_types=&ticks=&table=tab&sort=alphabetic",
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=ICEX&sec_types=&ticks=&table=tab&sort=alphabetic",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/MCX.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/RSE.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/TAL.csv",
+                                                                           "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/VSE.csv",
+                                                                           "http://bse.hu/topmenu/trading_data/cash_market/equities",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/SI.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/HK.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/SS.csv",
@@ -102,6 +107,7 @@ public class ExchangeSymbolsDownloaderTest {
   private static final String                    EMPTY                 = "";
   private static final String                    SPACE                 = " ";
   private static final char                      COMMA                 = ',';
+  private static final String                    COMMA_STR             = ",";
   private static final Pattern                   PUNCTUATION           = Pattern.compile("\\p{Punct}");
 
   @Rule
@@ -215,7 +221,7 @@ public class ExchangeSymbolsDownloaderTest {
   @Test
   public void cannotDownloadUnsupportedExchanges() throws Exception {
     final Map<String, Set<String>> unsupportedExchanges = ESD.download(UNSUPPORTED_EXCHANGES);
-    assertTrue(unsupportedExchanges.toString(), unsupportedExchanges.isEmpty());
+    assertTrue("Potentially supported exchanges: " + unsupportedExchanges.keySet(), unsupportedExchanges.isEmpty());
   }
 
   @Test
@@ -270,15 +276,37 @@ public class ExchangeSymbolsDownloaderTest {
 
   @Test
   public void downloadFX() throws Exception {
-    final Map<String, Set<String>> expecteds = new SymbolsReader().read(FX_SYMBOLS_FILE);
-    final Map<String, Set<String>> actuals = ESD.download(new Exchanges[] { FX });
+    final Set<String> actuals = ESD.download(new Exchanges[] { FX }).get(FX.toString());
 
-    assertEquals(expecteds, actuals);
+    // remove currency pairs one row at a time
+    for (final String line : Files.readAllLines(FX_SYMBOLS_FILE.toPath())) {
+      final String[] expecteds = line.split(COMMA_STR);
+      for (int i = 1; i < expecteds.length; ++i) {
+        final String expected = expecteds[i];
+        assertTrue("Expected currency pair: " + expected, actuals.remove(expected));
+      }
+    }
+
+    // all currency pairs would have been removed
+    assertTrue(actuals.size() + " unexpected currency pairs: " + actuals, actuals.isEmpty());
   }
 
   @Test
   public void downloadASX() throws Exception {
-    final String exchange = ASX.toString();
+    download(ASX.toString());
+  }
+
+  @Test
+  public void downloadISE() throws Exception {
+    download(ISE.toString());
+  }
+
+  @Test
+  public void downloadBET() throws Exception {
+    download(BET.toString());
+  }
+
+  private static final void download(final String exchange) throws IOException, InterruptedException {
     final Set<String> actuals = ESD.download(new String[] { exchange }).get(exchange);
 
     assertFalse(actuals.isEmpty());

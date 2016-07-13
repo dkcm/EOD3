@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloader.java v0.13 28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java v0.14 28 January 2015 12:27:30 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.13
+ * @version 0.14
  */
 public class ExchangeSymbolsDownloader {
 
@@ -90,6 +90,7 @@ public class ExchangeSymbolsDownloader {
   private static final String                        CPH           = "CPH";
   private static final String                        MCX           = "MCX";
   private static final String                        NZE           = "NZE";
+  private static final String                        TAL           = "TAL";
   private static final String                        TLV           = "TLV";
   private static final String                        BVMF          = "BVMF";
   private static final String                        MX            = "MX";
@@ -138,8 +139,10 @@ public class ExchangeSymbolsDownloader {
       SOURCES.put(ASX, new SymbolsSource(3, ASX_BASE, new TextTransformer(new SymbolsTransform(COMMA, 2))));
       final XMLTagTextTransform xmlTagTextTransform = new XMLTagTextTransform();
       SOURCES.put(ISE, new SymbolsSource(0, ISE_BASE, new ISETextTransformer(xmlTagTextTransform)));
+      SOURCES.put(BET, new SymbolsSource(0, BET_BASE, new BETTextTransformer(xmlTagTextTransform)));
 
-      // exchanges sourced from Google
+      // exchanges sourced from Google (via Quandl)
+      // TODO call Google to get Strings
       final Map<Exchanges, String> googles = new EnumMap<>(Exchanges.class);
       googles.put(NYSEARCA, NYSEARCA.toString());
       googles.put(LSE, LON);
@@ -154,6 +157,9 @@ public class ExchangeSymbolsDownloader {
       googles.put(BIST, IST);
       googles.put(HEX, HEL);
       googles.put(MOEX, MCX);
+      googles.put(RSE, RSE.toString());
+      googles.put(TALSE, TAL);
+      googles.put(VSE, VSE.toString());
       googles.put(TSE, TYO);
       googles.put(KRX, KRX.toString());
       googles.put(TWSE, TPE);
@@ -527,6 +533,7 @@ public class ExchangeSymbolsDownloader {
     private static final String NETFONDS_BASE      = "http://www.netfonds.no/quotes/kurs.php?exchange=%s&sec_types=&ticks=&table=tab&sort=alphabetic";
 //    private static final String TWSE_BASE          = "http://isin.twse.com.tw/isin/e_C_public.jsp?strMode=2";
     private static final String ISE_BASE           = "http://www.ise.ie/Market-Data-Announcements/Companies/Company-Codes/?list=full&type=SEDOL&exportTo=excel";
+    private static final String BET_BASE           = "http://bse.hu/topmenu/trading_data/cash_market/equities";
     private static final String ISO4217_BASE       = "http://www.currency-iso.org/dam/downloads/lists/list_one.xml";
 
     /**
@@ -648,6 +655,7 @@ public class ExchangeSymbolsDownloader {
     @Override
     public List<String> transform(final List<String> lines) {
       final List<String> symbols = new ArrayList<>();
+
       final ListIterator<String> iterator = lines.listIterator();
       while (iterator.hasNext()) {
         String line = iterator.next();
@@ -668,4 +676,33 @@ public class ExchangeSymbolsDownloader {
     }
 
   }
+
+  static class BETTextTransformer extends TextTransformer {
+
+    private final TextTransform transform;
+
+    private static final String DATA_START_TAG = "action=CompanyProfileAction\">";
+
+    public BETTextTransformer(final TextTransform transform) {
+      super(transform);
+      this.transform = transform;
+    }
+
+    @Override
+    public List<String> transform(final List<String> lines) {
+      final List<String> symbols = new ArrayList<>();
+
+      for (final String line : lines) {
+        if (line.contains(DATA_START_TAG)) {
+          symbols.add(transform.transform(line));
+        }
+      }
+
+      lines.clear();
+      lines.addAll(symbols);
+      return lines;
+    }
+
+  }
+
 }
