@@ -1,25 +1,29 @@
 /**
- * FinancialContentTest.java v0.1 15 January 2016 2:25:20 PM
+ * FinancialContentTest.java v0.2 15 January 2016 2:25:20 PM
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
 import static org.ikankechil.eod3.sources.Exchanges.*;
+import static org.junit.Assert.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 
 import org.ikankechil.eod3.Frequencies;
+import org.ikankechil.eod3.sources.FinancialContent.DateFormats;
+import org.junit.Test;
 
 /**
  * JUnit test for <code>FinancialContent</code>.
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class FinancialContentTest extends SourceTest {
 
@@ -30,6 +34,8 @@ public class FinancialContentTest extends SourceTest {
   private static final String MONTHS         = "&Range=";
 
   private static final int    MONTHS_IN_YEAR = 12;
+
+  private final String[]      DATE_FORMATS   = { "INPUT", "OUTPUT" };
 
   public FinancialContentTest() {
     this("http://markets.financialcontent.com/stocks/action/gethistoricaldata?Symbol=");
@@ -108,6 +114,36 @@ public class FinancialContentTest extends SourceTest {
                             final Calendar end,
                             final Frequencies frequency) throws MalformedURLException {
     return expectedURL(symbol, exchange, start, end);
+  }
+
+  @Test
+  public final void dateFormats() throws Exception {
+    for (final String df : DATE_FORMATS) {
+      assertEquals(df, DateFormats.valueOf(df).name());
+    }
+    assertEquals(DATE_FORMATS.length, DateFormats.values().length);
+  }
+
+  @Test
+  public final void dateFormatPatterns() throws Exception {
+    for (final DateFormats df : DateFormats.values()) {
+      assertTrue(df.dateFormat instanceof SimpleDateFormat);
+      final String actual = ((SimpleDateFormat) df.dateFormat).toPattern();
+
+      switch (df) {
+        case INPUT:
+          assertEquals("MM/dd/yy", actual);
+          break;
+
+        case OUTPUT:
+          assertEquals("yyyyMMdd", actual);
+          break;
+
+        default:
+          fail("Unsupported date format: " + df);
+          break;
+      }
+    }
   }
 
 }

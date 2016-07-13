@@ -1,7 +1,7 @@
 /**
- * FinancialContent.java v0.2 15 January 2016 11:36:44 AM
+ * FinancialContent.java v0.3 15 January 2016 11:36:44 AM
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class FinancialContent extends Source {
 
@@ -51,7 +51,7 @@ public class FinancialContent extends Source {
     super(source);
 
     // supported markets
-    // FX, NYSE, NASDAQ, AMEX and NYSEARCA do not require suffices
+    // FX, NYSE, NASDAQ, AMEX, NYSEARCA and TSX do not require suffices
     // Currency pairs need to be separated by a hyphen ('-')
     for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA, TSX, FX)) {
       exchanges.put(exchange, EMPTY);
@@ -144,7 +144,10 @@ public class FinancialContent extends Source {
         final int onePastFirstComma = ONE + findNth(COMMA, line, ONE, ZERO);
         if (onePastFirstComma > ZERO) {
           final ParsePosition pos = new ParsePosition(onePastFirstComma);
-          final Date date = INPUT.dateFormat.parse(line, pos);
+          final Date date;
+          synchronized (INPUT.dateFormat) {
+            date = INPUT.dateFormat.parse(line, pos);
+          }
           if (date != null) {
             final int volumeComma = findNth(COMMA, line, SIX, pos.getIndex());
             final char[] characters = new char[volumeComma - onePastFirstComma + ONE + symbol.length()];
@@ -152,8 +155,10 @@ public class FinancialContent extends Source {
             int i = getChars(symbol, ZERO, symbol.length(), characters, ZERO);
             characters[i] = COMMA;
             // reformat and copy date
-            OUTPUT.dateFormat.format(date) // MM/dd/yy -> yyyyMMdd
-                             .getChars(ZERO, EIGHT, characters, ++i);
+            synchronized (OUTPUT.dateFormat) {
+              OUTPUT.dateFormat.format(date) // MM/dd/yy -> yyyyMMdd
+                               .getChars(ZERO, EIGHT, characters, ++i);
+            }
             // copy rest of line
             line.getChars(pos.getIndex(), volumeComma, characters, i + EIGHT);
             result = String.valueOf(characters);
