@@ -1,5 +1,5 @@
 /**
- * QuoteMediaTest.java	v0.7	20 March 2014 12:46:35 AM
+ * QuoteMediaTest.java	v0.8	20 March 2014 12:46:35 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -18,7 +18,7 @@ import org.ikankechil.eod3.Frequencies;
  * JUnit test for <code>QuoteMedia</code>.
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class QuoteMediaTest extends SourceTest {
 
@@ -40,6 +40,7 @@ public class QuoteMediaTest extends SourceTest {
   private static final String PA          = ":PA";
   private static final String AS          = ":AS";
   private static final String BR          = ":BR";
+  private static final String LU          = ":LU";
   private static final String SM          = ":SM";
   private static final String MI          = ":MI";
   private static final String MA          = ":MA";
@@ -64,6 +65,7 @@ public class QuoteMediaTest extends SourceTest {
   private static final String ID          = ":ID";
   private static final String MY          = ":MY";
   private static final String TH          = ":TH";
+  private static final String PH          = ":PH";
   private static final String AU          = ":AU";
   private static final String NZ          = ":NZ";
   private static final String BV          = ":BV";
@@ -96,6 +98,7 @@ public class QuoteMediaTest extends SourceTest {
     exchanges.put(PAR, PA);
     exchanges.put(AMS, AS);
     exchanges.put(BB, BR);
+    exchanges.put(LUX, LU);
     exchanges.put(SWX, SM);
     exchanges.put(MIB, MI);
     exchanges.put(BM, MA);
@@ -120,6 +123,7 @@ public class QuoteMediaTest extends SourceTest {
     exchanges.put(IDX, ID);
     exchanges.put(MYX, MY);
     exchanges.put(SET, TH);
+    exchanges.put(PSE, PH);
     exchanges.put(ASX, AU);
     exchanges.put(NZX, NZ);
     exchanges.put(BOVESPA, BV);

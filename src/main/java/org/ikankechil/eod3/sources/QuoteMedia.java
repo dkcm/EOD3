@@ -1,5 +1,5 @@
 /**
- * QuoteMedia.java	v0.9	24 December 2013 1:40:26 AM
+ * QuoteMedia.java	v0.10	24 December 2013 1:40:26 AM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing QuoteMedia.
  *
  * @author Daniel Kuan
- * @version 0.9
+ * @version 0.10
  */
 public class QuoteMedia extends Source {
 // TODO cannot seem to narrow download window!
@@ -47,6 +47,7 @@ public class QuoteMedia extends Source {
   private static final String PA          = ":PA";
   private static final String AS          = ":AS";
   private static final String BR          = ":BR";
+  private static final String LU          = ":LU";
   private static final String SM          = ":SM";
   private static final String MI          = ":MI";
   private static final String MA          = ":MA";
@@ -71,6 +72,7 @@ public class QuoteMedia extends Source {
   private static final String ID          = ":ID";
   private static final String MY          = ":MY";
   private static final String TH          = ":TH";
+  private static final String PH          = ":PH";
   private static final String AU          = ":AU";
   private static final String NZ          = ":NZ";
   private static final String BV          = ":BV";
@@ -90,7 +92,7 @@ public class QuoteMedia extends Source {
     this.webmasterID = webmasterID;
 
     // supported markets (see http://www.quotemedia.com/legal/tos/#times and http://www.quotemedia.com/quotetools/symbolHelp/SymbolHelp_US_Version_Default.html)
-    // NYSE, NASDAQ, AMEX and NYSEARCA do not require suffices
+    // // NYSE, NASDAQ, AMEX, NYSEARCA and FX do not require suffices
     for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA, FX)) {
       exchanges.put(exchange, EMPTY);
     }
@@ -102,6 +104,7 @@ public class QuoteMedia extends Source {
     exchanges.put(PAR, PA);
     exchanges.put(AMS, AS);
     exchanges.put(BB, BR);
+    exchanges.put(LUX, LU);
     exchanges.put(SWX, SM);
     exchanges.put(MIB, MI);
     exchanges.put(BM, MA);
@@ -126,6 +129,7 @@ public class QuoteMedia extends Source {
     exchanges.put(IDX, ID);
     exchanges.put(MYX, MY);
     exchanges.put(SET, TH);
+    exchanges.put(PSE, PH);
     exchanges.put(ASX, AU);
     exchanges.put(NZX, NZ);
     exchanges.put(BOVESPA, BV);
