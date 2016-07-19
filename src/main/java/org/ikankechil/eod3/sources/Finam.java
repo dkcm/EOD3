@@ -1,11 +1,12 @@
 /**
- * Finam.java v0.1 16 December 2014 2:03:09 PM
+ * Finam.java v0.2 16 December 2014 2:03:09 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
 import static java.util.Calendar.*;
+import static org.ikankechil.eod3.Frequencies.*;
 import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.ikankechil.util.StringUtility.*;
 
@@ -28,35 +29,35 @@ import org.slf4j.LoggerFactory;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 class Finam extends Source {
 
-  private final Map<Frequencies, Integer> frequencies;
+  private static final Map<Frequencies, Integer> FREQUENCIES = new EnumMap<>(Frequencies.class);
 
   // Date-related URL parameters
-  private static final String             START_MONTH = "&mf=";
-  private static final String             START_DATE  = "&df=";
-  private static final String             START_YEAR  = "&yf=";
-  private static final String             END_MONTH   = "&mt=";
-  private static final String             END_DATE    = "&dt=";
-  private static final String             END_YEAR    = "&yt=";
-  private static final String             FREQUENCY   = "&p=";
+  private static final String                    START_MONTH = "&mf=";
+  private static final String                    START_DATE  = "&df=";
+  private static final String                    START_YEAR  = "&yf=";
+  private static final String                    END_MONTH   = "&mt=";
+  private static final String                    END_DATE    = "&dt=";
+  private static final String                    END_YEAR    = "&yt=";
+  private static final String                    FREQUENCY   = "&p=";
 
   // Exchange-related constants
-  private static final String             US1         = "US1.";
-  private static final String             US2         = "US2.";
+  private static final String                    US1         = "US1.";
+  private static final String                    US2         = "US2.";
 
-  private static final Logger             logger      = LoggerFactory.getLogger(Finam.class);
+  private static final Logger                    logger      = LoggerFactory.getLogger(Finam.class);
 
   public static void main(final String... arguments) throws IOException {
     final Finam finam = new Finam();
     final TextReader reader = new TextReader();
-    final String symbol = "IBM";
+    final String symbol = "AAPL";
     final Calendar start = Calendar.getInstance();
     start.set(2015, Calendar.SEPTEMBER, 20);
     final Calendar end = Calendar.getInstance();
-    final List<String> strings = reader.read(finam.url(symbol, NYSE, start, end, Frequencies.DAILY));
+    final List<String> strings = reader.read(finam.url(symbol, NASDAQ, start, end, MONTHLY));
     System.out.println(strings);
     final TextTransformer transformer = finam.newTransformer(finam.newTransform(symbol));
     transformer.transform(strings);
@@ -67,28 +68,32 @@ class Finam extends Source {
 //    writer.write(strings, new File("IBM.csv"));
   }
 
+  static {
+    // daily = 8, weekly = 9 / none, monthly = 10
+    FREQUENCIES.put(DAILY, EIGHT);
+    FREQUENCIES.put(WEEKLY, NINE);
+    FREQUENCIES.put(MONTHLY, TEN);
+  }
+
   public Finam() {
     super("http://195.128.78.52/ohlcv.csv?market=25&em=20569&dtf=1&tmf=1&sep=1&sep2=1&datf=5&at=1&cn=");
 
     // supported markets
+    // MOEX does not require a suffix
     exchanges.put(NYSE, US1);
     exchanges.put(NASDAQ, US2);
-
-    // daily = 8, weekly = none / 9, monthly = 10
-    frequencies = new EnumMap<>(Frequencies.class);
-    frequencies.put(Frequencies.DAILY, EIGHT);
-//    frequencies.put(Frequencies.WEEKLY, NINE);
-    frequencies.put(Frequencies.MONTHLY, TEN);
+    exchanges.put(MOEX, EMPTY);
+    exchanges.put(FX, EMPTY);
 
     // http://www.finam.ru/scripts/export.js
     // http://195.128.78.52/
+    // http://195.128.78.52/AFLT_160711_160711.csv?market=1&em=29&code=AFLT&apply=0&df=11&mf=6&yf=2016&from=11.07.2016&dt=11&mt=6&yt=2016&to=11.07.2016&p=9&f=AFLT_160711_160711&e=.csv&cn=AFLT&dtf=1&tmf=1&MSOR=1&mstime=on&mstimever=1&sep=1&sep2=1&datf=5&at=1
     // http://195.128.78.52/US2.AAPL_951216_141216.csv?market=25&em=20569&code=US2.AAPL&df=16&mf=11&yf=1995&from=16.12.1995&dt=16&mt=11&yt=2014&to=16.12.2014&p=8&f=US2.AAPL_951216_141216&e=.csv&cn=US2.AAPL&dtf=1&tmf=1&MSOR=1&mstimever=0&sep=1&sep2=1&datf=1&at=1
-    //
     // http://195.128.78.52/ohlcv.csv?market=25&em=20569&dtf=1&tmf=1&sep=1&sep2=1&datf=5&at=1&cn=US2.AAPL&df=1&mf=0&yf=1970&dt=13&mt=5&yt=2015&p=10
 
     // # Load file from finam if haven't ever loaded
     // rdict = dict(d='d',
-    //              market=ticker.data['market'],
+    //              market=ticker.data['market'], # 1 = MOEX
     //              cn=ticker.symbol,
     //              em=ticker.data['id'],
     //              p=p,
@@ -151,8 +156,8 @@ class Finam extends Source {
 
   @Override
   void appendFrequency(final StringBuilder url, final Frequencies frequency) {
-    if ((frequency != null) && (frequency != Frequencies.WEEKLY)) {
-      url.append(FREQUENCY).append(frequencies.get(frequency).intValue());
+    if (frequency != null) {
+      url.append(FREQUENCY).append(FREQUENCIES.get(frequency).intValue());
       logger.debug("Frequency: {}", url);
     }
   }
