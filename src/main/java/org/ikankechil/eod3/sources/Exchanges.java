@@ -1,5 +1,5 @@
 /**
- * Exchanges.java  v0.13  13 November 2014 10:38:47 AM
+ * Exchanges.java  v0.14  13 November 2014 10:38:47 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -11,9 +11,11 @@ import org.slf4j.LoggerFactory;
 /**
  * Supported exchanges. The foreign exchange market ("FX") is included here as a
  * pseudo-exchange.
+ * <p>
+ * http://money.visualcapitalist.com/all-of-the-worlds-stock-exchanges-by-size/
  *
  * @author Daniel Kuan
- * @version 0.13
+ * @version 0.14
  */
 public enum Exchanges {
 
@@ -37,11 +39,13 @@ public enum Exchanges {
   /** Deutsche Börse, Frankfurt Stock Exchange */
   FWB,
   /** Paris Stock Exchange / NYSE Euronext Paris */
-  PAR,
+  PAR,  // TODO to rename as BDP
   /** NYSE Euronext Amsterdam */
-  AMS,
+  AMS,  // TODO to rename as AEX
   /** Bourse de Bruxelles, Brussels Stock Exchange */
   BB,
+  /** Bourse de Luxembourg, Luxembourg Stock Exchange */
+  LUX,
   /** SIX Swiss Exchange */
   SWX,
   /** Borsa Italiana */
@@ -126,14 +130,30 @@ public enum Exchanges {
   // Middle East
   /** Tel Aviv Stock Exchange */
   TASE,
-  /** Egyptian Exchange */
-  EGX,
+  /** Tadawul, Saudi Stock Exchange */
+  TADAWUL,
   /** Qatar Stock Exchange */
   QSE,
+  /** Abu Dhabi Securities Exchange */
+  ADX,
+  /** Dubai Financial Market */
+  DFM,
+  /** Muscat Securities Market */
+  MSM,
+  /** Amman Stock Exchange */
+  ASE,
+  /** Bahrain Bourse */
+  BHB,
 
   // Africa
   /** Johannesburg Stock Exchange */
   JSE,
+  /** Egyptian Exchange */
+  EGX,
+  /** Nigerian Stock Exchange */
+  NGSE,
+  /** Bourse de Casablanca, Casablanca Stock Exchange */
+  BC,
 
   // South America
   /** Bolsa de Valores, Mercadorias & Futuros de São Paulo, Sao Paolo Stock Exchange */

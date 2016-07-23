@@ -1,7 +1,7 @@
 /**
- * ExchangesTest.java v0.6 6 April 2015 2:44:12 PM
+ * ExchangesTest.java v0.7 6 April 2015 2:44:12 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -16,7 +16,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class ExchangesTest {
 
@@ -26,7 +26,7 @@ public class ExchangesTest {
   private static final String[]  EXCHANGES = { "NYSE", "NASDAQ", "AMEX", "NYSEARCA", "TSX",
                                                "LSE",  "ISE",    "FWB",  "PAR",      "AMS",
                                                "BB",   "SWX",    "MIB",  "BM",       "BVLP",
-                                               "WB",   "ATHEX",  "BIST",
+                                               "WB",   "ATHEX",  "BIST", "LUX",
                                                "MOEX", "TALSE",  "RSE",  "VSE",      "UX",
                                                "GPW",  "BET",    "PX",   "BVB",      "LJSE",
                                                "OSLO", "SB",     "HEX",  "KFB",      "ICEX",
@@ -34,8 +34,9 @@ public class ExchangesTest {
                                                "OSE",  "BSE",    "NSE",  "KRX",      "TWSE",
                                                "IDX",  "MYX",    "SET",  "PSE",
                                                "ASX",  "NZX",
-                                               "TASE", "EGX",    "QSE",
-                                               "JSE",
+                                               "TASE", "QSE",    "ADX",  "TADAWUL",  "DFM",
+                                               "MSM",  "ASE",    "BHB",
+                                               "JSE",  "EGX",    "NGSE", "BC",
                                                "BCBA", "BCS",    "BMV",  "BOVESPA",  "BVC",
                                                "BVCA", "BVL",
                                                "FX" };
