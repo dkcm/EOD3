@@ -1,5 +1,5 @@
 /**
- * MorningstarTest.java	v0.6	27 December 2015 9:04:44 am
+ * MorningstarTest.java	v0.7	27 December 2015 9:04:44 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -23,7 +23,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class MorningstarTest extends SourceTest {
 
@@ -46,6 +46,7 @@ public class MorningstarTest extends SourceTest {
   private static final String      XPAR              = "XPAR:";
   private static final String      XAMS              = "XAMS:";
   private static final String      XBRU              = "XBRU:";
+  private static final String      XLUX              = "XLUX:";
   private static final String      XSWX              = "XSWX:";
   private static final String      XMIL              = "XMIL:";
   private static final String      XMAD              = "XMAD:";
@@ -84,7 +85,15 @@ public class MorningstarTest extends SourceTest {
   private static final String      XASX              = "XASX:";
   private static final String      XNZE              = "XNZE:";
   private static final String      XTAE              = "XTAE:";
+  private static final String      XSAU              = "XSAU:";
+  private static final String      DSMD              = "DSMD:";
+  private static final String      XADS              = "XADS:";
+  private static final String      XDFM              = "XDFM:";
+  private static final String      XMUS              = "XMUS:";
+  private static final String      XAMM              = "XAMM:";
+  private static final String      XBAH              = "XBAH:";
   private static final String      XJSE              = "XJSE:";
+  private static final String      XCAS              = "XCAS:";
   private static final String      XCAI              = "XCAI:";
   private static final String      XBSP              = "XBSP:";
   private static final String      XBUE              = "XBUE:";
@@ -108,6 +117,7 @@ public class MorningstarTest extends SourceTest {
     exchanges.put(PAR, XPAR);
     exchanges.put(AMS, XAMS);
     exchanges.put(BB, XBRU);
+    exchanges.put(LUX, XLUX);
     exchanges.put(SWX, XSWX);
     exchanges.put(MIB, XMIL);
     exchanges.put(BM, XMAD);
@@ -146,8 +156,16 @@ public class MorningstarTest extends SourceTest {
     exchanges.put(ASX, XASX);
     exchanges.put(NZX, XNZE);
     exchanges.put(TASE, XTAE);
+    exchanges.put(TADAWUL, XSAU);
+    exchanges.put(QSE, DSMD);
+    exchanges.put(ADX, XADS);
+    exchanges.put(DFM, XDFM);
+    exchanges.put(MSM, XMUS);
+    exchanges.put(ASE, XAMM);
+    exchanges.put(BHB, XBAH);
     exchanges.put(JSE, XJSE);
     exchanges.put(EGX, XCAI);
+    exchanges.put(BC, XCAS);
     exchanges.put(BOVESPA, XBSP);
     exchanges.put(BCBA, XBUE);
     exchanges.put(BCS, XSGO);
