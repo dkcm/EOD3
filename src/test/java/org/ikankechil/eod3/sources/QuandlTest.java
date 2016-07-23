@@ -1,7 +1,7 @@
 /**
- * QuandlTest.java	v0.4	5 April, 2015 11:25:06 pm
+ * QuandlTest.java	v0.5	5 April, 2015 11:25:06 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -23,7 +23,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class QuandlTest extends SourceTest {
 
@@ -43,9 +43,15 @@ public class QuandlTest extends SourceTest {
 //  private static final String FREQUENCY     = "&collapse=";
 //  private static final String SUFFIX        = "&sort_order=desc&exclude_headers=false&transformation=none";
 
-  private static final String WIKI          = "WIKI";
-  private static final String FSE           = "FSE";
-  private static final char   SLASH         = '/';
+  private static final String WIKI          = "WIKI/%s";
+  private static final String LSE_          = "LSE/%s";
+  private static final String FSE           = "FSE/%s_X";
+  private static final String EURONEXT      = "EURONEXT/%s";
+  private static final String HKEX          = "HKEX/%s";
+  private static final String TSE_          = "TSE/%s";
+  private static final String BSE_BOM       = "BSE/BOM%s";
+  private static final String NSE_          = "NSE/%s";
+
   private static final String CSV           = ".csv?";
 
   private final DateFormat    urlDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -54,10 +60,16 @@ public class QuandlTest extends SourceTest {
     exchanges.put(NYSE, WIKI);
     exchanges.put(NASDAQ, WIKI);
     exchanges.put(AMEX, WIKI);
-    exchanges.put(LSE, LSE.toString());
+    exchanges.put(LSE, LSE_);
     exchanges.put(FWB, FSE);
-    exchanges.put(NSE, NSE.toString());
-    exchanges.put(TSE, TSE.toString());
+    exchanges.put(PAR, EURONEXT);
+    exchanges.put(AMS, EURONEXT);
+    exchanges.put(BB, EURONEXT);
+    exchanges.put(BVLP, EURONEXT);
+    exchanges.put(HKSE, HKEX);
+    exchanges.put(TSE, TSE_);
+    exchanges.put(BSE, BSE_BOM);
+    exchanges.put(NSE, NSE_);
 
     originalLines.addAll(Arrays.asList("Date,Open,High,Low,Close,Volume,Ex-Dividend,Split Ratio,Adj. Open,Adj. High,Adj. Low,Adj. Close,Adj. Volume",
                                        "2015-12-04,34.11,35.025,34.0,34.935,24261345.0,0.0,1.0,34.11,35.025,34.0,34.935,24261345.0",
@@ -75,24 +87,21 @@ public class QuandlTest extends SourceTest {
 
   @Override
   protected URL expectedURL(final String symbol) throws MalformedURLException {
-    return new URL(BASE + SLASH + symbol + CSV + SUFFIX);
+    return expectedURL(symbol, null);
   }
 
   @Override
   protected URL expectedURL(final String symbol, final Exchanges exchange)
       throws MalformedURLException {
     return new URL(BASE +
-                   (exchanges.containsKey(exchange) ? exchanges.get(exchange) : EMPTY) +
-                   SLASH + symbol + CSV + SUFFIX);
+                   (exchanges.containsKey(exchange) ? String.format(exchanges.get(exchange), symbol) : symbol) +
+                   CSV + SUFFIX);
   }
 
   @Override
   protected URL expectedURL(final String symbol, final Calendar start, final Calendar end)
       throws MalformedURLException {
-    return new URL(BASE + SLASH + symbol + CSV +
-                   START_DATE + urlDateFormat.format(start.getTime()) +
-                   END_DATE + urlDateFormat.format(end.getTime()) +
-                   SUFFIX);
+    return expectedURL(symbol, start, end, null);
   }
 
   @Override
@@ -100,11 +109,7 @@ public class QuandlTest extends SourceTest {
                             final Calendar start,
                             final Calendar end,
                             final Frequencies frequency) throws MalformedURLException {
-    return new URL(BASE + SLASH + symbol + CSV +
-                   START_DATE + urlDateFormat.format(start.getTime()) +
-                   END_DATE + urlDateFormat.format(end.getTime()) +
-                   FREQUENCY + frequency.toString().toLowerCase() +
-                   SUFFIX);
+    return expectedURL(symbol, null, start, end, frequency);
   }
 
   @Override
@@ -112,12 +117,7 @@ public class QuandlTest extends SourceTest {
                             final Exchanges exchange,
                             final Calendar start,
                             final Calendar end) throws MalformedURLException {
-    return new URL(BASE +
-                   (exchanges.containsKey(exchange) ? exchanges.get(exchange) : EMPTY) +
-                   SLASH + symbol + CSV +
-                   START_DATE + urlDateFormat.format(start.getTime()) +
-                   END_DATE + urlDateFormat.format(end.getTime()) +
-                   SUFFIX);
+    return expectedURL(symbol, exchange, start, end, null);
   }
 
   @Override
@@ -127,11 +127,11 @@ public class QuandlTest extends SourceTest {
                             final Calendar end,
                             final Frequencies frequency) throws MalformedURLException {
     return new URL(BASE +
-                   (exchanges.containsKey(exchange) ? exchanges.get(exchange) : EMPTY) +
-                   SLASH + symbol + CSV +
+                   (exchanges.containsKey(exchange) ? String.format(exchanges.get(exchange), symbol) : symbol) +
+                   CSV +
                    START_DATE + urlDateFormat.format(start.getTime()) +
                    END_DATE + urlDateFormat.format(end.getTime()) +
-                   FREQUENCY + frequency.toString().toLowerCase() +
+                   (frequency != null ? FREQUENCY + frequency.toString().toLowerCase() : EMPTY) +
                    SUFFIX);
   }
 

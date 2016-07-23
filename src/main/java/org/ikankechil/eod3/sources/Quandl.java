@@ -1,7 +1,7 @@
 /**
- * Quandl.java  v0.5  3 November 2014 4:51:49 PM
+ * Quandl.java  v0.6  3 November 2014 4:51:49 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * calls per 10 minutes, and a limit of 50000 calls per day.
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class Quandl extends Source {
   // TODO extend support for asset classes other than Equities
@@ -46,9 +46,13 @@ public class Quandl extends Source {
   private static final String CSV           = ".csv";
 
   // Exchange-related constants
-  private static final String WIKI          = "WIKI";   // U.S. Equities
+  private static final String WIKI          = "WIKI/";   // U.S. Equities
+  private static final String FSE           = "FSE/";
+  private static final String _X            = "_X";
+  private static final String EURONEXT      = "EURONEXT/";
+  private static final String BSE_BOM       = "BSE/BOM";
+  private static final String HKEX          = "HKEX/";
 //  private static final String CURRFX        = "CURRFX"; // FX
-  private static final String FSE           = "FSE";
 
   private static final Logger logger        = LoggerFactory.getLogger(Quandl.class);
 
@@ -68,14 +72,20 @@ public class Quandl extends Source {
                                authenticationToken;
     this.urlQueryKeys = urlQueryKeys;
 
-    // supported markets (see https://www.quandl.com/resources/api-for-stock-data)
+    // supported markets (see https://www.quandl.com/blog/api-for-global-stock-data)
     for (final Exchanges exchange : new Exchanges[] { NYSE, NASDAQ, AMEX }) {
       exchanges.put(exchange, WIKI);
     }
-    for (final Exchanges exchange : new Exchanges[] { LSE, NSE, TSE }) {
-      exchanges.put(exchange, exchange.toString());
+    for (final Exchanges exchange : new Exchanges[] { PAR, AMS, BB, BVLP }) {
+      exchanges.put(exchange, EURONEXT);
     }
+    for (final Exchanges exchange : new Exchanges[] { LSE, TSE, NSE }) {
+      exchanges.put(exchange, exchange.toString() + SLASH);
+    }
+
     exchanges.put(FWB, FSE);
+    exchanges.put(HKSE, HKEX);
+    exchanges.put(BSE, BSE_BOM);
 //    exchanges.put(FX, CURRFX);
     // TODO FX has a different format from equities (i.e. Date,Rate,High (est),Low (est))
     // either maintain a table of FX symbols or overload newTransform() with exchange
@@ -87,11 +97,13 @@ public class Quandl extends Source {
   }
 
   static enum API {
+    // https://www.quandl.com/help/api_v1
     V1("http://www.quandl.com/api/v1/datasets/",
        "&trim_start=",
        "&trim_end=",
        "&auth_token=",
        "&sort_order=desc&exclude_headers=false&transformation=none"),
+    // https://www.quandl.com/docs/api#customize-your-dataset, API version: 2015-04-09
     V3("https://www.quandl.com/api/v3/datasets/",
        "&start_date=",
        "&end_date=",
@@ -121,8 +133,10 @@ public class Quandl extends Source {
                                final Exchanges exchange) {
     // Quandl code format: <database_code>/<dataset_code>
     appendExchange(url, exchange);
-    url.append(SLASH);
     appendSymbol(url, symbol);
+    if (exchange == FWB) {
+      url.append(_X);
+    }
 
     // e.g. https://www.quandl.com/api/v3/datasets/WIKI/AAPL.csv?
     url.append(CSV).append(QUESTION);
