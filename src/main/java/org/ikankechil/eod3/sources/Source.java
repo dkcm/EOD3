@@ -1,7 +1,7 @@
 /**
- * Source.java	v1.8  15 December 2013 8:11:20 PM
+ * Source.java	v1.9  15 December 2013 8:11:20 PM
  *
- * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2013-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -29,10 +29,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A representation of a data source.
+ * A representation of a price data source.
  *
  * @author Daniel Kuan
- * @version 1.8
+ * @version 1.9
  */
 public abstract class Source {
   // TODO Other potential sources
@@ -75,6 +75,8 @@ public abstract class Source {
   static final char                        DOUBLE_QUOTE      = '"';
   static final char                        CLOSE_BRACE       = '}';
   static final char                        DOLLAR            = '$';
+  static final char                        UNDERSCORE        = '_';
+  static final char                        TAB               = '\t';
 
   // Numeric constants
   static final int                         ZERO              = 0;
@@ -88,10 +90,14 @@ public abstract class Source {
   static final int                         EIGHT             = 8;
   static final int                         NINE              = 9;
   static final int                         TEN               = 10;
+  static final int                         ELEVEN            = 11;
   static final int                         TWELVE            = 12;
+  static final int                         THIRTEEN          = 13;
+  static final int                         FOURTEEN          = 14;
   static final int                         FIFTEEN           = 15;
 
   static final char                        DEFAULT_FREQUENCY = Frequencies.DAILY.frequency();
+
   /**
    * Start date defaults to 1 January 1970 00:00:00.000 GMT.
    */
@@ -118,6 +124,7 @@ public abstract class Source {
                                                                 MotleyFool.class,
                                                                 MSNMoney.class,
                                                                 Netfonds.class,
+                                                                Portfolio.class,
                                                                 QuoteMedia.class,
                                                                 StockNod.class,
                                                                 Stooq.class,
@@ -224,13 +231,7 @@ public abstract class Source {
   }
 
   void appendSymbol(final StringBuilder url, final String symbol) {
-    try {
-      url.append(isRFC2396Compliant ? URLEncoder.encode(symbol, UTF_8) : symbol);
-    }
-    catch (final UnsupportedEncodingException ueE) {
-      logger.warn("{} encoding not supported", UTF_8, ueE);
-      url.append(symbol);
-    }
+    url.append(rfc2396Compliant(symbol));
   }
 
   void appendExchange(final StringBuilder url, final Exchanges exchange) {
@@ -301,6 +302,20 @@ public abstract class Source {
 
   public String directory() {
     return getClass().getSimpleName();
+  }
+
+  protected String rfc2396Compliant(final String string) {
+    String rfc2396CompliantString;
+    // encode string if RFC2396 compliance is required
+    try {
+      rfc2396CompliantString = isRFC2396Compliant ? URLEncoder.encode(string, UTF_8) : string;
+    }
+    catch (final UnsupportedEncodingException ueE) {
+      logger.warn("{} encoding not supported", UTF_8, ueE);
+      rfc2396CompliantString = string;
+    }
+
+    return rfc2396CompliantString;
   }
 
 }
