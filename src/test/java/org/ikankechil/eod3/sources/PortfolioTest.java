@@ -1,5 +1,5 @@
 /**
- * PortfolioTest.java	v0.1	28 July 2016 1:06:23 am
+ * PortfolioTest.java	v0.2	28 July 2016 1:06:23 am
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -20,11 +20,11 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class PortfolioTest extends SourceTest {
 
-  private static final String BASE = "http://www.portfolio.hu/reszveny/adatletoltes.tdp?typ=txt&rv=";
+  private static final String BASE = baseURL(PortfolioTest.class);
 
   public PortfolioTest() {
     exchanges.put(BET, EMPTY);

@@ -1,7 +1,7 @@
 /**
- * StockNodTest.java	v0.2	28 December 2015 4:58:25 pm
+ * StockNodTest.java	v0.3	28 December 2015 4:58:25 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -13,12 +13,12 @@ import java.util.Arrays;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class StockNodTest extends FinancialContentTest {
 
   public StockNodTest() {
-    super("http://quotes.stocknod.com/stocknod/action/gethistoricaldata?Symbol=");
+    super(StockNodTest.class);
 
     originalLines.addAll(Arrays.asList("Symbol,Date,Open,High,Low,Close,Volume,Change,% Change",
                                        "INTC,12/28/15,34.95,35.00,34.57,34.93,9449390,-0.05,-0.14%",

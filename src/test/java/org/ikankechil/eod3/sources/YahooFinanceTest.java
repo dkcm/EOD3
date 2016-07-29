@@ -1,7 +1,7 @@
 /**
- * YahooFinanceTest.java  v0.7  4 March 2014 5:59:06 PM
+ * YahooFinanceTest.java  v0.8  4 March 2014 5:59:06 PM
  *
- * Copyright � 2013-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -16,13 +16,15 @@ import org.ikankechil.eod3.Frequencies;
 
 /**
  * JUnit test for <code>YahooFinance</code>.
+ * <p>
+ *
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class YahooFinanceTest extends SourceTest {
 
-  private static final String BASE        = "https://ichart.finance.yahoo.com/table.csv?s=";
+  private static final String BASE        = baseURL(YahooFinanceTest.class);
   private static final String START_MONTH = "&a=";
   private static final String START_DATE  = "&b=";
   private static final String START_YEAR  = "&c=";
@@ -30,17 +32,6 @@ public class YahooFinanceTest extends SourceTest {
   private static final String END_DATE    = "&e=";
   private static final String END_YEAR    = "&f=";
   private static final String FREQUENCY   = "&g=";
-
-  // Yahoo! Finance API
-  // http://ichart.finance.yahoo.com/table.csv?s=<Stock Symbol>
-  //                                          &a=<Start Month - 1>
-  //                                          &b=<Start Date>
-  //                                          &c=<Start Year>
-  //                                          &d=<End Month - 1>
-  //                                          &e=<End Date>
-  //                                          &f=<End Year>
-  //                                          &g=<Frequency>
-  //                                          &ignore=.csv
 
   public YahooFinanceTest() {
     exchanges.put(NYSE, EMPTY);

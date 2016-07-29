@@ -1,7 +1,7 @@
 /**
- * FXHistoricalDataTest.java v0.4 17 December 2014 7:17:30 PM
+ * FXHistoricalDataTest.java v0.5 17 December 2014 7:17:30 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -22,11 +22,11 @@ import org.junit.Test;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class FXHistoricalDataTest extends SourceTest {
 
-  private static final String BASE      = "http://www.fxhistoricaldata.com/download/";
+  private static final String BASE      = baseURL(FXHistoricalDataTest.class);
   private static final String FREQUENCY = "_day.zip";
 
   public FXHistoricalDataTest() {

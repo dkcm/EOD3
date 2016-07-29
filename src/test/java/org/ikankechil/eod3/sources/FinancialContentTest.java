@@ -1,5 +1,5 @@
 /**
- * FinancialContentTest.java v0.2 15 January 2016 2:25:20 PM
+ * FinancialContentTest.java v0.3 15 January 2016 2:25:20 PM
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -23,7 +23,7 @@ import org.junit.Test;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class FinancialContentTest extends SourceTest {
 
@@ -38,7 +38,7 @@ public class FinancialContentTest extends SourceTest {
   private final String[]      DATE_FORMATS   = { "INPUT", "OUTPUT" };
 
   public FinancialContentTest() {
-    this("http://markets.financialcontent.com/stocks/action/gethistoricaldata?Symbol=");
+    this(FinancialContentTest.class);
 
     originalLines.addAll(Arrays.asList("Symbol,Date,Open,High,Low,Close,Volume,Change,% Change",
                                        "INTC,12/31/15,,133.64,133.64,133.64,0,-2.35,-1.73%",
@@ -53,8 +53,8 @@ public class FinancialContentTest extends SourceTest {
                                           "INTC,20151224,,128.87,128.87,128.87,0"));
   }
 
-  FinancialContentTest(final String base) {
-    this.base = base;
+  FinancialContentTest(final Class<? extends SourceTest> source) {
+    base = baseURL(source);
 
     exchanges.put(NYSE, EMPTY);
     exchanges.put(NASDAQ, EMPTY);

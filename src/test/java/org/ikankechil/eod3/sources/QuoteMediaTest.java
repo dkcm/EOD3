@@ -1,5 +1,5 @@
 /**
- * QuoteMediaTest.java	v0.8	20 March 2014 12:46:35 AM
+ * QuoteMediaTest.java	v0.9	20 March 2014 12:46:35 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -18,12 +18,12 @@ import org.ikankechil.eod3.Frequencies;
  * JUnit test for <code>QuoteMedia</code>.
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class QuoteMediaTest extends SourceTest {
 
   // Date-related URL parameters
-  private static final String BASE        = "http://app.quotemedia.com/quotetools/getHistoryDownload.csv?&webmasterId=500&symbol=";
+  private static final String BASE        = baseURL(QuoteMediaTest.class);
   private static final String START_DATE  = "&startDay=";
   private static final String START_MONTH = "&startMonth=";
   private static final String START_YEAR  = "&startYear=";

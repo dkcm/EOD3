@@ -1,7 +1,7 @@
 /**
  * SourceTest.java	v0.5	7 January 2014 10:06:00 PM
  *
- * Copyright � 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 

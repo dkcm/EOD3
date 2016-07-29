@@ -1,5 +1,5 @@
 /**
- * KdbTest.java	v0.4	29 December 2015 4:36:07 pm
+ * KdbTest.java	v0.5	29 December 2015 4:36:07 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -20,11 +20,11 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class KdbTest extends SourceTest {
 
-  private static final String BASE       = "http://k-db.com/stocks/";
+  private static final String BASE       = baseURL(KdbTest.class);
   private static final String START_YEAR = "&year=";
   private static final String DOWNLOAD   = "?download=csv";
 

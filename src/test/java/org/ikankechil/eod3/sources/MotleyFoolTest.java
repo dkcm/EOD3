@@ -1,7 +1,7 @@
 /**
- * MotleyFoolTest.java	v0.4	6 April 2015 12:53:51 am
+ * MotleyFoolTest.java	v0.5	6 April 2015 12:53:51 am
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -26,11 +26,11 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class MotleyFoolTest extends SourceTest {
 
-  private static final String BASE          = "http://www.motleyfool.idmanagedsolutions.com/stocks/historical_quotes.idms?&BLOCKSIZE=20000&OFFSET=0&SYMBOL_";
+  private static final String BASE          = baseURL(MotleyFoolTest.class);
   private static final String START_DATE    = "&START_DATE=";
   private static final String END_DATE      = "&END_DATE=";
   private static final String US            = "US";

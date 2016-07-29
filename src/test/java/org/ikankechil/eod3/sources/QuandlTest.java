@@ -1,5 +1,5 @@
 /**
- * QuandlTest.java	v0.5	5 April, 2015 11:25:06 pm
+ * QuandlTest.java	v0.6	5 April, 2015 11:25:06 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -23,14 +23,14 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class QuandlTest extends SourceTest {
 
   // https://www.quandl.com/api/v3/datasets/WIKI/FB/data.csv?column_index=4&exclude_column_names=true&rows=3&start_date=2012-11-01&end_date=2013-11-30&order=asc&collapse=quarterly&transform=rdiff
 
   // v3
-  private static final String BASE          = "https://www.quandl.com/api/v3/datasets/";
+  private static final String BASE          = baseURL(QuandlTest.class);
   private static final String START_DATE    = "&start_date=";
   private static final String END_DATE      = "&end_date=";
   private static final String FREQUENCY     = "&collapse=";

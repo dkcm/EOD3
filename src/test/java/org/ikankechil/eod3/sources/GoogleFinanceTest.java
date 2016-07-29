@@ -1,5 +1,5 @@
 /**
- * GoogleFinanceTest.java	v0.9	6 March 2014 2:32:24 AM
+ * GoogleFinanceTest.java	v0.10	6 March 2014 2:32:24 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -24,11 +24,11 @@ import org.junit.Test;
  * JUnit test for <code>GoogleFinance</code>.
  *
  * @author Daniel Kuan
- * @version 0.9
+ * @version 0.10
  */
 public class GoogleFinanceTest extends SourceTest {
 
-  private static final String BASE         = "http://www.google.com/finance/historical?output=csv&q=";
+  private static final String BASE         = baseURL(GoogleFinanceTest.class);
   private static final String START_DATE   = "&startdate=";
   private static final String END_DATE     = "&enddate=";
 //  private static final String FREQUENCY    = "&histperiod=";
@@ -107,6 +107,7 @@ public class GoogleFinanceTest extends SourceTest {
     exchanges.put(TALSE, TAL);
     exchanges.put(VSE, VSE.toString() + COLON);
     exchanges.put(TASE, TLV);
+    exchanges.put(TADAWUL, TADAWUL.toString() + COLON);
     exchanges.put(JSE, JSE.toString() + COLON);
     exchanges.put(BOVESPA, BVMF);
     exchanges.put(BCBA, BCBA.toString() + COLON);
