@@ -1,5 +1,5 @@
 /**
- * Stooq.java v0.5  27 January 2014 PM 07:12:11 PM
+ * Stooq.java v0.6  27 January 2014 PM 07:12:11 PM
  *
  * Copyright � 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -10,6 +10,7 @@ import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.ikankechil.util.StringUtility.*;
 
 import java.util.Calendar;
+import java.util.EnumSet;
 
 import org.ikankechil.eod3.Frequencies;
 import org.ikankechil.io.TextTransform;
@@ -22,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * portal.
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class Stooq extends Source {
 
@@ -38,7 +39,6 @@ public class Stooq extends Source {
   private static final String HK         = ".hk";
   private static final String JP         = ".jp";
   private static final String HU         = ".hu";
-//  private static final String IT         = ".it";
 //  private static final String F          = ".f";  // futures
 
   static final Logger         logger     = LoggerFactory.getLogger(Stooq.class);
@@ -47,17 +47,18 @@ public class Stooq extends Source {
     super(Stooq.class);
 
     // supported markets
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA)) {
+      exchanges.put(exchange, US);
+    }
+
     // GPW and FX do not require a suffix
-    exchanges.put(GPW, EMPTY);
-    exchanges.put(FX, EMPTY);
-    exchanges.put(NYSE, US);
-    exchanges.put(NASDAQ, US);
-    exchanges.put(AMEX, US);
-    exchanges.put(NYSEARCA, US);
+    for (final Exchanges exchange : EnumSet.of(GPW, FX)) {
+      exchanges.put(exchange, EMPTY);
+    }
+
     exchanges.put(LSE, UK);
     exchanges.put(FWB, DE);
-//    exchanges.put(MIB, IT);
-    exchanges.put(HKSE, HK);
+    exchanges.put(HKEX, HK);
     exchanges.put(TSE, JP);
     exchanges.put(BET, HU);
 

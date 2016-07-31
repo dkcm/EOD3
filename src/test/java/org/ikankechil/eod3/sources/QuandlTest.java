@@ -1,5 +1,5 @@
 /**
- * QuandlTest.java	v0.6	5 April, 2015 11:25:06 pm
+ * QuandlTest.java	v0.7	5 April, 2015 11:25:06 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -23,7 +23,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class QuandlTest extends SourceTest {
 
@@ -47,7 +47,7 @@ public class QuandlTest extends SourceTest {
   private static final String LSE_          = "LSE/%s";
   private static final String FSE           = "FSE/%s_X";
   private static final String EURONEXT      = "EURONEXT/%s";
-  private static final String HKEX          = "HKEX/%s";
+  private static final String HKEX_         = "HKEX/%s";
   private static final String TSE_          = "TSE/%s";
   private static final String BSE_BOM       = "BSE/BOM%s";
   private static final String NSE_          = "NSE/%s";
@@ -63,10 +63,10 @@ public class QuandlTest extends SourceTest {
     exchanges.put(LSE, LSE_);
     exchanges.put(FWB, FSE);
     exchanges.put(PAR, EURONEXT);
-    exchanges.put(AMS, EURONEXT);
+    exchanges.put(AEX, EURONEXT);
     exchanges.put(BB, EURONEXT);
     exchanges.put(BVLP, EURONEXT);
-    exchanges.put(HKSE, HKEX);
+    exchanges.put(HKEX, HKEX_);
     exchanges.put(TSE, TSE_);
     exchanges.put(BSE, BSE_BOM);
     exchanges.put(NSE, NSE_);

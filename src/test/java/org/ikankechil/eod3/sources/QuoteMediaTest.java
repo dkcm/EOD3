@@ -1,5 +1,5 @@
 /**
- * QuoteMediaTest.java	v0.9	20 March 2014 12:46:35 AM
+ * QuoteMediaTest.java	v0.10	20 March 2014 12:46:35 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -18,7 +18,7 @@ import org.ikankechil.eod3.Frequencies;
  * JUnit test for <code>QuoteMedia</code>.
  *
  * @author Daniel Kuan
- * @version 0.9
+ * @version 0.10
  */
 public class QuoteMediaTest extends SourceTest {
 
@@ -90,13 +90,13 @@ public class QuoteMediaTest extends SourceTest {
     exchanges.put(NYSE, EMPTY);
     exchanges.put(NASDAQ, EMPTY);
     exchanges.put(AMEX, EMPTY);
-    exchanges.put(NYSEARCA, EMPTY);
+    exchanges.put(ARCA, EMPTY);
     exchanges.put(TSX, CA);
     exchanges.put(LSE, LN);
     exchanges.put(ISE, IE);
     exchanges.put(FWB, FF);
     exchanges.put(PAR, PA);
-    exchanges.put(AMS, AS);
+    exchanges.put(AEX, AS);
     exchanges.put(BB, BR);
     exchanges.put(LUX, LU);
     exchanges.put(SWX, SM);
@@ -111,7 +111,7 @@ public class QuoteMediaTest extends SourceTest {
     exchanges.put(KFB, CO);
     exchanges.put(MOEX, RU);
     exchanges.put(SGX, SI);
-    exchanges.put(HKSE, HK);
+    exchanges.put(HKEX, HK);
     exchanges.put(SSE, SH);
     exchanges.put(SZSE, SZ);
     exchanges.put(TSE, TK);

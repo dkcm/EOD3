@@ -1,5 +1,5 @@
 /**
- * YahooFinance.java  v0.8  15 December 2013 8:28:07 PM
+ * YahooFinance.java  v0.9  15 December 2013 8:28:07 PM
  *
  * Copyright � 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Yahoo! Finance.
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class YahooFinance extends Source {
   // TODO adjust prices for splits, etc. (adjust only when close and adj. close are unequal)
@@ -89,7 +89,7 @@ public class YahooFinance extends Source {
 
     // supported markets (see https://help.yahoo.com/kb/finance/exchanges-data-providers-yahoo-finance-sln2310.html, previously: http://finance.yahoo.com/exchanges)
     // NYSE, NASDAQ, AMEX and NYSEARCA do not require suffices
-    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA)) {
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA)) {
       exchanges.put(exchange, EMPTY);
     }
 
@@ -98,7 +98,7 @@ public class YahooFinance extends Source {
     exchanges.put(ISE, IR);
     exchanges.put(FWB, F);
     exchanges.put(PAR, PA);
-    exchanges.put(AMS, AS);
+    exchanges.put(AEX, AS);
     exchanges.put(BB, BR);
     exchanges.put(SWX, SW);
     exchanges.put(MIB, MI);
@@ -118,7 +118,7 @@ public class YahooFinance extends Source {
     exchanges.put(VSE, VS);
     exchanges.put(PX, PR);
     exchanges.put(SGX, SI);
-    exchanges.put(HKSE, HK);
+    exchanges.put(HKEX, HK);
     exchanges.put(SSE, SS);
     exchanges.put(SZSE, SZ);
     exchanges.put(BSE, BO);

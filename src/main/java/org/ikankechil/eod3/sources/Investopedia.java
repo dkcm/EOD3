@@ -1,7 +1,7 @@
 /**
  * Investopedia.java	v0.1	12 January 2016 9:56:23 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -50,7 +50,7 @@ class Investopedia extends Source {
     exchanges.put(NYSE, STOCKS);
     exchanges.put(NASDAQ, STOCKS);
     exchanges.put(AMEX, STOCKS);
-    exchanges.put(NYSEARCA, ETFS);
+    exchanges.put(ARCA, ETFS);
 
     // Investopedia API
     // e.g.

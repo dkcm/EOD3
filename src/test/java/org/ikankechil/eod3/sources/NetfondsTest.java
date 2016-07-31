@@ -1,5 +1,5 @@
 /**
- * NetfondsTest.java	v0.9	6 April 2015 12:55:23 am
+ * NetfondsTest.java	v0.10	6 April 2015 12:55:23 am
  *
  * Copyright � 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -22,7 +22,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.9
+ * @version 0.10
  */
 public class NetfondsTest extends SourceTest {
 
@@ -47,13 +47,13 @@ public class NetfondsTest extends SourceTest {
   private static final String         E_V          = "E-%sV.BTSE";
   private static final String         E_H          = "E-%sH.BTSE";
 
-  private static final Set<Exchanges> EU_EXCHANGES = EnumSet.of(LSE, ISE, FWB, PAR, AMS, BB, SWX, MIB, BM, BVLP, WB, HEX);
+  private static final Set<Exchanges> EU_EXCHANGES = EnumSet.of(LSE, ISE, FWB, PAR, AEX, BB, SWX, MIB, BM, BVLP, WB, HEX);
 
   public NetfondsTest() {
     exchanges.put(NYSE, N);
     exchanges.put(NASDAQ, O);
     exchanges.put(AMEX, A);
-    exchanges.put(NYSEARCA, A);
+    exchanges.put(ARCA, A);
     exchanges.put(OSLO, EMPTY);
     exchanges.put(SB, ST);
     exchanges.put(HEX, E_H);
@@ -64,7 +64,7 @@ public class NetfondsTest extends SourceTest {
     exchanges.put(ISE, E_I);
     exchanges.put(FWB, E_D);
     exchanges.put(PAR, E_P);
-    exchanges.put(AMS, E_A);
+    exchanges.put(AEX, E_A);
     exchanges.put(BB, E_B);
     exchanges.put(SWX, E_Z);
     exchanges.put(MIB, E_M);

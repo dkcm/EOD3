@@ -1,5 +1,5 @@
 /**
- * Exchanges.java  v0.14  13 November 2014 10:38:47 AM
+ * Exchanges.java  v0.15  13 November 2014 10:38:47 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * http://money.visualcapitalist.com/all-of-the-worlds-stock-exchanges-by-size/
  *
  * @author Daniel Kuan
- * @version 0.14
+ * @version 0.15
  */
 public enum Exchanges {
 
@@ -27,7 +27,7 @@ public enum Exchanges {
   /** American Stock Exchange */
   AMEX,
   /** Archipelago Exchange */
-  NYSEARCA,
+  ARCA,
   /** Toronto Stock Exchange */
   TSX,
 
@@ -38,10 +38,10 @@ public enum Exchanges {
   ISE,
   /** Deutsche Börse, Frankfurt Stock Exchange */
   FWB,
-  /** Paris Stock Exchange / NYSE Euronext Paris */
-  PAR,  // TODO to rename as BDP
-  /** NYSE Euronext Amsterdam */
-  AMS,  // TODO to rename as AEX
+  /** Bourse de Paris, Paris Stock Exchange */
+  PAR,
+  /** Amsterdam Stock Exchange */
+  AEX,
   /** Bourse de Bruxelles, Brussels Stock Exchange */
   BB,
   /** Bourse de Luxembourg, Luxembourg Stock Exchange */
@@ -95,7 +95,7 @@ public enum Exchanges {
   /** Singapore Stock Exchange */
   SGX,
   /** Hong Kong Stock Exchange */
-  HKSE,
+  HKEX,
   /** Shanghai Stock Exchange */
   SSE,
   /** Shenzhen Stock Exchange */

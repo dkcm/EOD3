@@ -1,5 +1,5 @@
 /**
- * GoogleFinanceTest.java	v0.10	6 March 2014 2:32:24 AM
+ * GoogleFinanceTest.java	v0.11	6 March 2014 2:32:24 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -24,7 +24,7 @@ import org.junit.Test;
  * JUnit test for <code>GoogleFinance</code>.
  *
  * @author Daniel Kuan
- * @version 0.10
+ * @version 0.11
  */
 public class GoogleFinanceTest extends SourceTest {
 
@@ -48,6 +48,7 @@ public class GoogleFinanceTest extends SourceTest {
   private static final String VIE          = "VIE:";
   private static final String IST          = "IST:";
   private static final String EPA          = "EPA:";
+  private static final String AMS          = "AMS:";
   private static final String EBR          = "EBR:";
   private static final String BME          = "BME:";
   private static final String ELI          = "ELI:";
@@ -70,12 +71,12 @@ public class GoogleFinanceTest extends SourceTest {
     exchanges.put(NYSE, EMPTY);
     exchanges.put(NASDAQ, EMPTY);
     exchanges.put(AMEX, EMPTY);
-    exchanges.put(NYSEARCA, EMPTY);
+    exchanges.put(ARCA, EMPTY);
     exchanges.put(TSX, TSE_);
     exchanges.put(LSE, LON);
     exchanges.put(FWB, FRA);
     exchanges.put(PAR, EPA);
-    exchanges.put(AMS, AMS.toString() + COLON);
+    exchanges.put(AEX, AMS);
     exchanges.put(BB, EBR);
     exchanges.put(SWX, SWX.toString() + COLON);
     exchanges.put(MIB, BIT);
@@ -89,7 +90,7 @@ public class GoogleFinanceTest extends SourceTest {
     exchanges.put(ICEX, ICE);
     exchanges.put(GPW, WSE);
     exchanges.put(SGX, SGX.toString() + COLON);
-    exchanges.put(HKSE, HKG);
+    exchanges.put(HKEX, HKG);
     exchanges.put(SSE, SHA);
     exchanges.put(SZSE, SHE);
     exchanges.put(TSE, TYO);

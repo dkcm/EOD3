@@ -1,5 +1,5 @@
 /**
- * GoogleFinance.java v0.9  21 December 2013 1:33:30 AM
+ * GoogleFinance.java v0.10  21 December 2013 1:33:30 AM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Google Finance.
  *
  * @author Daniel Kuan
- * @version 0.9
+ * @version 0.10
  */
 public class GoogleFinance extends Source {
 
@@ -48,6 +48,7 @@ public class GoogleFinance extends Source {
   private static final String VIE               = "VIE:";
   private static final String IST               = "IST:";
   private static final String EPA               = "EPA:";
+  private static final String AMS               = "AMS:";
   private static final String EBR               = "EBR:";
   private static final String BME               = "BME:";
   private static final String ELI               = "ELI:";
@@ -73,23 +74,32 @@ public class GoogleFinance extends Source {
 
     // supported markets (http://www.google.com/intl/en/googlefinance/disclaimer/)
     // NYSE, NASDAQ, AMEX and NYSEARCA do not require prefixes
-    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA)) {
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA)) {
       exchanges.put(exchange, EMPTY);
     }
-    for (final Exchanges exchange : EnumSet.of(AMS, SWX, RSE, VSE, SGX, NSE, KRX, IDX, ASX, JSE, BCBA, BMV)) {
+    for (final Exchanges exchange : EnumSet.of(SWX, RSE, VSE, SGX, NSE, KRX, IDX, ASX, TADAWUL, JSE, BCBA, BMV)) {
       exchanges.put(exchange, exchange.toString() + COLON);
     }
 
+    exchanges.put(TSX, TSE_);
     exchanges.put(LSE, LON);
     exchanges.put(FWB, FRA);
     exchanges.put(PAR, EPA);
+    exchanges.put(AEX, AMS);
     exchanges.put(BB, EBR);
     exchanges.put(MIB, BIT);
     exchanges.put(BM, BME);
     exchanges.put(BVLP, ELI);
     exchanges.put(WB, VIE);
     exchanges.put(BIST, IST);
-    exchanges.put(HKSE, HKG);
+    exchanges.put(SB, STO);
+    exchanges.put(HEX, HEL);
+    exchanges.put(KFB, CPH);
+    exchanges.put(ICEX, ICE);
+    exchanges.put(MOEX, MCX);
+    exchanges.put(TALSE, TAL);
+    exchanges.put(GPW, WSE);
+    exchanges.put(HKEX, HKG);
     exchanges.put(SSE, SHA);
     exchanges.put(SZSE, SHE);
     exchanges.put(TSE, TYO);
@@ -98,14 +108,6 @@ public class GoogleFinance extends Source {
     exchanges.put(MYX, KLSE);
     exchanges.put(SET, BKK);
     exchanges.put(NZX, NZE);
-    exchanges.put(TSX, TSE_);
-    exchanges.put(GPW, WSE);
-    exchanges.put(SB, STO);
-    exchanges.put(HEX, HEL);
-    exchanges.put(KFB, CPH);
-    exchanges.put(ICEX, ICE);
-    exchanges.put(MOEX, MCX);
-    exchanges.put(TALSE, TAL);
     exchanges.put(TASE, TLV);
     exchanges.put(BOVESPA, BVMF);
 

@@ -1,7 +1,7 @@
 /**
- * MotleyFool.java  v0.3  6 June 2014 01:19:57 PM
+ * MotleyFool.java  v0.4  6 June 2014 01:19:57 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class MotleyFool extends Source {
 
@@ -48,7 +48,7 @@ public class MotleyFool extends Source {
     super(MotleyFool.class);
 
     // supported markets (only US and UK)
-    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA)) {
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA)) {
       exchanges.put(exchange, US);
     }
 

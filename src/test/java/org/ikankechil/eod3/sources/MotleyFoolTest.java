@@ -1,5 +1,5 @@
 /**
- * MotleyFoolTest.java	v0.5	6 April 2015 12:53:51 am
+ * MotleyFoolTest.java	v0.6	6 April 2015 12:53:51 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class MotleyFoolTest extends SourceTest {
 
@@ -43,7 +43,7 @@ public class MotleyFoolTest extends SourceTest {
     exchanges.put(NYSE, US);
     exchanges.put(NASDAQ, US);
     exchanges.put(AMEX, US);
-    exchanges.put(NYSEARCA, US);
+    exchanges.put(ARCA, US);
     exchanges.put(LSE, UK);
 
     originalLines.addAll(Files.readAllLines(new File(DIRECTORY, getClass().getSimpleName() + HTML).toPath()));

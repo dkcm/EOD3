@@ -1,5 +1,5 @@
 /**
- * ExchangesTest.java v0.7 6 April 2015 2:44:12 PM
+ * ExchangesTest.java v0.8 6 April 2015 2:44:12 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,28 +16,28 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class ExchangesTest {
 
   @Rule
   public final ExpectedException thrown    = ExpectedException.none();
 
-  private static final String[]  EXCHANGES = { "NYSE", "NASDAQ", "AMEX", "NYSEARCA", "TSX",
-                                               "LSE",  "ISE",    "FWB",  "PAR",      "AMS",
-                                               "BB",   "SWX",    "MIB",  "BM",       "BVLP",
-                                               "WB",   "ATHEX",  "BIST", "LUX",
-                                               "MOEX", "TALSE",  "RSE",  "VSE",      "UX",
-                                               "GPW",  "BET",    "PX",   "BVB",      "LJSE",
-                                               "OSLO", "SB",     "HEX",  "KFB",      "ICEX",
-                                               "SGX",  "HKSE",   "SSE",  "SZSE",     "TSE",
-                                               "OSE",  "BSE",    "NSE",  "KRX",      "TWSE",
-                                               "IDX",  "MYX",    "SET",  "PSE",
+  private static final String[]  EXCHANGES = { "NYSE", "NASDAQ",  "AMEX", "ARCA", "TSX",
+                                               "LSE",  "ISE",     "FWB",  "PAR",  "AEX",
+                                               "BB",   "SWX",     "MIB",  "BM",   "BVLP",
+                                               "WB",   "ATHEX",   "BIST", "LUX",
+                                               "MOEX", "TALSE",   "RSE",  "VSE",  "UX",
+                                               "GPW",  "BET",     "PX",   "BVB",  "LJSE",
+                                               "OSLO", "SB",      "HEX",  "KFB",  "ICEX",
+                                               "SGX",  "HKEX",    "SSE",  "SZSE", "TSE",
+                                               "OSE",  "BSE",     "NSE",  "KRX",  "TWSE",
+                                               "IDX",  "MYX",     "SET",  "PSE",
                                                "ASX",  "NZX",
-                                               "TASE", "QSE",    "ADX",  "TADAWUL",  "DFM",
-                                               "MSM",  "ASE",    "BHB",
-                                               "JSE",  "EGX",    "NGSE", "BC",
-                                               "BCBA", "BCS",    "BMV",  "BOVESPA",  "BVC",
+                                               "TASE", "TADAWUL", "QSE",  "ADX",  "DFM",
+                                               "MSM",  "ASE",     "BHB",
+                                               "JSE",  "EGX",     "NGSE", "BC",
+                                               "BCBA", "BOVESPA", "BCS",  "BMV",  "BVC",
                                                "BVCA", "BVL",
                                                "FX" };
   private static final String    PARA      = "PARA";

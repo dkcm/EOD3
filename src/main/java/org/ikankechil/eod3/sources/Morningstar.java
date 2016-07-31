@@ -1,5 +1,5 @@
 /**
- * Morningstar.java	v0.7	26 December 2015 8:53:35 pm
+ * Morningstar.java	v0.8	26 December 2015 8:53:35 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class Morningstar extends Source {
 
@@ -117,13 +117,13 @@ public class Morningstar extends Source {
     exchanges.put(NYSE, XNYS);
     exchanges.put(NASDAQ, XNAS);
     exchanges.put(AMEX, XASE);
-    exchanges.put(NYSEARCA, EMPTY);
+    exchanges.put(ARCA, EMPTY);
     exchanges.put(TSX, XTSE);
     exchanges.put(LSE, XLON);
     exchanges.put(ISE, XDUB);
     exchanges.put(FWB, XFRA);
     exchanges.put(PAR, XPAR);
-    exchanges.put(AMS, XAMS);
+    exchanges.put(AEX, XAMS);
     exchanges.put(BB, XBRU);
     exchanges.put(LUX, XLUX);
     exchanges.put(SWX, XSWX);
@@ -149,7 +149,7 @@ public class Morningstar extends Source {
     exchanges.put(BVB, XBSE);
     exchanges.put(LJSE, XLJU);
     exchanges.put(SGX, XSES);
-    exchanges.put(HKSE, XHKG);
+    exchanges.put(HKEX, XHKG);
     exchanges.put(SSE, XSHG);
     exchanges.put(SZSE, XSHE);
     exchanges.put(TSE, XTKS);

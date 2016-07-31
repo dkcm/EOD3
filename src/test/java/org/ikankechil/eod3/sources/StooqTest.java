@@ -1,7 +1,7 @@
 /**
- * StooqTest.java	v0.6	5 April 2015 9:45:19 pm
+ * StooqTest.java	v0.7	5 April 2015 9:45:19 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -23,7 +23,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class StooqTest extends SourceTest {
 
@@ -38,7 +38,6 @@ public class StooqTest extends SourceTest {
   private static final String HK            = ".hk";
   private static final String JP            = ".jp";
   private static final String HU            = ".hu";
-//  private static final String IT            = ".it";
 
   private final DateFormat    urlDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
 
@@ -46,11 +45,10 @@ public class StooqTest extends SourceTest {
     exchanges.put(NYSE, US);
     exchanges.put(NASDAQ, US);
     exchanges.put(AMEX, US);
-    exchanges.put(NYSEARCA, US);
+    exchanges.put(ARCA, US);
     exchanges.put(LSE, UK);
     exchanges.put(FWB, DE);
-//    exchanges.put(MIB, IT);
-    exchanges.put(HKSE, HK);
+    exchanges.put(HKEX, HK);
     exchanges.put(TSE, JP);
     exchanges.put(BET, HU);
     exchanges.put(GPW, EMPTY);

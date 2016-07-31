@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloader.java v0.14 28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java v0.15 28 January 2015 12:27:30 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.14
+ * @version 0.15
  */
 public class ExchangeSymbolsDownloader {
 
@@ -74,9 +74,11 @@ public class ExchangeSymbolsDownloader {
   private static final String                        TPE           = "TPE";
   private static final String                        JK            = "JK";
   private static final String                        BKK           = "BKK";
+  private static final String                        NYSEARCA      = "NYSEARCA";
   private static final String                        LON           = "LON";
   private static final String                        FRA           = "FRA";
   private static final String                        EPA           = "EPA";
+  private static final String                        AMS           = "AMS";
   private static final String                        EBR           = "EBR";
   private static final String                        BIT           = "BIT";
   private static final String                        MC            = "MC";
@@ -126,6 +128,8 @@ public class ExchangeSymbolsDownloader {
       //      http://www.netfonds.no/quotes/kurs.php?exchange=BTSE&sec_types=&ticks=&table=tab&sort=alphabetic
       //      https://www.nzx.com/markets/NZSX/securities
       //      https://www.euronext.com/sites/www.euronext.com/files/ftp/smartpoolsecuritiesumtfcsv.csv
+      //      http://www.bursamalaysia.com/market/listed-companies/list-of-companies/main-market
+      //      http://www.hkex.com.hk/eng/market/sec_tradinfo/stockcode/eisdeqty_pf.htm
 
       final TextTransformer commaAtFirstColumn = new TextTransformer(new SymbolsTransform(COMMA, 1));
 
@@ -144,11 +148,11 @@ public class ExchangeSymbolsDownloader {
       // exchanges sourced from Google (via Quandl)
       // TODO call Google to get Strings
       final Map<Exchanges, String> googles = new EnumMap<>(Exchanges.class);
-      googles.put(NYSEARCA, NYSEARCA.toString());
+      googles.put(ARCA, NYSEARCA);
       googles.put(LSE, LON);
       googles.put(FWB, FRA);
       googles.put(PAR, EPA);
-      googles.put(AMS, AMS.toString());
+      googles.put(AEX, AMS);
       googles.put(BB, EBR);
       googles.put(SWX, SWX.toString());
       googles.put(MIB, BIT);
@@ -176,11 +180,11 @@ public class ExchangeSymbolsDownloader {
                                       commaAtFirstColumn));
       }
 
-      // exchanges sourced from Yahoo
+      // exchanges sourced from Yahoo (via Quandl)
       final Map<Exchanges, String> yahoos = new EnumMap<>(Exchanges.class);
       yahoos.put(BM, MC);
       yahoos.put(SGX, SI);
-      yahoos.put(HKSE, HK);
+      yahoos.put(HKEX, HK);
       yahoos.put(SSE, SS);
       yahoos.put(SZSE, SZ);
       yahoos.put(BSE, BO);
@@ -537,6 +541,7 @@ public class ExchangeSymbolsDownloader {
     private static final String ISO4217_BASE       = "http://www.currency-iso.org/dam/downloads/lists/list_one.xml";
 
     /**
+     *
      * @param skippedRows number of rows to skip
      * @param url symbol source <code>URL</code>
      * @param transformer
@@ -563,6 +568,7 @@ public class ExchangeSymbolsDownloader {
     private static final int  FIRST = 1;
 
     /**
+     *
      * @param separator column separator
      * @param targetColumn the column to be extracted
      */
@@ -628,7 +634,7 @@ public class ExchangeSymbolsDownloader {
       lines.clear();
       for (final String base : currencies) {
         for (final String quote : currencies) {
-          if (base != quote) {
+          if (!base.equals(quote)) {
             lines.add(base + quote);
           }
         }

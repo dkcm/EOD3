@@ -1,5 +1,5 @@
 /**
- * FinancialContentTest.java v0.3 15 January 2016 2:25:20 PM
+ * FinancialContentTest.java v0.4 15 January 2016 2:25:20 PM
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -23,7 +23,7 @@ import org.junit.Test;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class FinancialContentTest extends SourceTest {
 
@@ -59,7 +59,7 @@ public class FinancialContentTest extends SourceTest {
     exchanges.put(NYSE, EMPTY);
     exchanges.put(NASDAQ, EMPTY);
     exchanges.put(AMEX, EMPTY);
-    exchanges.put(NYSEARCA, EMPTY);
+    exchanges.put(ARCA, EMPTY);
     exchanges.put(TSX, EMPTY);
     exchanges.put(FX, EMPTY);
   }

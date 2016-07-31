@@ -1,5 +1,5 @@
 /**
- * Netfonds.java  v0.6  5 March 2014 6:05:08 PM
+ * Netfonds.java  v0.7  5 March 2014 6:05:08 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,12 +21,12 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing Netfonds, a Norwegian on-line broker.
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class Netfonds extends Source {
 
   // Western-European non-Scandinavian exchanges
-  private final static Set<Exchanges> EU_EXCHANGES = EnumSet.of(LSE, ISE, FWB, PAR, AMS, BB, SWX, MIB, BM, BVLP, WB, HEX);
+  private final static Set<Exchanges> EU_EXCHANGES = EnumSet.of(LSE, ISE, FWB, PAR, AEX, BB, SWX, MIB, BM, BVLP, WB, HEX);
 
   // Exchange-related constants
   private static final String         N            = ".N";
@@ -58,7 +58,7 @@ public class Netfonds extends Source {
     exchanges.put(NYSE, N);
     exchanges.put(NASDAQ, O);
     exchanges.put(AMEX, A);
-    exchanges.put(NYSEARCA, A);
+    exchanges.put(ARCA, A);
     exchanges.put(OSLO, EMPTY); // suffix = OSE?
     exchanges.put(SB, ST);
     exchanges.put(KFB, CPH);
@@ -70,7 +70,7 @@ public class Netfonds extends Source {
     exchanges.put(ISE, E_I);
     exchanges.put(FWB, E_D);
     exchanges.put(PAR, E_P);
-    exchanges.put(AMS, E_A);
+    exchanges.put(AEX, E_A);
     exchanges.put(BB, E_B);
     exchanges.put(SWX, E_Z);
     exchanges.put(MIB, E_M);

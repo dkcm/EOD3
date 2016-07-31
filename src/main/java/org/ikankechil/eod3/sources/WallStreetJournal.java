@@ -1,5 +1,5 @@
 /**
- * WallStreetJournal.java v0.8  14 May 2014 11:49:20 PM
+ * WallStreetJournal.java v0.9  14 May 2014 11:49:20 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing the Wall Street Journal.
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class WallStreetJournal extends Source {
 
@@ -98,7 +98,7 @@ public class WallStreetJournal extends Source {
     super(WallStreetJournal.class);
 
     // supported markets (see http://quotes.wsj.com/company-list)
-    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA, FX)) {
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA, FX)) {
       exchanges.put(exchange, US);
     }
 
@@ -107,7 +107,7 @@ public class WallStreetJournal extends Source {
     exchanges.put(ISE, IE);
     exchanges.put(FWB, DE);
     exchanges.put(PAR, FR);
-    exchanges.put(AMS, NL);
+    exchanges.put(AEX, NL);
     exchanges.put(BB, BE);
     exchanges.put(SWX, CH);
     exchanges.put(MIB, IT);
@@ -132,7 +132,7 @@ public class WallStreetJournal extends Source {
     exchanges.put(BVB, RO);
     exchanges.put(LJSE, SI);
     exchanges.put(SGX, SG);
-    exchanges.put(HKSE, HK);
+    exchanges.put(HKEX, HK);
     exchanges.put(SSE, CN);
     exchanges.put(SZSE, CN);
     exchanges.put(TSE, JP);

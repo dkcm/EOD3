@@ -1,5 +1,5 @@
 /**
- * QuoteMedia.java	v0.10	24 December 2013 1:40:26 AM
+ * QuoteMedia.java	v0.11	24 December 2013 1:40:26 AM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing QuoteMedia.
  *
  * @author Daniel Kuan
- * @version 0.10
+ * @version 0.11
  */
 public class QuoteMedia extends Source {
 // TODO cannot seem to narrow download window!
@@ -93,7 +93,7 @@ public class QuoteMedia extends Source {
 
     // supported markets (see http://www.quotemedia.com/legal/tos/#times and http://www.quotemedia.com/quotetools/symbolHelp/SymbolHelp_US_Version_Default.html)
     // // NYSE, NASDAQ, AMEX, NYSEARCA and FX do not require suffices
-    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA, FX)) {
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA, FX)) {
       exchanges.put(exchange, EMPTY);
     }
 
@@ -102,7 +102,7 @@ public class QuoteMedia extends Source {
     exchanges.put(ISE, IE);
     exchanges.put(FWB, FF);
     exchanges.put(PAR, PA);
-    exchanges.put(AMS, AS);
+    exchanges.put(AEX, AS);
     exchanges.put(BB, BR);
     exchanges.put(LUX, LU);
     exchanges.put(SWX, SM);
@@ -117,7 +117,7 @@ public class QuoteMedia extends Source {
     exchanges.put(KFB, CO);
     exchanges.put(MOEX, RU);
     exchanges.put(SGX, SI);
-    exchanges.put(HKSE, HK);
+    exchanges.put(HKEX, HK);
     exchanges.put(SSE, SH);
     exchanges.put(SZSE, SZ);
     exchanges.put(TSE, TK);

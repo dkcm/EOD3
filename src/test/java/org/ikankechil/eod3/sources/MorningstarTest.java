@@ -1,5 +1,5 @@
 /**
- * MorningstarTest.java	v0.7	27 December 2015 9:04:44 am
+ * MorningstarTest.java	v0.8	27 December 2015 9:04:44 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -23,7 +23,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class MorningstarTest extends SourceTest {
 
@@ -109,13 +109,13 @@ public class MorningstarTest extends SourceTest {
     exchanges.put(NYSE, XNYS);
     exchanges.put(NASDAQ, XNAS);
     exchanges.put(AMEX, XASE);
-    exchanges.put(NYSEARCA, EMPTY);
+    exchanges.put(ARCA, EMPTY);
     exchanges.put(TSX, XTSE);
     exchanges.put(LSE, XLON);
     exchanges.put(ISE, XDUB);
     exchanges.put(FWB, XFRA);
     exchanges.put(PAR, XPAR);
-    exchanges.put(AMS, XAMS);
+    exchanges.put(AEX, XAMS);
     exchanges.put(BB, XBRU);
     exchanges.put(LUX, XLUX);
     exchanges.put(SWX, XSWX);
@@ -141,7 +141,7 @@ public class MorningstarTest extends SourceTest {
     exchanges.put(BVB, XBSE);
     exchanges.put(LJSE, XLJU);
     exchanges.put(SGX, XSES);
-    exchanges.put(HKSE, XHKG);
+    exchanges.put(HKEX, XHKG);
     exchanges.put(SSE, XSHG);
     exchanges.put(SZSE, XSHE);
     exchanges.put(TSE, XTKS);

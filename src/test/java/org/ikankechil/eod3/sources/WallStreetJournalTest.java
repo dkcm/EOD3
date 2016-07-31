@@ -1,5 +1,5 @@
 /**
- * WallStreetJournalTest.java	v0.7	6 April 2015 12:50:58 am
+ * WallStreetJournalTest.java	v0.8	6 April 2015 12:50:58 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class WallStreetJournalTest extends SourceTest {
 
@@ -98,13 +98,13 @@ public class WallStreetJournalTest extends SourceTest {
     exchanges.put(NYSE, US);
     exchanges.put(NASDAQ, US);
     exchanges.put(AMEX, US);
-    exchanges.put(NYSEARCA, US);
+    exchanges.put(ARCA, US);
     exchanges.put(TSX, CA);
     exchanges.put(LSE, UK);
     exchanges.put(ISE, IE);
     exchanges.put(FWB, DE);
     exchanges.put(PAR, FR);
-    exchanges.put(AMS, NL);
+    exchanges.put(AEX, NL);
     exchanges.put(BB, BE);
     exchanges.put(SWX, CH);
     exchanges.put(MIB, IT);
@@ -129,7 +129,7 @@ public class WallStreetJournalTest extends SourceTest {
     exchanges.put(BVB, RO);
     exchanges.put(LJSE, SI);
     exchanges.put(SGX, SG);
-    exchanges.put(HKSE, HK);
+    exchanges.put(HKEX, HK);
     exchanges.put(SSE, CN);
     exchanges.put(SZSE, CN);
     exchanges.put(TSE, JP);

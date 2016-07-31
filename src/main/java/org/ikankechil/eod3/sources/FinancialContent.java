@@ -1,5 +1,5 @@
 /**
- * FinancialContent.java v0.3 15 January 2016 11:36:44 AM
+ * FinancialContent.java v0.4 15 January 2016 11:36:44 AM
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class FinancialContent extends Source {
 
@@ -53,7 +53,7 @@ public class FinancialContent extends Source {
     // supported markets
     // FX, NYSE, NASDAQ, AMEX, NYSEARCA and TSX do not require suffices
     // Currency pairs need to be separated by a hyphen ('-')
-    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, NYSEARCA, TSX, FX)) {
+    for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA, TSX, FX)) {
       exchanges.put(exchange, EMPTY);
     }
 

@@ -1,5 +1,5 @@
 /**
- * Quandl.java  v0.6  3 November 2014 4:51:49 PM
+ * Quandl.java  v0.7  3 November 2014 4:51:49 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * calls per 10 minutes, and a limit of 50000 calls per day.
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class Quandl extends Source {
   // TODO extend support for asset classes other than Equities
@@ -51,7 +51,6 @@ public class Quandl extends Source {
   private static final String _X            = "_X";
   private static final String EURONEXT      = "EURONEXT/";
   private static final String BSE_BOM       = "BSE/BOM";
-  private static final String HKEX          = "HKEX/";
 //  private static final String CURRFX        = "CURRFX"; // FX
 
   private static final Logger logger        = LoggerFactory.getLogger(Quandl.class);
@@ -76,15 +75,14 @@ public class Quandl extends Source {
     for (final Exchanges exchange : new Exchanges[] { NYSE, NASDAQ, AMEX }) {
       exchanges.put(exchange, WIKI);
     }
-    for (final Exchanges exchange : new Exchanges[] { PAR, AMS, BB, BVLP }) {
+    for (final Exchanges exchange : new Exchanges[] { PAR, AEX, BB, BVLP }) {
       exchanges.put(exchange, EURONEXT);
     }
-    for (final Exchanges exchange : new Exchanges[] { LSE, TSE, NSE }) {
+    for (final Exchanges exchange : new Exchanges[] { LSE, TSE, HKEX, NSE }) {
       exchanges.put(exchange, exchange.toString() + SLASH);
     }
 
     exchanges.put(FWB, FSE);
-    exchanges.put(HKSE, HKEX);
     exchanges.put(BSE, BSE_BOM);
 //    exchanges.put(FX, CURRFX);
     // TODO FX has a different format from equities (i.e. Date,Rate,High (est),Low (est))

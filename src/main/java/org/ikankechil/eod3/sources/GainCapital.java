@@ -1,7 +1,7 @@
 /**
  * GainCapital.java	v0.1	12 January 2016 10:46:37 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -29,11 +29,9 @@ import org.slf4j.LoggerFactory;
  */
 class GainCapital extends Source {
 
-  private static final String ZIP        = ".zip";
+  private static final String ZIP    = ".zip";
 
-  private static final char   UNDERSCORE = '_';
-
-  private static final Logger logger     = LoggerFactory.getLogger(GainCapital.class);
+  private static final Logger logger = LoggerFactory.getLogger(GainCapital.class);
 
   public GainCapital() {
     super("http://ratedata.gaincapital.com/");
