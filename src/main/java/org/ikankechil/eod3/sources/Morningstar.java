@@ -1,5 +1,5 @@
 /**
- * Morningstar.java	v0.8	26 December 2015 8:53:35 pm
+ * Morningstar.java  v0.9  26 December 2015 8:53:35 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class Morningstar extends Source {
 
@@ -221,7 +221,7 @@ public class Morningstar extends Source {
   void appendFrequency(final StringBuilder url, final Frequencies frequency) {
     // &freq=m
     url.append(FREQUENCY).append((frequency != null) ? frequency.frequency()
-                                                     : DEFAULT_FREQUENCY); // default to daily
+                                                     : DEFAULT_FREQUENCY.frequency()); // default to daily
     logger.debug("Frequency: {}", url);
   }
 

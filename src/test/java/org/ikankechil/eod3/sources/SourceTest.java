@@ -56,7 +56,7 @@ public abstract class SourceTest {
   private static final Map<String, String> BASE_URLS        = new HashMap<>();
 
   protected static final String            SYMBOL           = "INTC";
-  private static final String              FX_SYMBOL        = "EURUSD";
+  protected static final String            FX_SYMBOL        = "EURUSD";
   protected static final Calendar          TODAY            = getInstance();
   protected static final Calendar          YESTERDAY        = (Calendar) TODAY.clone();
   private static final Calendar            FIRST_JANUARY    = getInstance();

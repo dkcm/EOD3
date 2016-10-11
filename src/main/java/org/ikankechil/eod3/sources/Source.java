@@ -1,5 +1,5 @@
 /**
- * Source.java	v1.9  15 December 2013 8:11:20 PM
+ * Source.java	v1.10  15 December 2013 8:11:20 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * A representation of a price data source.
  *
  * @author Daniel Kuan
- * @version 1.9
+ * @version 1.10
  */
 public abstract class Source {
   // TODO Other potential sources
@@ -96,7 +96,7 @@ public abstract class Source {
   static final int                         FOURTEEN          = 14;
   static final int                         FIFTEEN           = 15;
 
-  static final char                        DEFAULT_FREQUENCY = Frequencies.DAILY.frequency();
+  static final Frequencies                 DEFAULT_FREQUENCY = Frequencies.DAILY;
 
   /**
    * Start date defaults to 1 January 1970 00:00:00.000 GMT.
@@ -117,6 +117,7 @@ public abstract class Source {
 
       for (final Class<? extends Source> source : Arrays.asList(FinancialContent.class,
                                                                 FXHistoricalData.class,
+                                                                GlobalView.class,
                                                                 GoogleFinance.class,
                                                                 Kdb.class,
                                                                 MoneyControl.class,
