@@ -1,7 +1,7 @@
 /**
- * FilenameConventionTest.java	v0.2	18 November 2015 12:23:46 am
+ * FilenameConventionTest.java  v0.3  18 November 2015 12:23:46 am
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 
@@ -23,7 +23,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class FilenameConventionTest {
 
@@ -78,7 +78,13 @@ public class FilenameConventionTest {
                                                                                FILE_EXTENSION;
 
   private static final String      FILENAME_REGEX                            = "[A-Z0-9]+(_[dwm])?" + FILE_EXTENSION;
+  private static final String      FILENAME_WITH_DAILY_REGEX                 = "[A-Z0-9]+_d" + FILE_EXTENSION;
+  private static final String      FILENAME_WITH_WEEKLY_REGEX                = "[A-Z0-9]+_w" + FILE_EXTENSION;
+  private static final String      FILENAME_WITH_MONTHLY_REGEX               = "[A-Z0-9]+_m" + FILE_EXTENSION;
   private static final String      FILENAME_WITH_DATES_REGEX                 = "[A-Z0-9]+_\\d{8}-\\d{8}(_[dwm])?" + FILE_EXTENSION;
+  private static final String      FILENAME_WITH_DATES_AND_DAILY_REGEX       = "[A-Z0-9]+_\\d{8}-\\d{8}_d" + FILE_EXTENSION;
+  private static final String      FILENAME_WITH_DATES_AND_WEEKLY_REGEX      = "[A-Z0-9]+_\\d{8}-\\d{8}_w" + FILE_EXTENSION;
+  private static final String      FILENAME_WITH_DATES_AND_MONTHLY_REGEX     = "[A-Z0-9]+_\\d{8}-\\d{8}_m" + FILE_EXTENSION;
 
   @Test
   public void cannotGetSymbolFromNullFilename() {
@@ -340,8 +346,57 @@ public class FilenameConventionTest {
   }
 
   @Test
+  public void regexWithNullFrequency() {
+    assertEquals(FILENAME_REGEX,
+                 FilenameConvention.getFilenameRegex(false, null));
+  }
+
+  @Test
+  public void regexWithDailyFrequency() {
+    assertEquals(FILENAME_WITH_DAILY_REGEX,
+                 FilenameConvention.getFilenameRegex(false, Frequencies.DAILY));
+  }
+
+  @Test
+  public void regexWithWeeklyFrequency() {
+    assertEquals(FILENAME_WITH_WEEKLY_REGEX,
+                 FilenameConvention.getFilenameRegex(false, Frequencies.WEEKLY));
+  }
+
+  @Test
+  public void regexWithMonthlyFrequency() {
+    assertEquals(FILENAME_WITH_MONTHLY_REGEX,
+                 FilenameConvention.getFilenameRegex(false, Frequencies.MONTHLY));
+  }
+
+  @Test
   public void regexWithDates() {
-    assertEquals(FILENAME_WITH_DATES_REGEX, FilenameConvention.FILENAME_WITH_DATES_REGEX);
+    assertEquals(FILENAME_WITH_DATES_REGEX,
+                 FilenameConvention.FILENAME_WITH_DATES_REGEX);
+  }
+
+  @Test
+  public void regexWithDatesAndNullFrequency() {
+    assertEquals(FILENAME_WITH_DATES_REGEX,
+                 FilenameConvention.getFilenameRegex(true, null));
+  }
+
+  @Test
+  public void regexWithDatesAndDailyFrequency() {
+    assertEquals(FILENAME_WITH_DATES_AND_DAILY_REGEX,
+                 FilenameConvention.getFilenameRegex(true, Frequencies.DAILY));
+  }
+
+  @Test
+  public void regexWithDatesAndWeeklyFrequency() {
+    assertEquals(FILENAME_WITH_DATES_AND_WEEKLY_REGEX,
+                 FilenameConvention.getFilenameRegex(true, Frequencies.WEEKLY));
+  }
+
+  @Test
+  public void regexWithDatesAndMonthlyFrequency() {
+    assertEquals(FILENAME_WITH_DATES_AND_MONTHLY_REGEX,
+                 FilenameConvention.getFilenameRegex(true, Frequencies.MONTHLY));
   }
 
 }

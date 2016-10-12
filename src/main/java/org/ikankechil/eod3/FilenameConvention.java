@@ -1,11 +1,12 @@
 /**
- * FilenameConvention.java  v0.2  5 December 2014 11:58:54 pm
+ * FilenameConvention.java  v0.3  5 December 2014 11:58:54 pm
  *
- * Copyright © 2014-2016 Daniel Kuan. All rights reserved.
+ * Copyright Â© 2014-2016 Daniel Kuan. All rights reserved.
  */
 package org.ikankechil.eod3;
 
 import static java.util.Calendar.*;
+import static org.ikankechil.eod3.Frequencies.*;
 
 import java.util.Calendar;
 import java.util.Map;
@@ -15,15 +16,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- * <p>
- * Recognises but does not generate filenames w/o frequencies.
+ * Recognises but does not generate filenames without frequencies.
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class FilenameConvention {
-  // TODO v0.3 move to new project
+  // TODO v0.4 move to new project
 
   // Accepted filename conventions:
   // 1. <symbol>.csv
@@ -33,7 +32,7 @@ public class FilenameConvention {
 
   private static final Map<Interval, String> SUFFICES                  = new WeakHashMap<>();
 
-  private static final Frequencies           DEFAULT_FREQUENCY         = Frequencies.DAILY;
+  private static final Frequencies           DEFAULT_FREQUENCY         = DAILY;
 
   private static final char                  UNDERSCORE                = '_';
   private static final char                  DASH                      = '-';
@@ -49,18 +48,18 @@ public class FilenameConvention {
   // regex building blocks
   private static final String                SYMBOL                    = "[A-Z0-9]+";
   private static final String                DATES                     = "\\d{8}";
-  private static final String                FREQUENCY                 = "(_[dwm])?";
+  private static final String                OPTIONAL_FREQUENCY        = "(_[dwm])?";
 
   /**
    * regex: [A-Z0-9]+(_[dwm])?
    */
-  public static final String                 FILENAME_REGEX            = SYMBOL + FREQUENCY + FILE_EXTENSION;
+  public static final String                 FILENAME_REGEX            = SYMBOL + OPTIONAL_FREQUENCY + FILE_EXTENSION;
   /**
    * regex: [A-Z0-9]+_\\d{8}-\\d{8}(_[dwm])?
    */
   public static final String                 FILENAME_WITH_DATES_REGEX = SYMBOL + UNDERSCORE +
                                                                          DATES + DASH + DATES +
-                                                                         FREQUENCY + FILE_EXTENSION;
+                                                                         OPTIONAL_FREQUENCY + FILE_EXTENSION;
   // date building blocks
   private static final char                  ZERO                      = '0';
   private static final int                   TEN                       = 10;
@@ -114,7 +113,7 @@ public class FilenameConvention {
     if ((penultimate > -1) &&
         filename.charAt(penultimate) == UNDERSCORE) {
       final char last = filename.charAt(penultimate + 1);
-      for (final Frequencies f : Frequencies.values()) {
+      for (final Frequencies f : values()) {
         if (last == f.frequency()) {
           frequency = f;
           break;
@@ -252,6 +251,20 @@ public class FilenameConvention {
                  symbol,
                  interval);
     return filename;
+  }
+
+  public static final String getFilenameRegex(final boolean hasDates, final Frequencies frequency) {
+    final StringBuilder regex = new StringBuilder(SYMBOL);
+    if (hasDates) {
+      regex.append(UNDERSCORE).append(DATES).append(DASH).append(DATES);
+    }
+    if (frequency == null) {
+      regex.append(OPTIONAL_FREQUENCY);
+    }
+    else {
+      regex.append(UNDERSCORE).append(frequency.frequency());
+    }
+    return regex.append(FILE_EXTENSION).toString();
   }
 
 }

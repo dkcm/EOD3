@@ -1,7 +1,7 @@
 /**
- * Converter.java v2.7  28 November 2013 10:14:02 PM
+ * Converter.java v2.8  28 November 2013 10:14:02 PM
  *
- * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
+ * Copyright Â© 2013-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 
@@ -63,7 +63,7 @@ import org.slf4j.LoggerFactory;
  * Converts downloaded price and volume data.
  *
  * @author Daniel Kuan
- * @version 2.7
+ * @version 2.8
  */
 public class Converter {
   // TODO Enhancements
@@ -81,7 +81,7 @@ public class Converter {
   // 9. [DONE] Support stock symbols with numbers in them (to update regexs)
   // 10. [DONE] Abstract file-naming details away (v2.6)
   // 11. Handle share splits / reverse-splits
-  // 12. [DONE] v2.8 keep date formatting to a minimum during file updates
+  // 12. v2.8 keep date formatting to a minimum during file updates
   // 13. Retry on failure
 
   private final Source                         source;
@@ -113,6 +113,7 @@ public class Converter {
   // Text-related constants
   private static final char                    COMMA          = ',';
   private static final char                    DOT            = '.';
+  private static final char                    SLASH          = '/';
   private static final char                    SPACE          = ' ';
   private static final char                    TAB            = '\t';
   private static final char                    LF             = '\n';
@@ -319,6 +320,7 @@ public class Converter {
                                                               final Action<V> action) {
     final Map<Future<V>, String> futures = newMap(symbols.size());
 
+    final String exchangeString = exchange.toString();
     for (final String symbol : symbols) {
       final Future<V> future = completionService.submit(new Callable<V>() {
         @Override
@@ -326,7 +328,7 @@ public class Converter {
           return action.execute(symbol, exchange, interval, outputParentDirectory);
         }
       });
-      futures.put(future, symbol);
+      futures.put(future, exchangeString + SLASH + symbol);
     }
 
     return futures;
@@ -491,7 +493,7 @@ public class Converter {
   }
 
   /**
-   * Updates all data files in <code>outputParentDirectory</code>.
+   * Updates all files in <code>outputParentDirectory</code>.
    *
    * @param outputParentDirectory the file directory to be updated
    * @return outputParentDirectory
@@ -499,11 +501,26 @@ public class Converter {
    *           if an I/O error is thrown by the file visitor
    */
   public File update(final File outputParentDirectory) throws IOException {
+    return update(outputParentDirectory, null);
+  }
+
+  /**
+   * Updates only those files in <code>outputParentDirectory</code> belonging to
+   * <code>frequency</code>.
+   *
+   * @param outputParentDirectory the file directory to be updated
+   * @param frequency if null, updates all <code>Frequencies</code>
+   * @return outputParentDirectory
+   * @throws IOException if an I/O error is thrown by the file visitor
+   */
+  public File update(final File outputParentDirectory, final Frequencies frequency)
+      throws IOException {
     // Algorithm
     // 1. find data files (assume some are in directories while others are not)
     // 2. read first line in each data file, assuming it the latest
     // 3. extract symbol and date, and store date in a dictionary
     // 4. download, convert and write to a separate update file
+
     if (!outputParentDirectory.isDirectory()) {
       throw new IllegalArgumentException("Not a directory: " + outputParentDirectory);
     }
@@ -511,7 +528,7 @@ public class Converter {
     logger.info("Updating files in: {}", outputParentDirectory);
 
     final CompletionServiceFileVisitor<File> visitor =
-        new CompletionServiceFileVisitor<>(SYNTAX + FILENAME_REGEX,
+        new CompletionServiceFileVisitor<>(SYNTAX + getFilenameRegex(false, frequency),
                                            new UpdateFile(convert),
                                            threadPools.get(LARGE));
     Files.walkFileTree(outputParentDirectory.toPath(), visitor);
@@ -653,6 +670,20 @@ public class Converter {
    *           if an I/O error is thrown by the file visitor
    */
   public File merge(final File outputParentDirectory) throws IOException {
+    return merge(outputParentDirectory, (Frequencies) null);
+  }
+
+  /**
+   * Merges only those files in <code>outputParentDirectory</code> belonging to
+   * <code>frequency</code>.
+   *
+   * @param outputParentDirectory
+   * @param frequency if null, merges all <code>Frequencies</code>
+   * @return outputParentDirectory
+   * @throws IOException if an I/O error is thrown by the file visitor
+   */
+  public File merge(final File outputParentDirectory, final Frequencies frequency)
+      throws IOException {
     // Algorithm
     // 1. Match update file to existing file for every symbol
     //    a) all update and existing files are in one single directory
@@ -661,6 +692,7 @@ public class Converter {
     //    d) [NOT SUPPORTED] several update files per symbol
     // 2. Read update file and existing file
     // 3. Insert and overwrite updates into existing data
+
     if (!outputParentDirectory.isDirectory()) {
       throw new IllegalArgumentException("Not a directory: " + outputParentDirectory);
     }
@@ -668,7 +700,7 @@ public class Converter {
     logger.info("Merging files in: {}", outputParentDirectory);
 
     final CompletionServiceFileVisitor<File> visitor =
-        new CompletionServiceFileVisitor<>(SYNTAX + FILENAME_WITH_DATES_REGEX,
+        new CompletionServiceFileVisitor<>(SYNTAX + getFilenameRegex(true, frequency),
                                            new MergeFile(),
                                            threadPools.get(TINY));
     Files.walkFileTree(outputParentDirectory.toPath(), visitor);
@@ -774,7 +806,7 @@ public class Converter {
     logger.info("Shutdown requested");
   }
 
-  static final Entry<String, String> extractSymbolAndDate(final String line) {
+  private static final Entry<String, String> extractSymbolAndDate(final String line) {
     int comma = line.indexOf(COMMA);
     final String symbol = line.substring(0, comma);
     final String date = line.substring(++comma, line.indexOf(COMMA, comma));
