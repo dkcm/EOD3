@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A <code>Source</code> representing Morningstar.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

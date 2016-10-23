@@ -1,7 +1,7 @@
 /**
- * IntervalTest.java	v0.3	7 April 2014 11:35:15 PM
+ * IntervalTest.java  v0.3  7 April 2014 11:35:15 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 

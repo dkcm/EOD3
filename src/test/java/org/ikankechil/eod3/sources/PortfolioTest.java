@@ -1,5 +1,5 @@
 /**
- * PortfolioTest.java	v0.2	28 July 2016 1:06:23 am
+ * PortfolioTest.java  v0.2  28 July 2016 1:06:23 am
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,7 +16,7 @@ import org.ikankechil.eod3.Frequencies;
 
 /**
  * JUnit test for <code>Portfolio</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

@@ -1,5 +1,5 @@
 /**
- * NetfondsTest.java	v0.10	6 April 2015 12:55:23 am
+ * NetfondsTest.java  v0.10  6 April 2015 12:55:23 am
  *
  * Copyright � 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -18,7 +18,7 @@ import org.ikankechil.eod3.Frequencies;
 
 /**
  * JUnit test for <code>Netfonds</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

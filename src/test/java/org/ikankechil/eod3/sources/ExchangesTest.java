@@ -1,5 +1,5 @@
 /**
- * ExchangesTest.java v0.8 6 April 2015 2:44:12 PM
+ * ExchangesTest.java  v0.8  6 April 2015 2:44:12 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,7 +13,7 @@ import org.junit.rules.ExpectedException;
 
 /**
  * JUnit test for <code>Exchanges</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.8

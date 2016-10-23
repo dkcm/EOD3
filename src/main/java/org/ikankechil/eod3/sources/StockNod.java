@@ -1,7 +1,7 @@
 /**
- * StockNod.java v0.5 22 October 2015 9:38:33 AM
+ * StockNod.java  v0.5  22 October 2015 9:38:33 AM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 

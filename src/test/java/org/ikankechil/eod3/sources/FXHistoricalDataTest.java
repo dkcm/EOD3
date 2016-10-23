@@ -1,5 +1,5 @@
 /**
- * FXHistoricalDataTest.java v0.5 17 December 2014 7:17:30 PM
+ * FXHistoricalDataTest.java  v0.5  17 December 2014 7:17:30 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -19,7 +19,7 @@ import org.junit.Test;
 
 /**
  * JUnit test for <code>FXHistoricalData</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.5

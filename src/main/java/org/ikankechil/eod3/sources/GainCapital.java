@@ -1,5 +1,5 @@
 /**
- * GainCapital.java	v0.1	12 January 2016 10:46:37 pm
+ * GainCapital.java  v0.1  12 January 2016 10:46:37 pm
  *
  * Copyright � 2016 Daniel Kuan.  All rights reserved.
  */
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A <code>Source</code> representing GAIN Capital, a U.S. provider of online
  * trading services.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

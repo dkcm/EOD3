@@ -88,7 +88,7 @@ public class YahooFinance extends Source {
     super(YahooFinance.class);
 
     // supported markets (see https://help.yahoo.com/kb/finance/exchanges-data-providers-yahoo-finance-sln2310.html, previously: http://finance.yahoo.com/exchanges)
-    // NYSE, NASDAQ, AMEX and NYSEARCA do not require suffices
+    // NYSE, NASDAQ, AMEX and ARCA do not require suffices
     for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA)) {
       exchanges.put(exchange, EMPTY);
     }

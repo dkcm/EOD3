@@ -1,5 +1,5 @@
 /**
- * EOD3Test.java v0.5 8 April 2015 10:41:13 AM
+ * EOD3Test.java  v0.5  8 April 2015 10:41:13 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -27,7 +27,7 @@ import org.junit.rules.ExpectedException;
 
 /**
  * JUnit test for <code>EOD3</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.5

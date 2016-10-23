@@ -1,7 +1,7 @@
 /**
- * SymbolsWriter.java	v0.5	25 January 2014 12:05:34 AM
+ * SymbolsWriter.java  v0.5  25 January 2014 12:05:34 AM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.io;
 

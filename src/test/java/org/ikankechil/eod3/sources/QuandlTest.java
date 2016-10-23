@@ -1,5 +1,5 @@
 /**
- * QuandlTest.java	v0.7	5 April, 2015 11:25:06 pm
+ * QuandlTest.java  v0.7  5 April, 2015 11:25:06 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -19,7 +19,7 @@ import org.ikankechil.eod3.Frequencies;
 
 /**
  * JUnit test for <code>Quandl</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

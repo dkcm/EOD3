@@ -1,5 +1,5 @@
 /**
- * Stooq.java v0.6  27 January 2014 PM 07:12:11 PM
+ * Stooq.java  v0.6  27 January 2014 PM 07:12:11 PM
  *
  * Copyright � 2013-2016 Daniel Kuan.  All rights reserved.
  */

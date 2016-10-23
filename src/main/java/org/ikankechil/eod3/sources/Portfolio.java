@@ -1,5 +1,5 @@
 /**
- * Portfolio.java	v0.1	30 December 2015 11:27:50 am
+ * Portfolio.java  v0.1  30 December 2015 11:27:50 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A <code>Source</code> representing Portfolio.hu, a Hungarian financial portal.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

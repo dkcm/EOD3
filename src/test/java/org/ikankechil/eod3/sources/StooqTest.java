@@ -1,5 +1,5 @@
 /**
- * StooqTest.java	v0.7	5 April 2015 9:45:19 pm
+ * StooqTest.java  v0.7  5 April 2015 9:45:19 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -19,7 +19,7 @@ import org.ikankechil.eod3.Frequencies;
 
 /**
  * JUnit test for <code>Stooq</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

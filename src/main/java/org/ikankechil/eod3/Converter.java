@@ -1,5 +1,5 @@
 /**
- * Converter.java v2.8  28 November 2013 10:14:02 PM
+ * Converter.java  v2.8  28 November 2013 10:14:02 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */

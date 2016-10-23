@@ -1,5 +1,5 @@
 /**
- * GoogleFinanceTest.java	v0.11	6 March 2014 2:32:24 AM
+ * GoogleFinanceTest.java  v0.11  6 March 2014 2:32:24 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

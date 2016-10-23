@@ -1,5 +1,5 @@
 /**
- * WallStreetJournalTest.java	v0.8	6 April 2015 12:50:58 am
+ * WallStreetJournalTest.java  v0.8  6 April 2015 12:50:58 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -22,7 +22,7 @@ import org.ikankechil.eod3.Frequencies;
 
 /**
  * JUnit test for <code>WallStreetJournal</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

@@ -16,7 +16,7 @@ import org.ikankechil.eod3.Frequencies;
 
 /**
  * JUnit test for <code>YahooFinance</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

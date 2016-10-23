@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A <code>Source</code> representing Global-View.com.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

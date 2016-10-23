@@ -1,7 +1,7 @@
 /**
- * FXHistoricalData.java	v0.5	28 March 2014 12:43:51 AM
+ * FXHistoricalData.java  v0.5  28 March 2014 12:43:51 AM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 

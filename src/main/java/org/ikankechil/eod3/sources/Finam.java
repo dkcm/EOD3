@@ -1,7 +1,7 @@
 /**
- * Finam.java v0.2 16 December 2014 2:03:09 PM
+ * Finam.java  v0.2  16 December 2014 2:03:09 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A <code>Source</code> representing Finam.ru, a Russian on-line finance
  * portal.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

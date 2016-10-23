@@ -1,7 +1,7 @@
 /**
- * ESD.java v0.5 4 February 2015 1:29:53 PM
+ * ESD.java  v0.5  4 February 2015 1:29:53 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.ui;
 
@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import joptsimple.OptionException;
-import joptsimple.OptionSet;
-import joptsimple.OptionSpec;
-
 import org.ikankechil.eod3.ExchangeSymbolsDownloader;
 import org.ikankechil.eod3.sources.Exchanges;
 import org.ikankechil.ui.AbstractCommandLineInterface;
+
+import joptsimple.OptionException;
+import joptsimple.OptionSet;
+import joptsimple.OptionSpec;
 
 /**
  * A command-line application that downloads exchange symbols.

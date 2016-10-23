@@ -1,5 +1,5 @@
 /**
- * WallStreetJournal.java v0.9  14 May 2014 11:49:20 PM
+ * WallStreetJournal.java  v0.9  14 May 2014 11:49:20 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

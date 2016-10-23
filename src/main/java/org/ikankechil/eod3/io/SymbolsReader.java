@@ -1,7 +1,7 @@
 /**
- * SymbolsReader.java	v2.0	7 January 2014 11:41:34 PM
+ * SymbolsReader.java  v2.0  7 January 2014 11:41:34 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.io;
 

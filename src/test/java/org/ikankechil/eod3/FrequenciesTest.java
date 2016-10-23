@@ -1,7 +1,7 @@
 /**
- * FrequenciesTest.java v0.1  8 April 2014 10:34:28 PM
+ * FrequenciesTest.java  v0.1  8 April 2014 10:34:28 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 

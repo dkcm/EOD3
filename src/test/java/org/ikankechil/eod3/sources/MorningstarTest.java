@@ -1,5 +1,5 @@
 /**
- * MorningstarTest.java	v0.8	27 December 2015 9:04:44 am
+ * MorningstarTest.java  v0.8  27 December 2015 9:04:44 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -19,7 +19,7 @@ import org.ikankechil.eod3.Frequencies;
 
 /**
  * JUnit test for <code>Morningstar</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

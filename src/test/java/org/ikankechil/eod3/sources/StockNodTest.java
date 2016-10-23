@@ -1,5 +1,5 @@
 /**
- * StockNodTest.java	v0.3	28 December 2015 4:58:25 pm
+ * StockNodTest.java  v0.3  28 December 2015 4:58:25 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 /**
  * JUnit test for <code>StockNod</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

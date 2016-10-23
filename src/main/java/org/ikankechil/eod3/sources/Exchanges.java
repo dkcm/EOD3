@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Supported exchanges. The foreign exchange market ("FX") is included here as a
  * pseudo-exchange.
- * <p>
- * http://money.visualcapitalist.com/all-of-the-worlds-stock-exchanges-by-size/
+ *
+ * <p>http://money.visualcapitalist.com/all-of-the-worlds-stock-exchanges-by-size/
  *
  * @author Daniel Kuan
  * @version 0.15

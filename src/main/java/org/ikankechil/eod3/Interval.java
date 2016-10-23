@@ -1,7 +1,7 @@
 /**
- * Interval.java	v0.3	2 April 2014 12:42:15 AM
+ * Interval.java  v0.3  2 April 2014 12:42:15 AM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 

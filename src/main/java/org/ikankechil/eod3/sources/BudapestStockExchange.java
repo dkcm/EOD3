@@ -1,7 +1,7 @@
 /**
- * BudapestStockExchange.java v0.1 21 October 2015 1:55:13 PM
+ * BudapestStockExchange.java  v0.1  21 October 2015 1:55:13 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A <code>Source</code> representing the Budapest Stock Exchange (BET).
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

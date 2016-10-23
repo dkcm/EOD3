@@ -1,5 +1,5 @@
 /**
- * GoogleFinance.java v0.10  21 December 2013 1:33:30 AM
+ * GoogleFinance.java  v0.10  21 December 2013 1:33:30 AM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -73,7 +73,7 @@ public class GoogleFinance extends Source {
     super(GoogleFinance.class);
 
     // supported markets (http://www.google.com/intl/en/googlefinance/disclaimer/)
-    // NYSE, NASDAQ, AMEX and NYSEARCA do not require prefixes
+    // NYSE, NASDAQ, AMEX and ARCA do not require prefixes
     for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA)) {
       exchanges.put(exchange, EMPTY);
     }

@@ -1,5 +1,5 @@
 /**
- * QuoteMediaTest.java	v0.10	20 March 2014 12:46:35 AM
+ * QuoteMediaTest.java  v0.10  20 March 2014 12:46:35 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

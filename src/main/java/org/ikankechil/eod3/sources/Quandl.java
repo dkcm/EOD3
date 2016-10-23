@@ -20,13 +20,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A <code>Source</code> representing Quandl.
- * <p>
- * https://www.quandl.com/docs/api
- * <p>
- * Authentication token can be specified by the System property:
+ *
+ * <p>https://www.quandl.com/docs/api
+ *
+ * <p>Authentication token can be specified by the System property:
  * org.ikankechil.eod3.sources.Quandl.apiKey
- * <p>
- * Download volume restrictions apply: Authenticated users have a limit of 2000
+ *
+ * <p>Download volume restrictions apply: Authenticated users have a limit of 2000
  * calls per 10 minutes, and a limit of 50000 calls per day.
  *
  * @author Daniel Kuan

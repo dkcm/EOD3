@@ -1,5 +1,5 @@
 /**
- * FinancialContentTest.java v0.4 15 January 2016 2:25:20 PM
+ * FinancialContentTest.java  v0.4  15 January 2016 2:25:20 PM
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -20,7 +20,7 @@ import org.junit.Test;
 
 /**
  * JUnit test for <code>FinancialContent</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.4

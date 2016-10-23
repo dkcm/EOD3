@@ -1,7 +1,7 @@
 /**
- * EuropeanCentralBank.java v0.1 17 June 2015 4:01:18 PM
+ * EuropeanCentralBank.java  v0.1  17 June 2015 4:01:18 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -12,7 +12,7 @@ import org.ikankechil.io.TextTransform;
 
 /**
  *
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

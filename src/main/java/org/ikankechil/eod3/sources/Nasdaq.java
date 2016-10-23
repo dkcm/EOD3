@@ -1,7 +1,7 @@
 /**
- * Nasdaq.java	v0.1	21 December 2015 9:47:52 pm
+ * Nasdaq.java  v0.1  21 December 2015 9:47:52 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -12,7 +12,7 @@ import org.ikankechil.io.TextTransform;
 
 /**
  *
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

@@ -1,7 +1,7 @@
 /**
- * OnVista.java v0.1 15 January 2016 5:26:05 PM
+ * OnVista.java  v0.1  15 January 2016 5:26:05 PM
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright ï¿½ 2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A <code>Source</code> representing OnVista.de, a finance portal run by a
  * German bank.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

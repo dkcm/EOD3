@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A <code>Source</code> representing Motley Fool.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.4

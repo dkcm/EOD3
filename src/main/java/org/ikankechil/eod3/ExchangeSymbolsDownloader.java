@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloader.java v0.15 28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java  v0.15  28 January 2015 12:27:30 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

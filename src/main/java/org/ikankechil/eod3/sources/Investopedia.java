@@ -1,5 +1,5 @@
 /**
- * Investopedia.java	v0.1	12 January 2016 9:56:23 pm
+ * Investopedia.java  v0.1  12 January 2016 9:56:23 pm
  *
  * Copyright � 2016 Daniel Kuan.  All rights reserved.
  */
@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A <code>Source</code> representing Investopedia.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

@@ -1,5 +1,5 @@
 /**
- * KdbTest.java	v0.5	29 December 2015 4:36:07 pm
+ * KdbTest.java  v0.5  29 December 2015 4:36:07 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,7 +16,7 @@ import org.ikankechil.eod3.Frequencies;
 
 /**
  * JUnit test for <code>Kdb</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan
