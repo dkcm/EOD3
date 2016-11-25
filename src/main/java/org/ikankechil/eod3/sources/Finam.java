@@ -55,9 +55,9 @@ class Finam extends Source {
     final TextReader reader = new TextReader();
     final String symbol = "AAPL";
     final Calendar start = Calendar.getInstance();
-    start.set(2015, Calendar.SEPTEMBER, 20);
+    start.set(2016, Calendar.SEPTEMBER, 20);
     final Calendar end = Calendar.getInstance();
-    final List<String> strings = reader.read(finam.url(symbol, NASDAQ, start, end, MONTHLY));
+    final List<String> strings = reader.read(finam.url(symbol, NASDAQ, start, end, DAILY));
     System.out.println(strings);
     final TextTransformer transformer = finam.newTransformer(finam.newTransform(symbol));
     transformer.transform(strings);
@@ -86,14 +86,15 @@ class Finam extends Source {
     exchanges.put(FX, EMPTY);
 
     // http://www.finam.ru/scripts/export.js
-    // http://195.128.78.52/
+    // http://export.finam.ru/GAZP_790501_160522.csv?market=1&em=16842&code=GAZP&apply=0&df=1&mf=4&yf=1979&from=01.05.1979&dt=22&mt=4&yt=2016&to=22.05.2016&p=10&f=GAZP_790501_160522&e=.csv&cn=GAZP&dtf=1&tmf=1&MSOR=1&mstime=on&mstimever=1&sep=1&sep2=1&datf=5&at=1
+    // http://export.finam.ru/US1.MMM_790501_160522.csv?market=25&em=18090&code=US1.MMM&apply=0&df=1&mf=4&yf=1979&from=01.05.1979&dt=22&mt=4&yt=2016&to=22.05.2016&p=10&f=US1.MMM_790501_160522&e=.csv&cn=US1.MMM&dtf=1&tmf=1&MSOR=1&mstime=on&mstimever=1&sep=1&sep2=1&datf=5&at=1
     // http://195.128.78.52/AFLT_160711_160711.csv?market=1&em=29&code=AFLT&apply=0&df=11&mf=6&yf=2016&from=11.07.2016&dt=11&mt=6&yt=2016&to=11.07.2016&p=9&f=AFLT_160711_160711&e=.csv&cn=AFLT&dtf=1&tmf=1&MSOR=1&mstime=on&mstimever=1&sep=1&sep2=1&datf=5&at=1
     // http://195.128.78.52/US2.AAPL_951216_141216.csv?market=25&em=20569&code=US2.AAPL&df=16&mf=11&yf=1995&from=16.12.1995&dt=16&mt=11&yt=2014&to=16.12.2014&p=8&f=US2.AAPL_951216_141216&e=.csv&cn=US2.AAPL&dtf=1&tmf=1&MSOR=1&mstimever=0&sep=1&sep2=1&datf=1&at=1
     // http://195.128.78.52/ohlcv.csv?market=25&em=20569&dtf=1&tmf=1&sep=1&sep2=1&datf=5&at=1&cn=US2.AAPL&df=1&mf=0&yf=1970&dt=13&mt=5&yt=2015&p=10
 
     // # Load file from finam if haven't ever loaded
     // rdict = dict(d='d',
-    //              market=ticker.data['market'], # 1 = MOEX
+    //              market=ticker.data['market'], # 1 = MOEX, 25 = US
     //              cn=ticker.symbol,
     //              em=ticker.data['id'],
     //              p=p,

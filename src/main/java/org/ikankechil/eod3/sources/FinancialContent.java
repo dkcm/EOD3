@@ -51,7 +51,7 @@ public class FinancialContent extends Source {
     super(source);
 
     // supported markets
-    // FX, NYSE, NASDAQ, AMEX, ARCA and TSX do not require suffices
+    // NYSE, NASDAQ, AMEX, ARCA, TSX and FX do not require suffices
     // Currency pairs need to be separated by a hyphen ('-')
     for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA, TSX, FX)) {
       exchanges.put(exchange, EMPTY);

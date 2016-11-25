@@ -92,7 +92,7 @@ public class QuoteMedia extends Source {
     this.webmasterID = webmasterID;
 
     // supported markets (see http://www.quotemedia.com/legal/tos/#times and http://www.quotemedia.com/quotetools/symbolHelp/SymbolHelp_US_Version_Default.html)
-    // // NYSE, NASDAQ, AMEX, ARCA and FX do not require suffices
+    // NYSE, NASDAQ, AMEX, ARCA and FX do not require suffices
     for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA, FX)) {
       exchanges.put(exchange, EMPTY);
     }

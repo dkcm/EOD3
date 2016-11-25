@@ -442,7 +442,7 @@ public abstract class SourceTest {
       assertNotNull(is);
     }
     catch (final FileNotFoundException fnfE) {
-      fail("URL no longer valid: " + fnfE);
+      fail("Source URL no longer valid: " + fnfE);
     }
   }
 
