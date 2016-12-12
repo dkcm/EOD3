@@ -1,5 +1,5 @@
 /**
- * Source.java  v1.10  15 December 2013 8:11:20 PM
+ * Source.java  v1.11  15 December 2013 8:11:20 PM
  *
  * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
  */
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * A representation of a price data source.
  *
  * @author Daniel Kuan
- * @version 1.10
+ * @version 1.11
  */
 public abstract class Source {
   // TODO Other potential sources
@@ -44,6 +44,10 @@ public abstract class Source {
   //    http://finanzen.handelsblatt.com/handelsblatt/kurse_einzelkurs_uebersicht.htn?&view=csvHistory&i=110067&von=01/04/14&bis=&i=110067&ajax=4
   // 4. fxtop.com
   //    http://fxtop.com/de/historische-wechselkurse.php?YA=1&C1=XAU&C2=EUR&A=1&YYYY1=2006&MM1=01&DD1=15&YYYY2=2016&MM2=01&DD2=15&LANG=de
+  // 5. GodmodeTrader
+  //    http://www.godmode-trader.de/aktien/bayerische-motoren-werke-kurs,119092/kurshistorie
+  // 6. TASE
+  //    http://www.tase.co.il/Eng/General/Company/Pages/companyHistoryData.aspx?companyID=000824&subDataType=0&shareID=00824011
 
   // TODO Enhancements v2.0
   // 1. support other asset classes (e.g. Futures)
@@ -127,6 +131,7 @@ public abstract class Source {
                                                                 Netfonds.class,
                                                                 Portfolio.class,
                                                                 QuoteMedia.class,
+                                                                Rava.class,
                                                                 StockNod.class,
                                                                 Stooq.class,
                                                                 WallStreetJournal.class,

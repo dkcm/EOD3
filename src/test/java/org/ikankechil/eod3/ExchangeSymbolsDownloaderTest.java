@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloaderTest.java  v0.12  7 April 2015 3:51:55 PM
+ * ExchangeSymbolsDownloaderTest.java  v0.13  7 April 2015 3:51:55 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -43,7 +43,7 @@ import org.junit.rules.ExpectedException;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.12
+ * @version 0.13
  */
 public class ExchangeSymbolsDownloaderTest {
 
@@ -56,7 +56,7 @@ public class ExchangeSymbolsDownloaderTest {
   private static final SymbolsTaskHelper         SYMBOLS_TASK_HELPER   = ESD.new SymbolsTaskHelper();
 
   private static final Map<String, Set<String>>  MARKETS               = new LinkedHashMap<>();
-  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { LUX, ATHEX, UX, GPW, PX, BVB, LJSE, OSE, MYX, PSE, TADAWUL, QSE, ADX, DFM, MSM, ASE, BHB, EGX, NGSE, BC, BCBA, BCS, BVC, BVCA, BVL };
+  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { LUX, ATHEX, UX, GPW, PX, BVB, LJSE, OSE, MYX, PSE, HOSE, TADAWUL, QSE, ADX, DFM, MSM, ASE, BHB, EGX, NGSE, BC, BCBA, BCS, BVC, BVCA, BVL };
   private static final String[]                  EXCHANGE_URLS         = { "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NYSE",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NASDAQ",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=AMEX",

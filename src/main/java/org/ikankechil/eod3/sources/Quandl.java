@@ -1,5 +1,5 @@
 /**
- * Quandl.java  v0.7  3 November 2014 4:51:49 PM
+ * Quandl.java  v0.8  3 November 2014 4:51:49 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -30,10 +30,9 @@ import org.slf4j.LoggerFactory;
  * calls per 10 minutes, and a limit of 50000 calls per day.
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class Quandl extends Source {
-  // TODO extend support for asset classes other than Equities
 
   private final String        authenticationToken;
   private final API           urlQueryKeys;
@@ -51,6 +50,7 @@ public class Quandl extends Source {
   private static final String _X            = "_X";
   private static final String EURONEXT      = "EURONEXT/";
   private static final String BSE_BOM       = "BSE/BOM";
+  private static final String SIX_          = "SIX/";
 //  private static final String CURRFX        = "CURRFX"; // FX
 
   private static final Logger logger        = LoggerFactory.getLogger(Quandl.class);
@@ -84,8 +84,10 @@ public class Quandl extends Source {
 
     exchanges.put(FWB, FSE);
     exchanges.put(BSE, BSE_BOM);
+    exchanges.put(SWX, SIX_);
 //    exchanges.put(FX, CURRFX);
-    // TODO FX has a different format from equities (i.e. Date,Rate,High (est),Low (est))
+    // TODO extend support for asset classes other than Equities
+    // FX has a different format from equities (i.e. Date,Rate,High (est),Low (est))
     // either maintain a table of FX symbols or overload newTransform() with exchange
 
     // e.g. https://www.quandl.com/api/v3/datasets/WIKI/FB/data.csv?column_index=4&exclude_column_names=true&rows=3&start_date=2012-11-01&end_date=2013-11-30&order=asc&collapse=quarterly&transform=rdiff

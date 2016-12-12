@@ -1,5 +1,5 @@
 /**
- * Exchanges.java  v0.15  13 November 2014 10:38:47 AM
+ * Exchanges.java  v0.16  13 November 2014 10:38:47 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * <p>http://money.visualcapitalist.com/all-of-the-worlds-stock-exchanges-by-size/
  *
  * @author Daniel Kuan
- * @version 0.15
+ * @version 0.16
  */
 public enum Exchanges {
 
@@ -120,6 +120,8 @@ public enum Exchanges {
   SET,
   /** Philippine Stock Exchange */
   PSE,
+  /** Ho Chi Minh Securities Exchange */
+  HOSE,
 
   // Oceania
   /** Australian Securities Exchange */

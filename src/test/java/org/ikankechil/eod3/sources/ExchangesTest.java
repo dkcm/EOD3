@@ -1,5 +1,5 @@
 /**
- * ExchangesTest.java  v0.8  6 April 2015 2:44:12 PM
+ * ExchangesTest.java  v0.9  6 April 2015 2:44:12 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,7 +16,7 @@ import org.junit.rules.ExpectedException;
  *
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class ExchangesTest {
 
@@ -32,7 +32,7 @@ public class ExchangesTest {
                                                "OSLO", "SB",      "HEX",  "KFB",  "ICEX",
                                                "SGX",  "HKEX",    "SSE",  "SZSE", "TSE",
                                                "OSE",  "BSE",     "NSE",  "KRX",  "TWSE",
-                                               "IDX",  "MYX",     "SET",  "PSE",
+                                               "IDX",  "MYX",     "SET",  "PSE",  "HOSE",
                                                "ASX",  "NZX",
                                                "TASE", "TADAWUL", "QSE",  "ADX",  "DFM",
                                                "MSM",  "ASE",     "BHB",

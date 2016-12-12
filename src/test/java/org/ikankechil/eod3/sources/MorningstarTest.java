@@ -1,5 +1,5 @@
 /**
- * MorningstarTest.java  v0.8  27 December 2015 9:04:44 am
+ * MorningstarTest.java  v0.9  27 December 2015 9:04:44 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -23,7 +23,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class MorningstarTest extends SourceTest {
 
@@ -82,6 +82,7 @@ public class MorningstarTest extends SourceTest {
   private static final String      XKLS              = "XKLS:";
   private static final String      XBKK              = "XBKK:";
   private static final String      XPHS              = "XPHS:";
+  private static final String      XSTC              = "XSTC:";
   private static final String      XASX              = "XASX:";
   private static final String      XNZE              = "XNZE:";
   private static final String      XTAE              = "XTAE:";
@@ -153,6 +154,7 @@ public class MorningstarTest extends SourceTest {
     exchanges.put(MYX, XKLS);
     exchanges.put(SET, XBKK);
     exchanges.put(PSE, XPHS);
+    exchanges.put(HOSE, XSTC);
     exchanges.put(ASX, XASX);
     exchanges.put(NZX, XNZE);
     exchanges.put(TASE, XTAE);

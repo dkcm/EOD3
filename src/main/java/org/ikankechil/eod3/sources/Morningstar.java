@@ -1,5 +1,5 @@
 /**
- * Morningstar.java  v0.9  26 December 2015 8:53:35 pm
+ * Morningstar.java  v0.10  26 December 2015 8:53:35 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.9
+ * @version 0.10
  */
 public class Morningstar extends Source {
 
@@ -85,6 +85,7 @@ public class Morningstar extends Source {
   private static final String XKLS       = "XKLS:";
   private static final String XBKK       = "XBKK:";
   private static final String XPHS       = "XPHS:";
+  private static final String XSTC       = "XSTC:";
   private static final String XASX       = "XASX:";
   private static final String XNZE       = "XNZE:";
   private static final String XTAE       = "XTAE:";
@@ -161,6 +162,7 @@ public class Morningstar extends Source {
     exchanges.put(MYX, XKLS);
     exchanges.put(SET, XBKK);
     exchanges.put(PSE, XPHS);
+    exchanges.put(HOSE, XSTC);
     exchanges.put(ASX, XASX);
     exchanges.put(NZX, XNZE);
     exchanges.put(TASE, XTAE);
@@ -235,6 +237,7 @@ public class Morningstar extends Source {
     return new TextTransform() {
       @Override
       public String transform(final String line) {
+        // Morningstar CSV format
         // Citigroup Inc (C) Historical Prices
         // Date,Open,High,Low,Close,Volume
         // 12/25/2015,54.40,55.33,50.50,52.71,"16,742,260"
