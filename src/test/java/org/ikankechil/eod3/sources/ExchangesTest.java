@@ -1,5 +1,5 @@
 /**
- * ExchangesTest.java  v0.9  6 April 2015 2:44:12 PM
+ * ExchangesTest.java  v0.10  6 April 2015 2:44:12 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,7 +16,7 @@ import org.junit.rules.ExpectedException;
  *
  *
  * @author Daniel Kuan
- * @version 0.9
+ * @version 0.10
  */
 public class ExchangesTest {
 
@@ -48,8 +48,11 @@ public class ExchangesTest {
 
   @Test
   public final void validExchanges() {
-    for (final String exchange : EXCHANGES) {
+    final Exchanges[] exchanges = Exchanges.toExchanges(EXCHANGES);
+    for (int i = 0; i < EXCHANGES.length; ++i) {
+      final String exchange = EXCHANGES[i];
       assertEquals(Exchanges.toExchange(exchange), Exchanges.valueOf(exchange));
+      assertEquals(exchange, exchanges[i].toString());
     }
     assertEquals(EXCHANGES.length, Exchanges.values().length);
   }
@@ -59,6 +62,22 @@ public class ExchangesTest {
     assertNull(Exchanges.toExchange(PARA));
     assertNull(Exchanges.toExchange(SWXA));
     assertNull(Exchanges.toExchange(AMSA));
+  }
+
+  @Test
+  public final void emptyArrayIfOnlyInvalidExchanges() {
+    // empty array
+    assertEquals(0, Exchanges.toExchanges(PARA, SWXA, AMSA).length);
+  }
+
+  @Test
+  public final void invalidExchangesFilteredOff() {
+    // mix of valid and invalid exchanges
+    final String exchange = EXCHANGES[0];
+    final Exchanges[] exchanges = Exchanges.toExchanges(PARA, exchange, SWXA);
+
+    assertEquals(exchange, exchanges[0].toString());
+    assertEquals(1, exchanges.length);
   }
 
   @Test

@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloader.java  v0.15  28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java  v0.16  28 January 2015 12:27:30 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -46,11 +46,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Downloads exchange-listed symbols.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan
- * @version 0.15
+ * @version 0.16
  */
 public class ExchangeSymbolsDownloader {
 
@@ -100,6 +100,8 @@ public class ExchangeSymbolsDownloader {
   // Constants
   private static final int                           ZERO          = 0;
   private static final char                          COMMA         = ',';
+  private static final char                          QUOTE         = '"';
+  private static final char                          UNDERSCORE    = '_';
   private static final char                          TAB           = '\t';
   private static final String                        EMPTY         = "";
 
@@ -143,7 +145,7 @@ public class ExchangeSymbolsDownloader {
       SOURCES.put(ASX, new SymbolsSource(3, ASX_BASE, new TextTransformer(new SymbolsTransform(COMMA, 2))));
       final XMLTagTextTransform xmlTagTextTransform = new XMLTagTextTransform();
       SOURCES.put(ISE, new SymbolsSource(0, ISE_BASE, new ISETextTransformer(xmlTagTextTransform)));
-      SOURCES.put(BET, new SymbolsSource(0, BET_BASE, new BETTextTransformer(xmlTagTextTransform)));
+      SOURCES.put(BET, new SymbolsSource(0, BET_BASE, new BETTextTransformer(new AsymmetricalDelimiterTextTransform(UNDERSCORE, QUOTE))));
 
       // exchanges sourced from Google (via Quandl)
       // TODO call Google to get Strings
@@ -291,6 +293,19 @@ public class ExchangeSymbolsDownloader {
     final Map<String, Set<String>> markets = new LinkedHashMap<>(exchanges.length);
 
     // collate symbols
+    final int symbolCount = collateSymbols(markets, inputParentDirectory, exchanges);
+
+    // write to file
+    writer.write(markets, destination);
+    logger.info("Collated {} symbols in: {}", symbolCount, inputParentDirectory);
+    logger.info("Symbols written to file: {}", destination);
+
+    return markets;
+  }
+
+  private final int collateSymbols(final Map<String, Set<String>> markets,
+                                   final File inputParentDirectory,
+                                   final Exchanges... exchanges) {
     int symbolCount = ZERO;
     for (final Exchanges exchange : exchanges) {
       final File directory = new File(inputParentDirectory, exchange.toString());
@@ -314,13 +329,7 @@ public class ExchangeSymbolsDownloader {
         symbolCount += symbols.size();
       }
     }
-
-    // write to file
-    writer.write(markets, destination);
-    logger.info("Collated {} symbols in: {}", symbolCount, inputParentDirectory);
-    logger.info("Symbols written to file: {}", destination);
-
-    return markets;
+    return symbolCount;
   }
 
   private static final class PatternFilenameFilter implements FilenameFilter {
@@ -348,15 +357,7 @@ public class ExchangeSymbolsDownloader {
    */
   public Map<String, Set<String>> download(final String... exchanges)
       throws IOException, InterruptedException {
-    // convert Strings to Exchanges
-    final List<Exchanges> xchgs = new ArrayList<>(exchanges.length);
-    for (final String exchange : exchanges) {
-      final Exchanges xchg = Exchanges.toExchange(exchange);
-      if (xchg != null) {
-        xchgs.add(xchg);
-      }
-    }
-    return download(xchgs.toArray(new Exchanges[xchgs.size()]));
+    return download(Exchanges.toExchanges(exchanges));
   }
 
   /**
@@ -442,7 +443,7 @@ public class ExchangeSymbolsDownloader {
 
   }
 
-  final List<String> download(final Exchanges exchange) throws IOException {
+  private final List<String> download(final Exchanges exchange) throws IOException {
     List<String> lines = null;
     final SymbolsSource source = SOURCES.get(exchange);
     if (source != null) {
@@ -451,7 +452,7 @@ public class ExchangeSymbolsDownloader {
       while (lines.remove(EMPTY)) { /* remove all empty lines */ }
       // skip rows
       lines = lines.subList(source.skippedRows, lines.size());
-      logger.info("Symbols downloaded for {}: {}",
+      logger.info("Rows downloaded for {}: {}",
                   exchange,
                   lines.size());
     }
@@ -537,7 +538,7 @@ public class ExchangeSymbolsDownloader {
     private static final String NETFONDS_BASE      = "http://www.netfonds.no/quotes/kurs.php?exchange=%s&sec_types=&ticks=&table=tab&sort=alphabetic";
 //    private static final String TWSE_BASE          = "http://isin.twse.com.tw/isin/e_C_public.jsp?strMode=2";
     private static final String ISE_BASE           = "http://www.ise.ie/Market-Data-Announcements/Companies/Company-Codes/?list=full&type=SEDOL&exportTo=excel";
-    private static final String BET_BASE           = "http://bse.hu/topmenu/trading_data/cash_market/equities";
+    private static final String BET_BASE           = "http://www.portfolio.hu/tozsde_arfolyamok/bet_reszveny_arfolyamok.html";
     private static final String ISO4217_BASE       = "http://www.currency-iso.org/dam/downloads/lists/list_one.xml";
 
     /**
@@ -562,8 +563,6 @@ public class ExchangeSymbolsDownloader {
 
     private final char        separator;
     private final int         targetColumn;
-
-    private static final char QUOTE = '"';
 
     private static final int  FIRST = 1;
 
@@ -596,7 +595,7 @@ public class ExchangeSymbolsDownloader {
 
   }
 
-  static class XMLTagTextTransform implements TextTransform {
+  private static class XMLTagTextTransform implements TextTransform {
 
     private static final char MORE_THAN = '>';
     private static final char LESS_THAN = '<';
@@ -609,7 +608,25 @@ public class ExchangeSymbolsDownloader {
 
   }
 
-  static class CurrencyTextTransformer extends TextTransformer {
+  private static class AsymmetricalDelimiterTextTransform implements TextTransform {
+
+    private final char startDelimiter;
+    private final char endDelimiter;
+
+    AsymmetricalDelimiterTextTransform(final char start, final char end) {
+      startDelimiter = start;
+      endDelimiter = end;
+    }
+
+    @Override
+    public String transform(final String line) {
+      final int start = line.indexOf(startDelimiter) + 1;
+      return line.substring(start, line.indexOf(endDelimiter, start)).trim();
+    }
+
+  }
+
+  private static class CurrencyTextTransformer extends TextTransformer {
 
     private final TextTransform transform;
 
@@ -646,7 +663,7 @@ public class ExchangeSymbolsDownloader {
 
   }
 
-  static class ISETextTransformer extends TextTransformer {
+  private static class ISETextTransformer extends TextTransformer {
 
     private final TextTransform transform;
 
@@ -683,15 +700,39 @@ public class ExchangeSymbolsDownloader {
 
   }
 
-  static class BETTextTransformer extends TextTransformer {
+  private static class BETTextTransformer extends TextTransformer {
 
     private final TextTransform transform;
 
-    private static final String DATA_START_TAG = "action=CompanyProfileAction\">";
+    private static final String DATA_START_TAG = "<tr id=\"P_";
 
     public BETTextTransformer(final TextTransform transform) {
       super(transform);
       this.transform = transform;
+
+      // e.g.
+      // <tr id="P_MTELEKOM" class="">
+      // <td><div class="bg dir up"></div></td>
+      // <td class="ticker">MTELEKOM</td>
+      // <td class="ido">12:41</td>
+      // <td class="last"><span class="up">491</span></td>
+      // <td class="chg"><span class="up">2.0</span></td>
+      // <td class="chgpc"><span class="up">0.4</span></td>
+      // <td class="forgdb">522 811</td>
+      // <td class="forg">257</td>
+      // <td class="kotesdb">103</td>
+      // <td class="bid">490</td>
+      // <td class="bidsize">36 425</td>
+      // <td class="ask">491</td>
+      // <td class="asksize">38 033</td>
+      // <td class="open">490</td>
+      // <td class="min">489</td>
+      // <td class="max">492</td>
+      // <td class="close">489</td>
+      // <td class="pe1">17.5</td>
+      // <td class="openint">0</td>
+      // <td class="kamattart"></td>
+      // </tr>
     }
 
     @Override

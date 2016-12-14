@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloaderTest.java  v0.13  7 April 2015 3:51:55 PM
+ * ExchangeSymbolsDownloaderTest.java  v0.14  7 April 2015 3:51:55 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -40,10 +40,10 @@ import org.junit.rules.ExpectedException;
 
 /**
  * JUnit test for <code>ExchangeSymbolsDownloader</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
- * @version 0.13
+ * @version 0.14
  */
 public class ExchangeSymbolsDownloaderTest {
 
@@ -83,7 +83,7 @@ public class ExchangeSymbolsDownloaderTest {
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/RSE.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/TAL.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/VSE.csv",
-                                                                           "http://bse.hu/topmenu/trading_data/cash_market/equities",
+                                                                           "http://www.portfolio.hu/tozsde_arfolyamok/bet_reszveny_arfolyamok.html",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/SI.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/HK.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/SS.csv",
@@ -309,7 +309,11 @@ public class ExchangeSymbolsDownloaderTest {
   private static final void download(final String exchange) throws IOException, InterruptedException {
     final Set<String> actuals = ESD.download(new String[] { exchange }).get(exchange);
 
-    assertFalse(actuals.isEmpty());
+    final URL url = ExchangeSymbolsDownloader.urls().get(Exchanges.toExchange(exchange));
+    final String noSymbolsDownloadedMessage = String.format("No symbols downloaded for %s from %s",
+                                                            exchange,
+                                                            url);
+    assertFalse(noSymbolsDownloadedMessage, actuals.isEmpty());
     assertFalse(actuals.contains(EMPTY));
     assertFalse(actuals.contains(SPACE));
   }

@@ -1,9 +1,12 @@
 /**
- * Exchanges.java  v0.16  13 November 2014 10:38:47 AM
+ * Exchanges.java  v0.17  13 November 2014 10:38:47 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * <p>http://money.visualcapitalist.com/all-of-the-worlds-stock-exchanges-by-size/
  *
  * @author Daniel Kuan
- * @version 0.16
+ * @version 0.17
  */
 public enum Exchanges {
 
@@ -179,6 +182,14 @@ public enum Exchanges {
 
   private static final Logger logger = LoggerFactory.getLogger(Exchanges.class);
 
+  /**
+   * Convert a <code>String</code> to an <code>Exchanges</code>.
+   *
+   * @param exchange <code>String</code> representation of an
+   *          <code>Exchanges</code>
+   * @return an exchange
+   * @throws IllegalArgumentException when the given exchange does not exist
+   */
   public static final Exchanges toExchange(final String exchange) {
     Exchanges xchg;
     try {
@@ -189,6 +200,25 @@ public enum Exchanges {
       logger.warn("No such exchange: {}, returning null", exchange, iaE);
     }
     return xchg;
+  }
+
+  /**
+   * Convert a <code>String</code> array to an <code>Exchanges</code> array.
+   *
+   * @param exchanges a <code>String</code> array representing
+   *          <code>Exchanges</code>
+   * @return an array of <code>Exchanges</code> after filtering off invalid
+   *         <code>Exchanges</code>
+   */
+  public static final Exchanges[] toExchanges(final String... exchanges) {
+    final List<Exchanges> xchgs = new ArrayList<>(exchanges.length);
+    for (final String exchange : exchanges) {
+      final Exchanges xchg = Exchanges.toExchange(exchange);
+      if (xchg != null) { // filter off invalid exchanges
+        xchgs.add(xchg);
+      }
+    }
+    return xchgs.toArray(new Exchanges[xchgs.size()]);
   }
 
 }
