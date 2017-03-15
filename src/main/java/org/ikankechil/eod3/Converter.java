@@ -1,10 +1,11 @@
 /**
- * Converter.java  v2.8  28 November 2013 10:14:02 PM
+ * Converter.java  v2.9  28 November 2013 10:14:02 PM
  *
- * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2013-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 
+import static java.util.Calendar.*;
 import static org.ikankechil.eod3.Converter.PoolSize.*;
 import static org.ikankechil.eod3.FilenameConvention.*;
 
@@ -63,7 +64,7 @@ import org.slf4j.LoggerFactory;
  * Converts downloaded price and volume data.
  *
  * @author Daniel Kuan
- * @version 2.8
+ * @version 2.9
  */
 public class Converter {
   // TODO Enhancements
@@ -108,7 +109,7 @@ public class Converter {
     }
   };
 
-  final DateFormat                             dateFormat     = new SimpleDateFormat("yyyyMMdd", Locale.US);
+  private final DateFormat                     dateFormat     = new SimpleDateFormat("yyyyMMdd", Locale.US);
 
   // Text-related constants
   private static final char                    COMMA          = ',';
@@ -117,6 +118,8 @@ public class Converter {
   private static final char                    SPACE          = ' ';
   private static final char                    TAB            = '\t';
   private static final char                    LF             = '\n';
+
+  private static final String                  NO_EXCHANGE    = "NO_EXCHANGE_SPECIFIED";
 
   // File-related constants
   private static final String                  SYNTAX         = "regex:";
@@ -135,7 +138,7 @@ public class Converter {
     }
   };
 
-  static final Logger                          logger         = LoggerFactory.getLogger(Converter.class);
+  private static final Logger                  logger         = LoggerFactory.getLogger(Converter.class);
 
   interface Action<V> {
     V execute(final String symbol, final Exchanges exchange, final Interval interval, final File outputParentDirectory)
@@ -320,7 +323,7 @@ public class Converter {
                                                               final Action<V> action) {
     final Map<Future<V>, String> futures = newMap(symbols.size());
 
-    final String exchangeString = exchange.toString();
+    final String exchangeString = (exchange != null) ? exchange.toString() : NO_EXCHANGE;
     for (final String symbol : symbols) {
       final Future<V> future = completionService.submit(new Callable<V>() {
         @Override
@@ -542,21 +545,19 @@ public class Converter {
 
     final Action<File>                  action;
     private final Calendar              now;
-    final String                        endYYYYMMDD;
-    private final Map<Calendar, String> startYYYYMMDDs;
+    private final Map<Calendar, String> dateYYYYMMDDs;
     private final Map<String, Interval> updateIntervals;
     private final Map<Path, Exchanges>  exchanges;
 
     public UpdateFile(final Action<File> action) {
       this.action = action;
       now = Calendar.getInstance();
-      endYYYYMMDD = dateFormat.format(now.getTime());
-      startYYYYMMDDs = new HashMap<>();
+      dateYYYYMMDDs = new HashMap<>();
       updateIntervals = new HashMap<>();
       exchanges = new HashMap<>();
     }
 
-    final String readLatestLine(final Path file) throws IOException {
+    private final String readLatestLine(final Path file) throws IOException {
       String latest;
       try (final BufferedReader br = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
         latest = br.readLine();
@@ -568,53 +569,81 @@ public class Converter {
       return latest;
     }
 
-    final Interval getUpdateInterval(final String date, final Frequencies frequency)
+    private final Interval getUpdateInterval(final String date, final Frequencies frequency)
         throws ParseException {
       Interval interval;
       final String dateAndFrequency = date + frequency.frequency(); // prevent one frequency from masking others
       synchronized (updateIntervals) {
         if ((interval = updateIntervals.get(dateAndFrequency)) == null) {
-          // set interval start
-          final Calendar start = Calendar.getInstance();
-          start.setTime(dateFormat.parse(date));
-          switch (frequency) {
-            case MONTHLY:
-              start.add(Calendar.MONTH, 1);
-              start.set(Calendar.DATE, 1); // start 1st of next month
-              break;
-
-            case WEEKLY:
-              start.add(Calendar.DATE, 7); // start the next week
-              break;
-
-            case DAILY:
-            default:
-              start.add(Calendar.DATE, 1); // start the next day
-              break;
-          }
-          final String startYYYYMMDD = getStartYYYYMMDD(start);
+          final Calendar startDate = getStartDate(date, frequency); // set interval start and end
+          final Calendar endDate = getEndDate(frequency);
 
           // terminate task by throwing exception if start >= now
-          if (!start.before(now)) {
-            throw new IllegalArgumentException("Start date (" + startYYYYMMDD + ") not before end date (" + endYYYYMMDD + ")");
-          }
-          updateIntervals.put(dateAndFrequency, interval = new Interval(start, now, frequency));
-          logger.debug("New interval inserted: {} {} {}", startYYYYMMDD, endYYYYMMDD, frequency);
+          updateIntervals.put(dateAndFrequency, interval = new Interval(startDate, endDate, frequency));
+          logger.debug("New interval inserted: {}", interval);
         }
       }
       return interval;
     }
 
-    final String getStartYYYYMMDD(final Calendar start) {
-      String startYYYYMMDD;
-      if ((startYYYYMMDD = startYYYYMMDDs.get(start)) == null) {
-        // cache to prevent reformatting
-        startYYYYMMDDs.put(start, startYYYYMMDD = dateFormat.format(start.getTime()));
+    private final Calendar getStartDate(final String date, final Frequencies frequency)
+        throws ParseException {
+      final Calendar startDate = Calendar.getInstance();
+      startDate.setTime(dateFormat.parse(date));
+      switch (frequency) {
+        case MONTHLY: // start 1st of next month
+          startDate.add(MONTH, 1);
+          startDate.set(DATE, 1);
+          break;
+
+        case WEEKLY:  // start the next week
+          startDate.add(WEEK_OF_YEAR, 1);
+          startDate.set(DAY_OF_WEEK, MONDAY);
+          break;
+
+        case DAILY:   // start the next day
+        default:
+          startDate.add(DATE, 1);
+          break;
       }
-      return startYYYYMMDD;
+      return startDate;
     }
 
-    final Exchanges extractExchange(final Path parent) {
+    private final Calendar getEndDate(final Frequencies frequency) {
+      final Calendar endDate = (Calendar) now.clone();
+      switch (frequency) {
+        case MONTHLY: // last day of the month
+          if (now.get(DATE) != now.getActualMaximum(DATE)) { // not last day of the month
+            endDate.add(MONTH, -1);
+            endDate.set(DATE, endDate.getActualMaximum(DATE));
+          }
+          break;
+
+        case WEEKLY:  // last day of the week
+          if (now.get(DAY_OF_WEEK) != SUNDAY) { // not last day of the week
+            // Calendar API considers Sunday to be the first day of the week,
+            // whereas markets consider it to be the last day of the week
+            endDate.set(DAY_OF_WEEK, SUNDAY);
+          }
+          break;
+
+        case DAILY:   // now
+        default:
+          break;
+      }
+      return endDate;
+    }
+
+    private final String getYYYYMMDD(final Calendar date) {
+      String dateYYYYMMDD;
+      if ((dateYYYYMMDD = dateYYYYMMDDs.get(date)) == null) {
+        // cache to avoid reformatting
+        dateYYYYMMDDs.put(date, dateYYYYMMDD = dateFormat.format(date.getTime()));
+      }
+      return dateYYYYMMDD;
+    }
+
+    private final Exchanges extractExchange(final Path parent) {
       Exchanges exchange;
       if ((exchange = exchanges.get(parent)) == null) {
         exchanges.put(parent, exchange = Exchanges.toExchange(parent.getFileName().toString()));
@@ -639,7 +668,8 @@ public class Converter {
           final String filename = file.getFileName().toString();
           final Frequencies frequency = getFrequencyFrom(filename);
           final Interval interval = getUpdateInterval(date, frequency);
-          final String startYYYYMMDD = getStartYYYYMMDD(interval.start());
+          final String startYYYYMMDD = getYYYYMMDD(interval.start());
+          final String endYYYYMMDD = getYYYYMMDD(interval.end());
 
           // extract exchange
           final Path parent = file.getParent();

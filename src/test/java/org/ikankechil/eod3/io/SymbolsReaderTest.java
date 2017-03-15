@@ -1,7 +1,7 @@
 /**
- * SymbolsReaderTest.java  v0.2  9 January 2014 12:43:33 AM
+ * SymbolsReaderTest.java  v0.3  9 January 2014 12:43:33 AM
  *
- * Copyright � 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.io;
 
@@ -32,7 +32,7 @@ import org.junit.rules.ExpectedException;
  * JUnit test for <code>SymbolsReader</code>.
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class SymbolsReaderTest {
 
@@ -53,12 +53,13 @@ public class SymbolsReaderTest {
 
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
-    readSymbolsFile();
+    readSymbolsFile(SYMBOLS_FILE, EXPECTEDS);
     ACTUALS = Collections.unmodifiableMap(READER.read(SYMBOLS_FILE));
   }
 
-  private static final void readSymbolsFile() throws IOException {
-    final List<String> lines = Files.readAllLines(SYMBOLS_FILE.toPath(), StandardCharsets.UTF_8);
+  public static final Map<String, Set<String>> readSymbolsFile(final File symbolsFile, final Map<String, Set<String>> markets)
+      throws IOException {
+    final List<String> lines = Files.readAllLines(symbolsFile.toPath(), StandardCharsets.UTF_8);
     for (final String line : lines) {
       // remove spaces and convert to upper case
       final String[] strings = line.replace(SPACE, EMPTY).toUpperCase().split(COMMA);
@@ -69,15 +70,16 @@ public class SymbolsReaderTest {
         final Set<String> symbols = new HashSet<>(Arrays.asList(strings));
         symbols.remove(exchange);
         if (!symbols.isEmpty()) {
-          if (EXPECTEDS.containsKey(exchange)) {
-            EXPECTEDS.get(exchange).addAll(symbols);
+          if (markets.containsKey(exchange)) {
+            markets.get(exchange).addAll(symbols);
           }
           else {
-            EXPECTEDS.put(exchange, symbols);
+            markets.put(exchange, symbols);
           }
         }
       }
     }
+    return markets;
   }
 
   @AfterClass
