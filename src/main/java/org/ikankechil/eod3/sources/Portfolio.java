@@ -8,12 +8,9 @@ package org.ikankechil.eod3.sources;
 import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.ikankechil.util.StringUtility.*;
 
-import java.net.URL;
 import java.util.Calendar;
-import java.util.List;
 
 import org.ikankechil.eod3.Frequencies;
-import org.ikankechil.io.TextReader;
 import org.ikankechil.io.TextTransform;
 import org.ikankechil.io.TextTransformer;
 import org.slf4j.Logger;
@@ -120,16 +117,6 @@ public class Portfolio extends Source {
         return String.valueOf(characters);
       }
     };
-  }
-
-  public static void main(final String[] args) throws Exception {
-    final TextReader reader = new TextReader();
-    final List<String> lines = reader.read(new URL("http://www.portfolio.hu/reszveny/adatletoltes.tdp?typ=txt&rv=OTP"));
-    final Portfolio portfolio = new Portfolio();
-    portfolio.newTransformer(portfolio.newTransform("OTP")).transform(lines);
-    for (final String line : lines) {
-      System.out.println(line);
-    }
   }
 
 }

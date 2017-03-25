@@ -1,7 +1,7 @@
 /**
- * Source.java  v1.11  15 December 2013 8:11:20 PM
+ * Source.java  v1.12  15 December 2013 8:11:20 PM
  *
- * Copyright © 2013-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2013-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -12,7 +12,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -32,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * A representation of a price data source.
  *
  * @author Daniel Kuan
- * @version 1.11
+ * @version 1.12
  */
 public abstract class Source {
   // TODO Other potential sources
@@ -105,13 +104,14 @@ public abstract class Source {
   /**
    * Start date defaults to 1 January 1970 00:00:00.000 GMT.
    */
-  static final Calendar                    DEFAULT_START     = Calendar.getInstance();
+  static final Calendar                    DEFAULT_START;
 
   private static final Map<String, String> BASE_URLS         = new HashMap<>();
 
   private static final Logger              logger            = LoggerFactory.getLogger(Source.class);
 
   static {
+    DEFAULT_START = Calendar.getInstance();
     DEFAULT_START.setTimeInMillis(ZERO); // 1 January 1970 00:00:00.000 GMT
 
     // register source base URLs
@@ -119,32 +119,18 @@ public abstract class Source {
       final Properties properties = new Properties();
       properties.load(is);
 
-      for (final Class<? extends Source> source : Arrays.asList(FinancialContent.class,
-                                                                FXHistoricalData.class,
-                                                                GlobalView.class,
-                                                                GoogleFinance.class,
-                                                                Kdb.class,
-                                                                MoneyControl.class,
-                                                                Morningstar.class,
-                                                                MotleyFool.class,
-                                                                MSNMoney.class,
-                                                                Netfonds.class,
-                                                                Portfolio.class,
-                                                                QuoteMedia.class,
-                                                                Rava.class,
-                                                                StockNod.class,
-                                                                Stooq.class,
-                                                                WallStreetJournal.class,
-                                                                YahooFinance.class)) {
-        final String sourceName = source.getName();
-        final String key = sourceName + BASE_URL;
-        final String url = properties.getProperty(key, System.getProperty(key));
+      for (final String key : properties.stringPropertyNames()) {
+        // filter non-URL properties
+        if (key.endsWith(BASE_URL)) {
+          final String sourceName = key.substring(ZERO, key.length() - BASE_URL.length());
+          final String url = properties.getProperty(key, System.getProperty(key));
 
-        if (url != null && !url.isEmpty()) {
-          BASE_URLS.put(sourceName, url);
-        }
-        else {
-          logger.warn("No base URL for: {}", sourceName);
+          if (url != null && !url.isEmpty()) {
+            BASE_URLS.put(sourceName, url);
+          }
+          else {
+            logger.warn("No base URL for: {}", sourceName);
+          }
         }
       }
     }

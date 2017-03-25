@@ -1,7 +1,7 @@
 /**
- * FXHistoricalData.java  v0.6  28 March 2014 12:43:51 AM
+ * FXHistoricalData.java  v0.7  28 March 2014 12:43:51 AM
  *
- * Copyright � 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -9,6 +9,7 @@ import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.ikankechil.util.StringUtility.*;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import org.ikankechil.eod3.Frequencies;
 import org.ikankechil.io.TextTransform;
@@ -20,28 +21,36 @@ import org.slf4j.LoggerFactory;
  * A <code>Source</code> representing FXHistoricalData.
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class FXHistoricalData extends Source {
 
-  // Date-related URL parameters
-  private static final String FREQUENCY = "&timeframe=";
-  private static final String DAY       = "day";
-  private static final String WEEK      = "week";
+  private static final Calendar NOW                      = Calendar.getInstance();
 
-  private static final Logger logger    = LoggerFactory.getLogger(FXHistoricalData.class);
+  // Date-related URL parameters
+  private static final String   LOOKBACK_PERIODS         = "&item_count=";
+  private static final int      DEFAULT_LOOKBACK_PERIODS = 20000;
+  private static final String   FREQUENCY                = "&timeframe=";
+  private static final String   DAY                      = "day";
+  private static final String   WEEK                     = "week";
+
+  private static final int      WEEKDAYS_IN_WEEK         = FIVE;
+  private static final int      DAYS_IN_WEEK             = SEVEN;
+  private static final double   WEEKDAY_PROPORTION       = (double) WEEKDAYS_IN_WEEK / DAYS_IN_WEEK;
+
+  private static final Logger   logger                   = LoggerFactory.getLogger(FXHistoricalData.class);
 
   public FXHistoricalData() {
     super(FXHistoricalData.class);
 
-    // supported markets
+    // supported markets (see http://apidocs.fxhistoricaldata.com/#available-markets)
     // FX does not require a suffix
     exchanges.put(FX, EMPTY);
 
     // Notes:
-    // 1. incoming data is in CSV format (no longer Zip format)
-    // 2. data ultimately sourced from FXCM
-    // 3. FX data from 2001
+    // 1. incoming data is in CSV or JSON format (no longer Zip format)
+    // 2. data ultimately sourced from FXCM?
+    // 3. FX data from 2014 (previously 2001)
     // 4. frequencies supported: hourly, daily and weekly
   }
 
@@ -49,6 +58,30 @@ public class FXHistoricalData extends Source {
   void appendExchange(final StringBuilder url, final Exchanges exchange) {
     // do nothing
     logger.debug(UNSUPPORTED);
+  }
+
+  @Override
+  void appendStartAndEndDates(final StringBuilder url,
+                              final Calendar start,
+                              final Calendar end) {
+    if (aroundNow(end)) {
+      final long days = TimeUnit.DAYS.convert((end.getTimeInMillis() - start.getTimeInMillis()),
+                                              TimeUnit.MILLISECONDS);
+      final long weekdays = (days <= DAYS_IN_WEEK) ? days
+                                                   : (long) (days * WEEKDAY_PROPORTION);
+      url.append(LOOKBACK_PERIODS).append(weekdays);
+      logger.debug("Lookback periods: {}", url);
+    }
+    else {
+      appendDefaultDates(url, start, end);
+    }
+  }
+
+  private static final boolean aroundNow(final Calendar date) {
+    final boolean sameDate = (NOW.get(Calendar.YEAR) == date.get(Calendar.YEAR)) &&
+                             (NOW.get(Calendar.MONTH) == date.get(Calendar.MONTH)) &&
+                             (NOW.get(Calendar.DATE) == date.get(Calendar.DATE));
+    return sameDate;
   }
 
   @Override
@@ -64,10 +97,38 @@ public class FXHistoricalData extends Source {
   }
 
   @Override
+  void appendDefaultDates(final StringBuilder url,
+                          final Calendar start,
+                          final Calendar end) {
+    url.append(LOOKBACK_PERIODS).append(DEFAULT_LOOKBACK_PERIODS);
+    logger.debug("Lookback periods: {}", url);
+  }
+
+  @Override
   void appendFrequency(final StringBuilder url, final Frequencies frequency) {
+    // adjust lookback
+    if (frequency == Frequencies.WEEKLY) {
+      adjustLookback(url);
+    }
+
     // default to daily
     url.append(FREQUENCY).append((frequency == Frequencies.WEEKLY) ? WEEK : DAY);
     logger.debug("Frequency: {}", url);
+  }
+
+  private static final void adjustLookback(final StringBuilder url) {
+    final int start = url.indexOf(LOOKBACK_PERIODS) + LOOKBACK_PERIODS.length();
+    final int end = url.length();
+    final String lookback = url.substring(start, end);
+    try {
+      final int days = Integer.parseInt(lookback);
+      final int weeks = (days < WEEKDAYS_IN_WEEK) ? ONE : (days / WEEKDAYS_IN_WEEK);
+      url.replace(start, end, String.valueOf(weeks));
+    }
+    catch (final NumberFormatException nfE) {
+      // do nothing
+      logger.info("Could not adjust lookback: {}", lookback, nfE);
+    }
   }
 
   @Override

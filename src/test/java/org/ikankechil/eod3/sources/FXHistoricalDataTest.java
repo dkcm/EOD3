@@ -1,7 +1,7 @@
 /**
- * FXHistoricalDataTest.java  v0.6  17 December 2014 7:17:30 PM
+ * FXHistoricalDataTest.java  0.7  17 December 2014 7:17:30 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import org.ikankechil.eod3.Frequencies;
 
@@ -19,14 +20,19 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class FXHistoricalDataTest extends SourceTest {
 
-  private static final String BASE      = baseURL(FXHistoricalDataTest.class);
-  private static final String FREQUENCY = "&timeframe=";
-  private static final String DAY       = "day";
-  private static final String WEEK      = "week";
+  private static final String BASE                     = baseURL(FXHistoricalDataTest.class);
+  private static final String LOOKBACK_PERIODS         = "&item_count=";
+  private static final int    DEFAULT_LOOKBACK_PERIODS = 20000;
+  private static final String FREQUENCY                = "&timeframe=";
+  private static final String DAY                      = "day";
+  private static final String WEEK                     = "week";
+
+  private static final int    DAYS_IN_WEEK             = 7;
+  private static final double WEEKDAY_PROPORTION       = (double) 5 / DAYS_IN_WEEK;
 
   public FXHistoricalDataTest() {
     exchanges.put(FX, EMPTY);
@@ -46,7 +52,7 @@ public class FXHistoricalDataTest extends SourceTest {
 
   @Override
   protected URL expectedURL(final String symbol) throws MalformedURLException {
-    return new URL(BASE + symbol + FREQUENCY + DAY);
+    return expectedURL(symbol, null, null, Frequencies.DAILY);
   }
 
   @Override
@@ -59,7 +65,7 @@ public class FXHistoricalDataTest extends SourceTest {
                             final Calendar start,
                             final Calendar end)
       throws MalformedURLException {
-    return expectedURL(symbol);
+    return expectedURL(symbol, start, end, null);
   }
 
   @Override
@@ -68,7 +74,27 @@ public class FXHistoricalDataTest extends SourceTest {
                             final Calendar end,
                             final Frequencies frequency)
       throws MalformedURLException {
-    return new URL(BASE + symbol + FREQUENCY + ((frequency == Frequencies.WEEKLY) ? WEEK : DAY));
+    return new URL(BASE +
+                   symbol +
+                   LOOKBACK_PERIODS + computeLookbackPeriods(start, end) +
+                   FREQUENCY + ((frequency == Frequencies.WEEKLY) ? WEEK : DAY));
+  }
+
+  private static final long computeLookbackPeriods(final Calendar start, final Calendar end) {
+    final long lookbackPeriods;
+
+    if (start != null && end != null) {
+      final long days = TimeUnit.DAYS.convert((end.getTimeInMillis() - start.getTimeInMillis()),
+                                              TimeUnit.MILLISECONDS);
+      final long weekdays = (days <= DAYS_IN_WEEK) ? days
+                                                   : (long) (days * WEEKDAY_PROPORTION);
+      lookbackPeriods = weekdays;
+    }
+    else {
+      lookbackPeriods = DEFAULT_LOOKBACK_PERIODS;
+    }
+
+    return lookbackPeriods;
   }
 
   @Override

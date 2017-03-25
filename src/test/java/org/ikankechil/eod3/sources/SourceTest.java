@@ -487,7 +487,8 @@ public abstract class SourceTest {
 
   private final Source newInstance()
       throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-    return (Source) Class.forName(this.getClass().getName().replace(TEST, EMPTY)).newInstance();
+    final String sourceName = this.getClass().getName().replace(TEST, EMPTY);
+    return (Source) Class.forName(sourceName).newInstance();
   }
 
   protected static final String baseURL(final Class<? extends SourceTest> source) {
