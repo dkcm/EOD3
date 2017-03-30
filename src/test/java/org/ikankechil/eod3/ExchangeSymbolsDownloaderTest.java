@@ -1,7 +1,7 @@
 /**
- * ExchangeSymbolsDownloaderTest.java  v0.14  7 April 2015 3:51:55 PM
+ * ExchangeSymbolsDownloaderTest.java  v0.15  7 April 2015 3:51:55 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 
@@ -43,7 +43,7 @@ import org.junit.rules.ExpectedException;
  *
  *
  * @author Daniel Kuan
- * @version 0.14
+ * @version 0.15
  */
 public class ExchangeSymbolsDownloaderTest {
 
@@ -56,7 +56,7 @@ public class ExchangeSymbolsDownloaderTest {
   private static final SymbolsTaskHelper         SYMBOLS_TASK_HELPER   = ESD.new SymbolsTaskHelper();
 
   private static final Map<String, Set<String>>  MARKETS               = new LinkedHashMap<>();
-  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { LUX, ATHEX, UX, GPW, PX, BVB, LJSE, OSE, MYX, PSE, HOSE, TADAWUL, QSE, ADX, DFM, MSM, ASE, BHB, EGX, NGSE, BC, BCBA, BCS, BVC, BVCA, BVL };
+  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { LUX, UX, GPW, PX, LJSE, OSE, MYX, PSE, HOSE, TADAWUL, QSE, ADX, DFM, MSM, ASE, BHB, EGX, BC, BCBA, BCS, BVCA, BVL };
   private static final String[]                  EXCHANGE_URLS         = { "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NYSE",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NASDAQ",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=AMEX",
@@ -73,6 +73,7 @@ public class ExchangeSymbolsDownloaderTest {
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/MC.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/ELI.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/VIE.csv",
+                                                                           "http://www.helex.gr/web/guest/securities-market-products",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/IST.csv",
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=OSE&sec_types=&ticks=&table=tab&sort=alphabetic",
                                                                            "http://www.netfonds.no/quotes/kurs.php?exchange=ST&sec_types=&ticks=&table=tab&sort=alphabetic",
@@ -84,6 +85,7 @@ public class ExchangeSymbolsDownloaderTest {
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/TAL.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/VSE.csv",
                                                                            "http://www.portfolio.hu/tozsde_arfolyamok/bet_reszveny_arfolyamok.html",
+                                                                           "http://www.bvb.ro/FinancialInstruments/Markets/SharesListForDownload.ashx?filetype=csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/SI.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/HK.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/SS.csv",
@@ -98,10 +100,13 @@ public class ExchangeSymbolsDownloaderTest {
                                                                            "http://www.asx.com.au/asx/research/ASXListedCompanies.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/NZE.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/TLV.csv",
+//                                                                           "https://www.qe.com.qa/listed-securities",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/JSE.csv",
+                                                                           "http://www.nse.com.ng/rest/api/statistics/ticker?$filter=TickerType%20%20eq%20%27EQUITIES%27",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/BVMF.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/MX.csv",
-                                                                           "http://www.currency-iso.org/dam/downloads/lists/list_one.xml"
+                                                                           "http://en.bvc.com.co/pps/tibco/portalbvc",
+                                                                           "https://www.currency-iso.org/dam/downloads/lists/list_one.xml"
                                                                          };
 
   private static final String                    EMPTY                 = "";
@@ -278,6 +283,7 @@ public class ExchangeSymbolsDownloaderTest {
   public void downloadFX() throws Exception {
     final Set<String> actuals = ESD.download(new Exchanges[] { FX }).get(FX.toString());
 
+    assertFalse(actuals.isEmpty());
     // remove currency pairs one row at a time
     for (final String line : Files.readAllLines(FX_SYMBOLS_FILE.toPath())) {
       final String[] expecteds = line.split(COMMA_STR);
@@ -293,23 +299,48 @@ public class ExchangeSymbolsDownloaderTest {
 
   @Test
   public void downloadASX() throws Exception {
-    download(ASX.toString());
+    download(ASX);
   }
 
   @Test
   public void downloadISE() throws Exception {
-    download(ISE.toString());
+    download(ISE);
+  }
+
+  @Test
+  public void downloadATHEX() throws Exception {
+    download(ATHEX);
   }
 
   @Test
   public void downloadBET() throws Exception {
-    download(BET.toString());
+    download(BET);
   }
 
-  private static final void download(final String exchange) throws IOException, InterruptedException {
-    final Set<String> actuals = ESD.download(new String[] { exchange }).get(exchange);
+  @Test
+  public void downloadBVB() throws Exception {
+    download(BVB);
+  }
 
-    final URL url = ExchangeSymbolsDownloader.urls().get(Exchanges.toExchange(exchange));
+//  @Test
+//  public void downloadQSE() throws Exception {
+//    download(QSE);
+//  }
+
+  @Test
+  public void downloadNGSE() throws Exception {
+    download(NGSE);
+  }
+
+  @Test
+  public void downloadBVC() throws Exception {
+    download(BVC);
+  }
+
+  private static final void download(final Exchanges exchange) throws IOException, InterruptedException {
+    final Set<String> actuals = ESD.download(new Exchanges[] { exchange }).get(exchange.toString());
+
+    final URL url = ExchangeSymbolsDownloader.urls().get(exchange);
     final String noSymbolsDownloadedMessage = String.format("No symbols downloaded for %s from %s",
                                                             exchange,
                                                             url);
@@ -357,7 +388,7 @@ public class ExchangeSymbolsDownloaderTest {
   }
 
   @Test
-  public void cannotCollateFile2() throws Exception {
+  public void cannotCollateFileSpecifiedExchange() throws Exception {
     thrown.expect(IllegalArgumentException.class);
     ESD.collate(SYMBOLS_FILE, NYSE);
   }
@@ -402,21 +433,21 @@ public class ExchangeSymbolsDownloaderTest {
   }
 
   @Test
-  public void handleExecutionFailure() throws Exception {
+  public void handleExecutionFailure() {
     assertEquals(Collections.emptyList(),
                  SYMBOLS_TASK_HELPER.handleExecutionFailure(new ExecutionException(null),
                                                             AMEX));
   }
 
   @Test
-  public void handleTaskCancellation() throws Exception {
+  public void handleTaskCancellation() {
     assertEquals(Collections.emptyList(),
                  SYMBOLS_TASK_HELPER.handleTaskCancellation(new CancellationException(),
                                                             AMEX));
   }
 
   @Test
-  public void handleTimeout() throws Exception {
+  public void handleTimeout() {
     assertEquals(Collections.emptyList(),
                  SYMBOLS_TASK_HELPER.handleTimeout(new TimeoutException(),
                                                    AMEX));

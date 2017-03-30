@@ -1,7 +1,7 @@
 /**
- * ExchangeSymbolsDownloader.java  v0.16  28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java  v0.17  28 January 2015 12:27:30 am
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 
@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.16
+ * @version 0.17
  */
 public class ExchangeSymbolsDownloader {
 
@@ -102,6 +102,8 @@ public class ExchangeSymbolsDownloader {
   private static final char                          COMMA         = ',';
   private static final char                          QUOTE         = '"';
   private static final char                          UNDERSCORE    = '_';
+  private static final char                          COLON         = ':';
+  private static final char                          SEMI_COLON    = ';';
   private static final char                          TAB           = '\t';
   private static final String                        EMPTY         = "";
 
@@ -113,7 +115,7 @@ public class ExchangeSymbolsDownloader {
 
   private static final Map<Exchanges, SymbolsSource> SOURCES       = new EnumMap<>(Exchanges.class);
 
-  static final Logger                                logger        = LoggerFactory.getLogger(ExchangeSymbolsDownloader.class);
+  private static final Logger                        logger        = LoggerFactory.getLogger(ExchangeSymbolsDownloader.class);
 
   static { // initialise source URLs
     try {
@@ -132,6 +134,7 @@ public class ExchangeSymbolsDownloader {
       //      https://www.euronext.com/sites/www.euronext.com/files/ftp/smartpoolsecuritiesumtfcsv.csv
       //      http://www.bursamalaysia.com/market/listed-companies/list-of-companies/main-market
       //      http://www.hkex.com.hk/eng/market/sec_tradinfo/stockcode/eisdeqty_pf.htm
+      //      http://www.tase.co.il/_layouts/Tase/ManagementPages/Export.aspx?sn=none&GridId=106&CurGuid={3C7B8E3F-64E3-4A38-9027-6ED04A1F6EE6}&ExportType=3
 
       final TextTransformer commaAtFirstColumn = new TextTransformer(new SymbolsTransform(COMMA, 1));
 
@@ -144,8 +147,13 @@ public class ExchangeSymbolsDownloader {
       // other exchanges around the world
       SOURCES.put(ASX, new SymbolsSource(3, ASX_BASE, new TextTransformer(new SymbolsTransform(COMMA, 2))));
       final XMLTagTextTransform xmlTagTextTransform = new XMLTagTextTransform();
-      SOURCES.put(ISE, new SymbolsSource(0, ISE_BASE, new ISETextTransformer(xmlTagTextTransform)));
-      SOURCES.put(BET, new SymbolsSource(0, BET_BASE, new BETTextTransformer(new AsymmetricalDelimiterTextTransform(UNDERSCORE, QUOTE))));
+      SOURCES.put(ISE, new SymbolsSource(ZERO, ISE_BASE, new ISETextTransformer(xmlTagTextTransform)));
+      SOURCES.put(ATHEX, new SymbolsSource(ZERO, ATHEX_BASE, new BreakLongLinesTextTransformer(xmlTagTextTransform, "<td class=\"ticker-symbol\">", "</td>")));
+      SOURCES.put(BET, new SymbolsSource(ZERO, BET_BASE, new FilterTextTransformer(new AsymmetricalDelimiterTextTransform(UNDERSCORE, QUOTE), "<tr id=\"P_")));
+      SOURCES.put(BVB, new SymbolsSource(1, BVB_BASE, new TextTransformer(new SymbolsTransform(SEMI_COLON, 1))));
+//      SOURCES.put(QSE, new SymbolsSource(ZERO, QSE_BASE, new FilterTextTransformer(xmlTagTextTransform, "/web/guest/company-profile-page?CompanyCode=")));
+      SOURCES.put(NGSE, new SymbolsSource(ZERO, NGSE_BASE, new BreakLongLinesTextTransformer(new SymbolsTransform(COLON, 2), "\"SYMBOL\":\"", "\"")));
+      SOURCES.put(BVC, new SymbolsSource(ZERO, BVC_BASE, new FilterTextTransformer(new SymbolsTransform(TAB, 2), "/pps/tibco/portalbvc/Home/Empresas/Emisores+BVC/Listado+de+Emisores?com.tibco.ps.pagesvc.action=portletAction&action=link&emisorId=", 1)));
 
       // exchanges sourced from Google (via Quandl)
       // TODO call Google to get Strings
@@ -538,8 +546,13 @@ public class ExchangeSymbolsDownloader {
     private static final String NETFONDS_BASE      = "http://www.netfonds.no/quotes/kurs.php?exchange=%s&sec_types=&ticks=&table=tab&sort=alphabetic";
 //    private static final String TWSE_BASE          = "http://isin.twse.com.tw/isin/e_C_public.jsp?strMode=2";
     private static final String ISE_BASE           = "http://www.ise.ie/Market-Data-Announcements/Companies/Company-Codes/?list=full&type=SEDOL&exportTo=excel";
+    private static final String ATHEX_BASE         = "http://www.helex.gr/web/guest/securities-market-products";
     private static final String BET_BASE           = "http://www.portfolio.hu/tozsde_arfolyamok/bet_reszveny_arfolyamok.html";
-    private static final String ISO4217_BASE       = "http://www.currency-iso.org/dam/downloads/lists/list_one.xml";
+    private static final String BVB_BASE           = "http://www.bvb.ro/FinancialInstruments/Markets/SharesListForDownload.ashx?filetype=csv";
+//    private static final String QSE_BASE           = "https://www.qe.com.qa/listed-securities";
+    private static final String NGSE_BASE          = "http://www.nse.com.ng/rest/api/statistics/ticker?$filter=TickerType%20%20eq%20%27EQUITIES%27";
+    private static final String BVC_BASE           = "http://en.bvc.com.co/pps/tibco/portalbvc";
+    private static final String ISO4217_BASE       = "https://www.currency-iso.org/dam/downloads/lists/list_one.xml";
 
     /**
      *
@@ -569,7 +582,7 @@ public class ExchangeSymbolsDownloader {
     /**
      *
      * @param separator column separator
-     * @param targetColumn the column to be extracted
+     * @param targetColumn the column to be extracted, index starts at 1
      */
     SymbolsTransform(final char separator, final int targetColumn) {
       if (targetColumn < FIRST) {
@@ -583,11 +596,11 @@ public class ExchangeSymbolsDownloader {
     public String transform(final String line) {
       String symbol = EMPTY;
       for (int column = ZERO, from = ZERO; column < targetColumn; ++column) {
-        final boolean quote = line.charAt(from) == QUOTE;
+        final boolean quote = (line.charAt(from) == QUOTE);
         final int to = quote ?
                        findNth(QUOTE, line, FIRST, ++from) :
                        findNth(separator, line, FIRST, from);
-        symbol = line.substring(from, to);
+        symbol = (from < to) ? line.substring(from, to) : line.substring(from);
         from = to + (quote ? 2 : 1); // move past separator
       }
       return symbol.trim();
@@ -700,15 +713,22 @@ public class ExchangeSymbolsDownloader {
 
   }
 
-  private static class BETTextTransformer extends TextTransformer {
+  private static class FilterTextTransformer extends TextTransformer {
 
     private final TextTransform transform;
+    private final String        textOfInterest;
+    private final int           forwardMoves;
 
-    private static final String DATA_START_TAG = "<tr id=\"P_";
+    public FilterTextTransformer(final TextTransform transform, final String textOfInterest) {
+      this(transform, textOfInterest, ZERO);
+    }
 
-    public BETTextTransformer(final TextTransform transform) {
+    public FilterTextTransformer(final TextTransform transform, final String textOfInterest, final int forwardMoves) {
       super(transform);
+
       this.transform = transform;
+      this.textOfInterest = textOfInterest;
+      this.forwardMoves = forwardMoves;
 
       // e.g.
       // <tr id="P_MTELEKOM" class="">
@@ -739,15 +759,74 @@ public class ExchangeSymbolsDownloader {
     public List<String> transform(final List<String> lines) {
       final List<String> symbols = new ArrayList<>();
 
-      for (final String line : lines) {
-        if (line.contains(DATA_START_TAG)) {
-          symbols.add(transform.transform(line));
+      if (forwardMoves > ZERO) {
+        final Iterator<String> iterator = lines.iterator();
+        while (iterator.hasNext()) {
+          String line = iterator.next();
+          if (line.contains(textOfInterest)) {
+            // move forward
+            for (int i = ZERO; i < forwardMoves; ++i) {
+              line = iterator.next();
+            }
+            symbols.add(transform.transform(line));
+          }
+        }
+      }
+      else {
+        for (final String line : lines) {
+          if (line.contains(textOfInterest)) {
+            symbols.add(transform.transform(line));
+          }
         }
       }
 
       lines.clear();
       lines.addAll(symbols);
       return lines;
+    }
+
+  }
+
+  private static class BreakLongLinesTextTransformer extends TextTransformer {
+
+    private final String dataStartTag;
+    private final String dataEndTag;
+
+    public BreakLongLinesTextTransformer(final TextTransform transform, final String dataStartTag, final String dataEndTag) {
+      super(transform);
+
+      this.dataStartTag = dataStartTag;
+      this.dataEndTag = dataEndTag;
+
+      // e.g.
+      // ATHEX
+      // <tr> <th class="ticker-symbol">Symbol</th> <th class="isin">ISIN</th> <th class="instrument-name">Name</th> <th class="closing-price">Price 03/09/2017</th> <th class="snapshot-url">Snapshot</th> <th class="historic-url">Historic</th> </tr> <tr> <td class="ticker-symbol">AAAK</td> <td class="isin">GRS059063008 </td> <td class="instrument-name">"WOOL INDUSTRY TRIA ALFA" S.A. (CR)</td> <td class="closing-price">2.59</td> <td class="snapshot-url"> <a class="snapshot-icon-url" href="http://www.helex.gr/web/guest/stock-snapshot/-/select-stock/136">&nbsp;</a> </td> <td class="historic-url"> <a class="historic-icon-url" href="http://www.helex.gr/web/guest/stock-historic/-/select-stock/136">&nbsp;</a> </td> </tr> <tr> <td class="ticker-symbol">AAAP</td> <td class="isin">GRS059064006 </td> <td class="instrument-name">"WOOL INDUSTRY TRIA ALFA" S.A. (PR)</td> <td class="closing-price">1.63</td> <td class="snapshot-url"> <a class="snapshot-icon-url" href="http://www.helex.gr/web/guest/stock-snapshot/-/select-stock/137">&nbsp;</a> </td> <td class="historic-url"> <a class="historic-icon-url" href="http://www.helex.gr/web/guest/stock-historic/-/select-stock/137">&nbsp;</a> </td> </tr>
+      //
+      // NGSE
+      // [{"$id":"1","Id":167,"SYMBOL":"7UP","Value":86.000000,"PercChange":0.000000,"TickerType":"EQUITIES","SYMBOL2":"7UP "},{"$id":"2","Id":82,"SYMBOL":"ABBEYBDS","Value":1.250000,"PercChange":0.000000,"TickerType":"EQUITIES","SYMBOL2":"ABBEYBDS "},{"$id":"3","Id":128,"SYMBOL":"ABCTRANS","Value":0.500000,"PercChange":0.000000,"TickerType":"EQUITIES","SYMBOL2":"ABCTRANS "}]
+    }
+
+    @Override
+    public List<String> transform(final List<String> lines) {
+      final List<String> shorterLines = new ArrayList<>();
+
+      // break long lines
+      for (final String line : lines) {
+        final StringBuilder longLine = new StringBuilder(line);
+        int currentPosition = ZERO;
+        while (currentPosition < longLine.length()) {
+          final int start = longLine.indexOf(dataStartTag, currentPosition);
+          final int end = longLine.indexOf(dataEndTag, start + dataStartTag.length());
+          if (start < ZERO || end < ZERO) {
+            break;
+          }
+          shorterLines.add(longLine.substring(start, currentPosition = end + dataEndTag.length()));
+        }
+      }
+
+      lines.clear();
+      lines.addAll(shorterLines);
+      return super.transform(lines);
     }
 
   }
