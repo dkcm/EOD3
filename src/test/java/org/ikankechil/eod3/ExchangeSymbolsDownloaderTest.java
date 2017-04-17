@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloaderTest.java  v0.15  7 April 2015 3:51:55 PM
+ * ExchangeSymbolsDownloaderTest.java  v0.16  7 April 2015 3:51:55 PM
  *
  * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
@@ -9,6 +9,7 @@ import static org.ikankechil.eod3.sources.Exchanges.*;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -43,19 +44,22 @@ import org.junit.rules.ExpectedException;
  *
  *
  * @author Daniel Kuan
- * @version 0.15
+ * @version 0.16
  */
 public class ExchangeSymbolsDownloaderTest {
 
   private static final File                      DIRECTORY             = new File(".//./src/test/resources/" + ExchangeSymbolsDownloaderTest.class.getSimpleName());
   private static final File                      SYMBOLS_FILE          = new File(DIRECTORY, "Symbols.csv");
   private static final File                      FX_SYMBOLS_FILE       = new File(DIRECTORY, "Symbols-FX-ISO4217.csv");
+  private static final File                      MERGE_SYMBOLS_FILE1   = new File(DIRECTORY, "Symbols-Merge1.csv");
+  private static final File                      MERGE_SYMBOLS_FILE2   = new File(DIRECTORY, "Symbols-Merge2.csv");
   private static final File                      OHLCV_DIRECTORY       = new File(DIRECTORY, "YahooFinance");
 
   private static final ExchangeSymbolsDownloader ESD                   = new ExchangeSymbolsDownloader(SYMBOLS_FILE, true);
   private static final SymbolsTaskHelper         SYMBOLS_TASK_HELPER   = ESD.new SymbolsTaskHelper();
 
   private static final Map<String, Set<String>>  MARKETS               = new LinkedHashMap<>();
+  private static final Map<String, Set<String>>  MERGED_MARKETS        = new LinkedHashMap<>();
   private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { LUX, UX, GPW, PX, LJSE, OSE, MYX, PSE, HOSE, TADAWUL, QSE, ADX, DFM, MSM, ASE, BHB, EGX, BC, BCBA, BCS, BVCA, BVL };
   private static final String[]                  EXCHANGE_URLS         = { "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NYSE",
                                                                            "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NASDAQ",
@@ -137,7 +141,10 @@ public class ExchangeSymbolsDownloaderTest {
     MARKETS.put(NASDAQ.toString(),
                 new TreeSet<>(Arrays.asList("CSCO", "INTC")));
 
-
+    MERGED_MARKETS.put(NYSE.toString(),
+                       new TreeSet<>(Arrays.asList("A", "B")));
+    MERGED_MARKETS.put(NASDAQ.toString(),
+                       new TreeSet<>(Arrays.asList("AAAA", "ABCD", "AZZZ")));
   }
 
   @AfterClass
@@ -198,14 +205,14 @@ public class ExchangeSymbolsDownloaderTest {
   }
 
   @Test
-  public void cannotDownloadNullExchange() throws Exception {
+  public void cannotDownloadNullExchanges() throws Exception {
     thrown.expect(NullPointerException.class);
     final Exchanges[] exchanges = null;
     ESD.download(exchanges);
   }
 
   @Test
-  public void cannotDownloadNullExchange2() throws Exception {
+  public void cannotDownloadNullExchanges2() throws Exception {
     thrown.expect(NullPointerException.class);
     final String[] exchanges = null;
     ESD.download(exchanges);
@@ -430,6 +437,26 @@ public class ExchangeSymbolsDownloaderTest {
     final Map<String, Set<String>> actuals = ESD.collate(OHLCV_DIRECTORY);
 
     assertEquals(MARKETS, actuals);
+  }
+
+  @Test
+  public void mergeSymbolsFiles() throws Exception {
+    final Map<String, Set<String>> actuals = ESD.merge(MERGE_SYMBOLS_FILE1, MERGE_SYMBOLS_FILE2);
+
+    assertEquals(MERGED_MARKETS, actuals);
+  }
+
+  @Test
+  public void cannotMergeNullSymbolsFiles() throws Exception {
+    thrown.expect(NullPointerException.class);
+    final File[] symbolsFiles = null;
+    ESD.merge(symbolsFiles);
+  }
+
+  @Test
+  public void cannotMergeDirectories() throws Exception {
+    thrown.expect(FileNotFoundException.class);
+    ESD.merge(OHLCV_DIRECTORY.listFiles());
   }
 
   @Test

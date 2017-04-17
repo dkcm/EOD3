@@ -1,5 +1,5 @@
 /**
- * ExchangeSymbolsDownloader.java  v0.17  28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java  v0.18  28 January 2015 12:27:30 am
  *
  * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
@@ -34,6 +34,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
+import org.ikankechil.eod3.io.SymbolsReader;
 import org.ikankechil.eod3.io.SymbolsWriter;
 import org.ikankechil.eod3.sources.Exchanges;
 import org.ikankechil.io.TextReader;
@@ -50,12 +51,13 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.17
+ * @version 0.18
  */
 public class ExchangeSymbolsDownloader {
 
   private final TextReader                           reader;
-  private final SymbolsWriter                        writer;
+  private final SymbolsReader                        symbolsReader;
+  private final SymbolsWriter                        symbolsWriter;
   private final File                                 destination;
 
   private final boolean                              isRFC2396Compliant;
@@ -262,7 +264,8 @@ public class ExchangeSymbolsDownloader {
     }
     this.destination = destination;
     reader = new TextReader();
-    writer = new SymbolsWriter();
+    symbolsReader = new SymbolsReader();
+    symbolsWriter = new SymbolsWriter();
 
     this.isRFC2396Compliant = isRFC2396Compliant;
     executor = new TaskExecutor(Executors.newCachedThreadPool());
@@ -271,7 +274,7 @@ public class ExchangeSymbolsDownloader {
   }
 
   /**
-   * Collate all symbols in the given directory.
+   * Collate all symbols from OHLCV files in the given directory.
    *
    * @param inputParentDirectory
    * @return
@@ -282,8 +285,8 @@ public class ExchangeSymbolsDownloader {
   }
 
   /**
-   * Collate all symbols from the specified exchanges in the given directory.
-   * Each exchange is represented by a sub-directory.
+   * Collate all symbols for the specified exchanges from OHLCV files in the
+   * given directory. Each exchange is represented by a sub-directory.
    *
    * @param inputParentDirectory
    * @param exchanges the <code>Exchanges</code> of interest
@@ -304,7 +307,7 @@ public class ExchangeSymbolsDownloader {
     final int symbolCount = collateSymbols(markets, inputParentDirectory, exchanges);
 
     // write to file
-    writer.write(markets, destination);
+    symbolsWriter.write(markets, destination);
     logger.info("Collated {} symbols in: {}", symbolCount, inputParentDirectory);
     logger.info("Symbols written to file: {}", destination);
 
@@ -396,7 +399,7 @@ public class ExchangeSymbolsDownloader {
     }
 
     // write to file
-    writer.write(markets, destination);
+    symbolsWriter.write(markets, destination);
     logger.info("Symbols written to file: {}", destination);
 
     return markets;
@@ -524,6 +527,26 @@ public class ExchangeSymbolsDownloader {
       urls.put(exchange.getKey(), exchange.getValue().url);
     }
     return urls;
+  }
+
+  public Map<String, Set<String>> merge(final File... symbolsFiles) throws IOException {
+    final Map<String, Set<String>> mergedMarkets = new LinkedHashMap<>();
+
+    for (final File symbolsFile : symbolsFiles) {
+      final Map<String, Set<String>> markets = symbolsReader.read(symbolsFile);
+      for (final Entry<String, Set<String>> market : markets.entrySet()) {
+        final String exchange = market.getKey();
+        final Set<String> mergedMarket = mergedMarkets.get(exchange);
+        if (mergedMarket != null) {
+          mergedMarket.addAll(market.getValue());
+        }
+        else {
+          mergedMarkets.put(exchange, market.getValue());
+        }
+      }
+    }
+
+    return mergedMarkets;
   }
 
   public void stop() throws InterruptedException {

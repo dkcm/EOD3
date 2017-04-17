@@ -1,7 +1,7 @@
 /**
- * ESDTest.java  v0.2  8 April 2015 10:41:36 AM
+ * ESDTest.java  v0.3  8 April 2015 10:41:36 AM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.ui;
 
@@ -26,7 +26,7 @@ import org.junit.rules.ExpectedException;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class ESDTest {
 
@@ -41,6 +41,7 @@ public class ESDTest {
 
   private static final String O                   = "-o";
   private static final String I                   = "-i";
+  private static final String F                   = "-f";
 
   private static final String OUTPUT_SYMBOLS_FILE = ESDTest.class.getSimpleName() + CSV;
   private static final File   INPUT_DIRECTORY     = new File(".//./src/test/resources/" + ESDTest.class.getSimpleName());
@@ -115,8 +116,8 @@ public class ESDTest {
     final Map<String, Set<String>> markets = new SymbolsReader().read(new File(OUTPUT_SYMBOLS_FILE));
 
     assertEquals(1, markets.size());
-    assertTrue(EMPTY_EXCHANGE + exchange,
-               markets.get(exchange).size() > 0);
+    assertFalse(EMPTY_EXCHANGE + exchange,
+                markets.get(exchange).isEmpty());
   }
 
   @Test
@@ -128,8 +129,8 @@ public class ESDTest {
                                                          exchange);
 
     assertEquals(1, markets.size());
-    assertTrue(EMPTY_EXCHANGE + exchange,
-               markets.get(exchange).size() > 0);
+    assertFalse(EMPTY_EXCHANGE + exchange,
+                markets.get(exchange).isEmpty());
   }
 
   @Test
@@ -143,10 +144,26 @@ public class ESDTest {
                                                          exchange2);
 
     assertEquals(2, markets.size());
-    assertTrue(EMPTY_EXCHANGE + exchange1,
-               markets.get(exchange1).size() > 0);
-    assertTrue(EMPTY_EXCHANGE + exchange2,
-               markets.get(exchange2).size() > 0);
+    assertFalse(EMPTY_EXCHANGE + exchange1,
+                markets.get(exchange1).isEmpty());
+    assertFalse(EMPTY_EXCHANGE + exchange2,
+                markets.get(exchange2).isEmpty());
+  }
+
+  @Test
+  public void filterNonRFC2396CompliantSymbolsDownload() throws Exception {
+    final String exchange = NYSE.toString();
+
+    // filtered
+    ESD.main(O, OUTPUT_SYMBOLS_FILE, F, exchange);
+    final Map<String, Set<String>> filtered = new SymbolsReader().read(new File(OUTPUT_SYMBOLS_FILE));
+
+    // un-filtered
+    ESD.main(O, OUTPUT_SYMBOLS_FILE, exchange);
+    final Map<String, Set<String>> unfiltered = new SymbolsReader().read(new File(OUTPUT_SYMBOLS_FILE));
+
+    // filtered < un-filtered
+    assertTrue(filtered.get(exchange).size() < unfiltered.get(exchange).size());
   }
 
   @Test

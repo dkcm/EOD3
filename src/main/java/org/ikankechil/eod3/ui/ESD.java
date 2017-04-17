@@ -1,7 +1,7 @@
 /**
  * ESD.java  v0.5  4 February 2015 1:29:53 PM
  *
- * Copyright � 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.ui;
 
@@ -22,7 +22,7 @@ import joptsimple.OptionSpec;
 
 /**
  * A command-line application that downloads exchange symbols.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.5
@@ -47,6 +47,7 @@ public class ESD extends AbstractCommandLineInterface<Exchanges, Map<String, Set
     // command-line options:
     // -i input directory
     // -o output symbols file
+    // -f filter non-RFC2396 compliant symbols
 
     // Configuring command-line options
     // parameters
@@ -72,11 +73,11 @@ public class ESD extends AbstractCommandLineInterface<Exchanges, Map<String, Set
   @Override
   protected void workOn(final OptionSet options, final List<Exchanges> nonOptionArguments)
       throws OptionException, InterruptedException, IOException {
-    final ExchangeSymbolsDownloader symbolsDownloader =   // -o <outputSymbolsFile>
-        new ExchangeSymbolsDownloader(options.valueOf(outputSymbolsFile),
-                                      options.has(filter));
+    final ExchangeSymbolsDownloader symbolsDownloader =
+        new ExchangeSymbolsDownloader(options.valueOf(outputSymbolsFile), // -o <outputSymbolsFile>
+                                      options.has(filter));               // -o <outputSymbolsFile> -f
     try {
-      final Exchanges[] exchanges = nonOptionArguments.toArray(new Exchanges[0]);
+      final Exchanges[] exchanges = nonOptionArguments.toArray(new Exchanges[nonOptionArguments.size()]);
 
       markets = options.has(inputDir) ?
                 symbolsDownloader.collate(options.valueOf(inputDir), exchanges) : // -i <inputDir> <exchanges...>
