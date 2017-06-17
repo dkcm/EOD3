@@ -1,5 +1,5 @@
 /**
- * AlphaVantage.java  v0.1  23 March 2017 4:58:12 pm
+ * AlphaVantage.java  v0.2  23 March 2017 4:58:12 pm
  *
  * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class AlphaVantage extends Source {
 
@@ -37,6 +37,26 @@ public class AlphaVantage extends Source {
 
   // API key property: org.ikankechil.eod3.sources.AlphaVantage.apiKey
   private static final String API_KEY   = System.getProperty(AlphaVantage.class.getName() + ".apiKey", "demo");
+
+  // Exchange-related constants
+  private static final String TSE_      = "TSE:";
+  private static final String LON       = "LON:";
+  private static final String FRA       = "FRA:";
+  private static final String EPA       = "EPA:";
+  private static final String AMS       = "AMS:";
+  private static final String EBR       = "EBR:";
+  private static final String BIT       = "BIT:";
+  private static final String ELI       = "ELI:";
+  private static final String STO       = "STO:";
+  private static final String HEL       = "HEL:";
+  private static final String CPH       = "CPH:";
+  private static final String ICE       = "ICE:";
+  private static final String MCX       = "MCX:";
+  private static final String SHA       = "SHA:";
+  private static final String SHE       = "SHE:";
+  private static final String TYO       = "TYO:";
+  private static final String BOM       = "BOM:";
+  private static final String TPE       = "TPE:";
 
   private static final Logger logger    = LoggerFactory.getLogger(AlphaVantage.class);
 
@@ -53,12 +73,44 @@ public class AlphaVantage extends Source {
     for (final Exchanges exchange : EnumSet.of(NYSE, NASDAQ, AMEX, ARCA)) {
       exchanges.put(exchange, EMPTY);
     }
+    for (final Exchanges exchange : EnumSet.of(SGX, NSE, ASX)) {
+      exchanges.put(exchange, exchange.toString() + COLON);
+    }
+
+    exchanges.put(TSX, TSE_);
+    exchanges.put(LSE, LON);
+    exchanges.put(FWB, FRA);
+    exchanges.put(PAR, EPA);
+    exchanges.put(AEX, AMS);
+    exchanges.put(BB, EBR);
+    exchanges.put(MIB, BIT);
+    exchanges.put(BVLP, ELI);
+    exchanges.put(SB, STO);
+    exchanges.put(HEX, HEL);
+    exchanges.put(KFB, CPH);
+    exchanges.put(ICEX, ICE);
+    exchanges.put(MOEX, MCX);
+    exchanges.put(SSE, SHA);
+    exchanges.put(SZSE, SHE);
+    exchanges.put(TSE, TYO);
+    exchanges.put(BSE, BOM);
+    exchanges.put(TWSE, TPE);
 
     // Alpha Vantage API
     // http://www.alphavantage.co/documentation/
     //
     // Notes:
     // 1. incoming data is in JSON format
+    // 2. No FX data
+  }
+
+  @Override
+  void appendSymbolAndExchange(final StringBuilder url,
+                               final String symbol,
+                               final Exchanges exchange) {
+    // prefix exchange
+    appendExchange(url, exchange);
+    appendSymbol(url, symbol);
   }
 
   @Override
