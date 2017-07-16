@@ -76,6 +76,7 @@ public abstract class Source {
   static final char                        QUESTION          = '?';
   static final char                        HYPHEN            = '-';
   static final char                        DOUBLE_QUOTE      = '"';
+  static final char                        OPEN_BRACE        = '{';
   static final char                        CLOSE_BRACE       = '}';
   static final char                        DOLLAR            = '$';
   static final char                        UNDERSCORE        = '_';
