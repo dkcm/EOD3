@@ -1,5 +1,5 @@
 /**
- * FinamTest.java  v0.1  23 July 2017 3:51:19 pm
+ * FinamTest.java  v0.2  23 July 2017 3:51:19 pm
  *
  * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
@@ -22,7 +22,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class FinamTest extends SourceTest {
 
@@ -35,6 +35,10 @@ public class FinamTest extends SourceTest {
   private static final String                    END_YEAR    = "&yt=";
   private static final String                    FREQUENCY   = "&p=";
 
+  private static final String                    US1         = "25";
+  private static final String                    US2         = "28";
+  private static final String                    FX_         = "5";
+
   private static final Map<Frequencies, Integer> FREQUENCIES = new EnumMap<>(Frequencies.class);
 
   static {
@@ -45,11 +49,11 @@ public class FinamTest extends SourceTest {
   }
 
   public FinamTest() {
-    exchanges.put(NYSE, "25");
-    exchanges.put(NASDAQ, "25");
-    exchanges.put(ARCA, "28");
+    exchanges.put(NYSE, US1);
+    exchanges.put(NASDAQ, US1);
+    exchanges.put(ARCA, US2);
     exchanges.put(MOEX, EMPTY);
-    exchanges.put(FX, "5");
+    exchanges.put(FX, FX_);
 
     originalLines.addAll(Arrays.asList("<DATE>,<TIME>,<OPEN>,<HIGH>,<LOW>,<CLOSE>,<VOL>",
                                        "20150608,000000,128.9400000,129.2100000,126.8400000,127.7700000,3399563",

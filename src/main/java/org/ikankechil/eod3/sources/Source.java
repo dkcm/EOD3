@@ -78,6 +78,8 @@ public abstract class Source {
   static final char                        DOUBLE_QUOTE      = '"';
   static final char                        OPEN_BRACE        = '{';
   static final char                        CLOSE_BRACE       = '}';
+  static final char                        OPEN_PARENTHESIS  = '(';
+  static final char                        CLOSE_PARENTHESIS = ')';
   static final char                        DOLLAR            = '$';
   static final char                        UNDERSCORE        = '_';
   static final char                        TAB               = '\t';

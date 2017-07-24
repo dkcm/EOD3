@@ -1,5 +1,5 @@
 /**
- * Finam.java  v0.3  16 December 2014 2:03:09 PM
+ * Finam.java  v0.4  16 December 2014 2:03:09 PM
  *
  * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -32,32 +33,32 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class Finam extends Source {
 
-  private final SymbolMatcher                    symbolMatcher;
-
-  private static final Map<Frequencies, Integer> FREQUENCIES = new EnumMap<>(Frequencies.class);
+  private static final SymbolMatcher             SYMBOL_MATCHER = new SymbolMatcher();
+  private static final Map<Frequencies, Integer> FREQUENCIES    = new EnumMap<>(Frequencies.class);
 
   // Date-related URL parameters
-  private static final String                    START_DATE  = "&df=";
-  private static final String                    START_MONTH = "&mf=";
-  private static final String                    START_YEAR  = "&yf=";
-  private static final String                    END_DATE    = "&dt=";
-  private static final String                    END_MONTH   = "&mt=";
-  private static final String                    END_YEAR    = "&yt=";
-  private static final String                    FREQUENCY   = "&p=";
+  private static final String                    START_DATE     = "&df=";
+  private static final String                    START_MONTH    = "&mf=";
+  private static final String                    START_YEAR     = "&yf=";
+  private static final String                    END_DATE       = "&dt=";
+  private static final String                    END_MONTH      = "&mt=";
+  private static final String                    END_YEAR       = "&yt=";
+  private static final String                    FREQUENCY      = "&p=";
 
-  private static final String                    ID          = "&em=";
-  private static final String                    MARKET      = "&market=";
+  // Symbol- and exchange-related URL parameters
+  private static final String                    ID             = "&em=";
+  private static final String                    MARKET         = "&market=";
 
   // Exchange-related constants
-  private static final String                    US1         = "25";
-  private static final String                    US2         = "28";
-  private static final String                    FX_         = "5";
+  private static final String                    US1            = "25";
+  private static final String                    US2            = "28";
+  private static final String                    FX_            = "5";
 
-  private static final Logger                    logger      = LoggerFactory.getLogger(Finam.class);
+  private static final Logger                    logger         = LoggerFactory.getLogger(Finam.class);
 
   static {
     // daily = 8, weekly = 9 / none, monthly = 10
@@ -69,7 +70,7 @@ public class Finam extends Source {
   public Finam() throws IOException {
     super(Finam.class);
 
-    symbolMatcher = new SymbolMatcher();
+    SYMBOL_MATCHER.load();
 
     // supported markets
     // MOEX does not require a suffix
@@ -128,8 +129,20 @@ public class Finam extends Source {
   void appendSymbolAndExchange(final StringBuilder url,
                                final String symbol,
                                final Exchanges exchange) {
-    url.append(symbolMatcher.match(rfc2396Compliant(symbol)));
+    url.append(SYMBOL_MATCHER.match(rfc2396Compliant(symbol)));
     logger.debug("Symbol and exchange: {}", url);
+  }
+
+  @Override
+  void appendSymbol(final StringBuilder url, final String symbol) {
+    // do nothing
+    logger.debug(UNSUPPORTED);
+  }
+
+  @Override
+  void appendExchange(final StringBuilder url, final Exchanges exchange) {
+    // do nothing
+    logger.debug(UNSUPPORTED);
   }
 
   @Override
@@ -158,44 +171,62 @@ public class Finam extends Source {
 
   private static class SymbolMatcher {
 
-    private final List<String>  ids        = new ArrayList<>();
-    private final List<String>  symbols    = new ArrayList<>();
-    private final List<String>  markets    = new ArrayList<>();
+    private final Map<String, String> symbolsExchanges = new HashMap<>();
 
-    private static final String REFERENCES = "https://www.finam.ru/scripts/export.js";
+    private static final String       REFERENCES       = "https://www.finam.ru/scripts/export.js";
 
-    private static final String IDS        = "Ids";
-    private static final String CODES      = "Codes";
-    private static final String MARKETS    = "Markets";
+    private static final String       IDS              = "Ids";
+    private static final String       CODES            = "Codes";
+    private static final String       MARKETS          = "Markets";
 
-    public SymbolMatcher() throws IOException {
-      // load data from URL
-      for (final String reference : new TextReader().read(new URL(REFERENCES))) {
-        final int split = findNth(EQUAL, reference, ONE, ZERO);
-        final String key = reference.substring(ZERO, split);
-        if (key.contains(IDS)) {
-          ids.addAll(splitValues(reference.substring(split)));
-        }
-        else if (key.contains(CODES)) {
-          symbols.addAll(splitValues(reference.substring(split)));
+    public void load() throws IOException {
+      if (symbolsExchanges.isEmpty()) {
+        logger.debug("Loading symbols and exchanges from {}", REFERENCES);
+        final List<String> ids = new ArrayList<>();
+        final List<String> symbols = new ArrayList<>();
+        final List<String> markets = new ArrayList<>();
 
-          // remove delimiters
-          final ListIterator<String> iterator = symbols.listIterator();
-          while (iterator.hasNext()) {
-            final String symbol = iterator.next();
-            final int dot = findNth(DOT, symbol, ONE, ZERO);
-            iterator.set(symbol.substring(dot >= ZERO ? dot + ONE : ONE, symbol.length() - ONE));
+        // get symbols and markets from URL
+        for (final String reference : new TextReader().read(new URL(REFERENCES))) {
+          final int equal = findNth(EQUAL, reference, ONE, ZERO);
+          final String key = reference.substring(ZERO, equal);
+          if (key.contains(IDS)) {
+            ids.addAll(splitValues(reference.substring(equal)));
+          }
+          else if (key.contains(CODES)) {
+            symbols.addAll(splitValues(reference.substring(equal)));
+
+            // remove prefixes and suffixes
+            final ListIterator<String> iterator = symbols.listIterator();
+            while (iterator.hasNext()) {
+              final String symbol = iterator.next();
+              final int dot = findNth(DOT, symbol, ONE, ZERO);
+              iterator.set(symbol.substring(dot >= ZERO ? dot + ONE : ONE, symbol.length() - ONE));
+            }
+          }
+          else if (key.contains(MARKETS)) {
+            markets.addAll(splitValues(reference.substring(equal)));
           }
         }
-        else if (key.contains(MARKETS)) {
-          markets.addAll(splitValues(reference.substring(split)));
+
+        // load symbols and markets
+        for (int i = ZERO; i < symbols.size(); ++i) {
+          final String symbol = symbols.get(i);
+          symbolsExchanges.put(symbol, ID + ids.get(i) + MARKET + markets.get(i));
         }
+        logger.debug("Symbols and exchanges loaded");
+      }
+      else {
+        logger.debug("Symbols and exchanges already loaded");
       }
     }
 
     public String match(final String symbol) {
-      final int index = symbols.indexOf(symbol);
-      return ID + ids.get(index) + MARKET + markets.get(index);
+      String match;
+      if ((match = symbolsExchanges.get(symbol)) == null) {
+        match = EMPTY;
+      }
+      return match;
     }
 
     private static final List<String> splitValues(final String rawValues) {
