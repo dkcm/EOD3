@@ -1,7 +1,7 @@
 /**
- * AlphaVantageTest.java  v0.2  23 March 2017 5:09:27 pm
+ * AlphaVantageTest.java  v0.3  23 March 2017 5:09:27 pm
  *
- * Copyright © 2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -22,12 +22,13 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class AlphaVantageTest extends SourceTest {
 
   private static final String BASE      = baseURL(AlphaVantageTest.class);
   private static final String FREQUENCY = "&function=TIME_SERIES_";
+  private static final String FORMAT    = "&datatype=json";
   private static final String API_KEY   = "&apikey=demo";
 
   private static final String TSE_      = "TSE:";
@@ -214,6 +215,7 @@ public class AlphaVantageTest extends SourceTest {
                    (exchanges.containsKey(exchange) ? exchanges.get(exchange) : EMPTY) +
                    symbol +
                    FREQUENCY + ((frequency == null) ? Frequencies.DAILY : frequency) +
+                   FORMAT +
                    API_KEY);
   }
 
