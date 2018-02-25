@@ -1,7 +1,7 @@
 /**
- * Quandl.java  v0.8  3 November 2014 4:51:49 PM
+ * Quandl.java  v0.9  3 November 2014 4:51:49 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * calls per 10 minutes, and a limit of 50000 calls per day.
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class Quandl extends Source {
 
@@ -45,13 +45,14 @@ public class Quandl extends Source {
   private static final String CSV           = ".csv";
 
   // Exchange-related constants
-  private static final String WIKI          = "WIKI/";   // U.S. Equities
+  private static final String WIKI          = "WIKI/";      // U.S. equities
   private static final String FSE           = "FSE/";
   private static final String _X            = "_X";
-  private static final String EURONEXT      = "EURONEXT/";
+  private static final String EURONEXT      = "EURONEXT/";  // European equities
   private static final String BSE_BOM       = "BSE/BOM";
   private static final String SIX_          = "SIX/";
-//  private static final String CURRFX        = "CURRFX"; // FX
+  private static final String WSE_          = "WSE/";
+//  private static final String CURRFX        = "CURRFX";     // FX
 
   private static final Logger logger        = LoggerFactory.getLogger(Quandl.class);
 
@@ -85,6 +86,7 @@ public class Quandl extends Source {
     exchanges.put(FWB, FSE);
     exchanges.put(BSE, BSE_BOM);
     exchanges.put(SWX, SIX_);
+    exchanges.put(GPW, WSE_);
 //    exchanges.put(FX, CURRFX);
     // TODO extend support for asset classes other than Equities
     // FX has a different format from equities (i.e. Date,Rate,High (est),Low (est))

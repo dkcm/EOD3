@@ -1,7 +1,7 @@
 /**
- * QuandlTest.java  v0.8  5 April, 2015 11:25:06 pm
+ * QuandlTest.java  v0.9  5 April, 2015 11:25:06 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -23,7 +23,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.8
+ * @version 0.9
  */
 public class QuandlTest extends SourceTest {
 
@@ -52,6 +52,7 @@ public class QuandlTest extends SourceTest {
   private static final String BSE_BOM       = "BSE/BOM%s";
   private static final String NSE_          = "NSE/%s";
   private static final String SIX_          = "SIX/%s";
+  private static final String WSE_          = "WSE/%s";
 
   private static final String CSV           = ".csv?";
 
@@ -72,6 +73,7 @@ public class QuandlTest extends SourceTest {
     exchanges.put(BSE, BSE_BOM);
     exchanges.put(NSE, NSE_);
     exchanges.put(SWX, SIX_);
+    exchanges.put(GPW, WSE_);
 
     originalLines.addAll(Arrays.asList("Date,Open,High,Low,Close,Volume,Ex-Dividend,Split Ratio,Adj. Open,Adj. High,Adj. Low,Adj. Close,Adj. Volume",
                                        "2015-12-04,34.11,35.025,34.0,34.935,24261345.0,0.0,1.0,34.11,35.025,34.0,34.935,24261345.0",
