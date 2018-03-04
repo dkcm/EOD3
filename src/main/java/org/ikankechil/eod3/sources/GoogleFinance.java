@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Kuan
  * @version 0.10
  */
+@Deprecated
 public class GoogleFinance extends Source {
 
   // Date-related URL parameters

@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Kuan
  * @version 0.9
  */
+@Deprecated
 public class YahooFinance extends Source {
   // TODO adjust prices for splits, etc. (adjust only when close and adj. close are unequal)
 
