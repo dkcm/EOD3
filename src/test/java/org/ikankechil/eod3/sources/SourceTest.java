@@ -1,7 +1,7 @@
 /**
- * SourceTest.java  v0.5  7 January 2014 10:06:00 PM
+ * SourceTest.java  v0.6  7 January 2014 10:06:00 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -40,7 +41,7 @@ import org.junit.rules.ExpectedException;
  * JUnit test for <code>Source</code>.
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public abstract class SourceTest {
 
@@ -493,6 +494,10 @@ public abstract class SourceTest {
 
   protected static final String baseURL(final Class<? extends SourceTest> source) {
     return BASE_URLS.get(source.getName());
+  }
+
+  protected final boolean readOriginalLinesFromJsonFile() throws IOException {
+    return originalLines.addAll(Files.readAllLines(new File(DIRECTORY, getClass().getSimpleName() + JSON).toPath()));
   }
 
   protected abstract URL expectedURL(final String symbol) throws MalformedURLException;

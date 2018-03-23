@@ -1,17 +1,15 @@
 /**
- * MSNMoneyTest.java  v0.2  13 May 2016 7:14:12 pm
+ * MSNMoneyTest.java  v0.3  13 May 2016 7:14:12 pm
  *
- * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
 import static org.ikankechil.eod3.sources.Exchanges.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -22,7 +20,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class MSNMoneyTest extends SourceTest {
 
@@ -136,7 +134,7 @@ public class MSNMoneyTest extends SourceTest {
     exchanges.put(BVC, BOG);   // e.g. 390.1.CO-PFBCOLOM.BOG.PFBCOLOM
     exchanges.put(BVL, LIM);   // e.g. 398.1.PE-ALICORC1.LIM.ALICORC1
 
-    originalLines.addAll(Files.readAllLines(new File(DIRECTORY, getClass().getSimpleName() + JSON).toPath()));
+    readOriginalLinesFromJsonFile();
 
     transformedLines.addAll(Arrays.asList("INTC,20151207,54.77,54.88,53.91,54.40,15077326",
                                           "INTC,20151204,53.66,55.33,53.52,55.09,21463021",

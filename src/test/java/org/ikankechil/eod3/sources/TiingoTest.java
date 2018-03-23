@@ -1,17 +1,15 @@
 /**
- * TiingoTest.java  v0.1  15 July 2017 10:37:11 pm
+ * TiingoTest.java  v0.2  15 July 2017 10:37:11 pm
  *
- * Copyright © 2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3.sources;
 
 import static org.ikankechil.eod3.sources.Exchanges.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -27,7 +25,7 @@ import org.junit.Test;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class TiingoTest extends SourceTest {
 
@@ -46,7 +44,7 @@ public class TiingoTest extends SourceTest {
     exchanges.put(SSE, EMPTY);
     exchanges.put(SZSE, EMPTY);
 
-    originalLines.addAll(Files.readAllLines(new File(DIRECTORY, getClass().getSimpleName() + JSON).toPath()));
+    readOriginalLinesFromJsonFile();
 
     transformedLines.addAll(Arrays.asList("INTC,19800319,63.5,64.5,63.5,63.5,96400",
                                           "INTC,19800318,62.5,63.0,62.0,62.0,88900",

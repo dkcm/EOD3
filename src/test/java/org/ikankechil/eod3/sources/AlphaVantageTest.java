@@ -1,5 +1,5 @@
 /**
- * AlphaVantageTest.java  v0.3  23 March 2017 5:09:27 pm
+ * AlphaVantageTest.java  v0.4  23 March 2017 5:09:27 pm
  *
  * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
  */
@@ -7,11 +7,9 @@ package org.ikankechil.eod3.sources;
 
 import static org.ikankechil.eod3.sources.Exchanges.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -22,7 +20,7 @@ import org.ikankechil.eod3.Frequencies;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class AlphaVantageTest extends SourceTest {
 
@@ -77,7 +75,7 @@ public class AlphaVantageTest extends SourceTest {
     exchanges.put(TWSE, TPE);
     exchanges.put(ASX, ASX.toString() + COLON);
 
-    originalLines.addAll(Files.readAllLines(new File(DIRECTORY, getClass().getSimpleName() + JSON).toPath()));
+    readOriginalLinesFromJsonFile();
 
     transformedLines.addAll(Arrays.asList("INTC,20170324,35.65,35.73,35.12,35.16,22030600",
                                           "INTC,20170323,35.49,35.49,35.02,35.27,20529600",
