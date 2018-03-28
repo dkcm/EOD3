@@ -1,7 +1,7 @@
 /**
- * ExchangeSymbolsDownloaderTest.java  v0.16  7 April 2015 3:51:55 PM
+ * ExchangeSymbolsDownloaderTest.java  v0.17  7 April 2015 3:51:55 PM
  *
- * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 
@@ -44,7 +44,7 @@ import org.junit.rules.ExpectedException;
  *
  *
  * @author Daniel Kuan
- * @version 0.16
+ * @version 0.17
  */
 public class ExchangeSymbolsDownloaderTest {
 
@@ -60,10 +60,10 @@ public class ExchangeSymbolsDownloaderTest {
 
   private static final Map<String, Set<String>>  MARKETS               = new LinkedHashMap<>();
   private static final Map<String, Set<String>>  MERGED_MARKETS        = new LinkedHashMap<>();
-  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { LUX, UX, GPW, PX, LJSE, OSE, MYX, PSE, HOSE, TADAWUL, QSE, ADX, DFM, MSM, ASE, BHB, EGX, BC, BCBA, BCS, BVCA, BVL };
-  private static final String[]                  EXCHANGE_URLS         = { "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NYSE",
-                                                                           "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NASDAQ",
-                                                                           "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=AMEX",
+  private static final Exchanges[]               UNSUPPORTED_EXCHANGES = { LUX, UX, GPW, PX, LJSE, OSE, MYX, PSE, HOSE, ASE, EGX, BC, BCBA, BCS, BVCA, BVL };
+  private static final String[]                  EXCHANGE_URLS         = { "https://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NYSE",
+                                                                           "https://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=NASDAQ",
+                                                                           "https://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=AMEX",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/NYSEARCA.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/TSX.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/LON.csv",
@@ -101,10 +101,15 @@ public class ExchangeSymbolsDownloaderTest {
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/TPE.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Yahoo/JK.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/BKK.csv",
-                                                                           "http://www.asx.com.au/asx/research/ASXListedCompanies.csv",
+                                                                           "https://www.asx.com.au/asx/research/ASXListedCompanies.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/NZE.csv",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/TLV.csv",
-//                                                                           "https://www.qe.com.qa/listed-securities",
+                                                                           "http://www.asmainfo.com/Saudi/en/list/CompanyList.aspx",
+                                                                           "http://www.asmainfo.com/Qatar/en/list/CompanyList.aspx",
+                                                                           "http://www.asmainfo.com/Abudhabi/en/list/CompanyList.aspx",
+                                                                           "http://www.asmainfo.com/Dubai/en/list/CompanyList.aspx",
+                                                                           "http://www.asmainfo.com/Muscat/en/list/CompanyList.aspx",
+                                                                           "http://www.asmainfo.com/Bahrain/en/list/CompanyList.aspx",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/JSE.csv",
                                                                            "http://www.nse.com.ng/rest/api/statistics/ticker?$filter=TickerType%20%20eq%20%27EQUITIES%27",
                                                                            "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/Google/BVMF.csv",
@@ -329,10 +334,10 @@ public class ExchangeSymbolsDownloaderTest {
     download(BVB);
   }
 
-//  @Test
-//  public void downloadQSE() throws Exception {
-//    download(QSE);
-//  }
+  @Test
+  public void downloadQSE() throws Exception {
+    download(QSE);
+  }
 
   @Test
   public void downloadNGSE() throws Exception {
@@ -351,6 +356,7 @@ public class ExchangeSymbolsDownloaderTest {
     final String noSymbolsDownloadedMessage = String.format("No symbols downloaded for %s from %s",
                                                             exchange,
                                                             url);
+    assertNotNull(noSymbolsDownloadedMessage, actuals);
     assertFalse(noSymbolsDownloadedMessage, actuals.isEmpty());
     assertFalse(actuals.contains(EMPTY));
     assertFalse(actuals.contains(SPACE));

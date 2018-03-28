@@ -1,7 +1,7 @@
 /**
- * ExchangeSymbolsDownloader.java  v0.18  28 January 2015 12:27:30 am
+ * ExchangeSymbolsDownloader.java  v0.19  28 January 2015 12:27:30 am
  *
- * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.eod3;
 
@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.18
+ * @version 0.19
  */
 public class ExchangeSymbolsDownloader {
 
@@ -107,6 +107,8 @@ public class ExchangeSymbolsDownloader {
   private static final char                          COLON         = ':';
   private static final char                          SEMI_COLON    = ';';
   private static final char                          TAB           = '\t';
+  private static final char                          LESS_THAN     = '<';
+  private static final char                          SPACE         = ' ';
   private static final String                        EMPTY         = "";
 
   // collate already-merged files only and not update files
@@ -137,6 +139,8 @@ public class ExchangeSymbolsDownloader {
       //      http://www.bursamalaysia.com/market/listed-companies/list-of-companies/main-market
       //      http://www.hkex.com.hk/eng/market/sec_tradinfo/stockcode/eisdeqty_pf.htm
       //      http://www.tase.co.il/_layouts/Tase/ManagementPages/Export.aspx?sn=none&GridId=106&CurGuid={3C7B8E3F-64E3-4A38-9027-6ED04A1F6EE6}&ExportType=3
+      //      https://www.gulfbase.com/company-list-saudi-stock-exchange-1 (and other Middle-Eastern markets)
+      //      http://www.asmainfo.com/Kuwait/en/list/CompanyList.aspx
 
       final TextTransformer commaAtFirstColumn = new TextTransformer(new SymbolsTransform(COMMA, 1));
 
@@ -157,8 +161,23 @@ public class ExchangeSymbolsDownloader {
       SOURCES.put(NGSE, new SymbolsSource(ZERO, NGSE_BASE, new BreakLongLinesTextTransformer(new SymbolsTransform(COLON, 2), "\"SYMBOL\":\"", "\"")));
       SOURCES.put(BVC, new SymbolsSource(ZERO, BVC_BASE, new FilterTextTransformer(new SymbolsTransform(TAB, 2), "/pps/tibco/portalbvc/Home/Empresas/Emisores+BVC/Listado+de+Emisores?com.tibco.ps.pagesvc.action=portletAction&action=link&emisorId=", 1)));
 
+      // Middle-Eastern exchanges
+      final AsymmetricalDelimiterTextTransform asmaTextTransform = new AsymmetricalDelimiterTextTransform(SPACE, LESS_THAN);
+      final Map<Exchanges, String> meExchanges = new EnumMap<>(Exchanges.class);
+      meExchanges.put(TADAWUL, "Saudi");
+      meExchanges.put(QSE, "Qatar");
+      meExchanges.put(ADX, "Abudhabi");
+      meExchanges.put(DFM, "Dubai");
+      meExchanges.put(MSM, "Muscat");
+      meExchanges.put(BHB, "Bahrain");
+      for (final Entry<Exchanges, String> meExchange : meExchanges.entrySet()) {
+        SOURCES.put(meExchange.getKey(),
+                    new SymbolsSource(ZERO,
+                                      String.format(ASMA_BASE, meExchange.getValue()),
+                                      new AsmaTextTransformer(asmaTextTransform)));
+      }
+
       // exchanges sourced from Google (via Quandl)
-      // TODO call Google to get Strings
       final Map<Exchanges, String> googles = new EnumMap<>(Exchanges.class);
       googles.put(ARCA, NYSEARCA);
       googles.put(LSE, LON);
@@ -561,8 +580,8 @@ public class ExchangeSymbolsDownloader {
     final TextTransformer       transformer;
 
     // base URLs
-    private static final String NASDAQ_BASE        = "http://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=";
-    private static final String ASX_BASE           = "http://www.asx.com.au/asx/research/ASXListedCompanies.csv";
+    private static final String NASDAQ_BASE        = "https://www.nasdaq.com/screening/companies-by-name.aspx?render=download&exchange=";
+    private static final String ASX_BASE           = "https://www.asx.com.au/asx/research/ASXListedCompanies.csv";
     private static final String QUANDL_BASE        = "http://s3.amazonaws.com/quandl-static-content/Ticker+CSV's/";
     private static final String QUANDL_YAHOO_BASE  = QUANDL_BASE + "Yahoo/%s.csv";
     private static final String QUANDL_GOOGLE_BASE = QUANDL_BASE + "Google/%s.csv";
@@ -572,6 +591,7 @@ public class ExchangeSymbolsDownloader {
     private static final String ATHEX_BASE         = "http://www.helex.gr/web/guest/securities-market-products";
     private static final String BET_BASE           = "http://www.portfolio.hu/tozsde_arfolyamok/bet_reszveny_arfolyamok.html";
     private static final String BVB_BASE           = "http://www.bvb.ro/FinancialInstruments/Markets/SharesListForDownload.ashx?filetype=csv";
+    private static final String ASMA_BASE          = "http://www.asmainfo.com/%s/en/list/CompanyList.aspx";
 //    private static final String QSE_BASE           = "https://www.qe.com.qa/listed-securities";
     private static final String NGSE_BASE          = "http://www.nse.com.ng/rest/api/statistics/ticker?$filter=TickerType%20%20eq%20%27EQUITIES%27";
     private static final String BVC_BASE           = "http://en.bvc.com.co/pps/tibco/portalbvc";
@@ -634,7 +654,6 @@ public class ExchangeSymbolsDownloader {
   private static class XMLTagTextTransform implements TextTransform {
 
     private static final char MORE_THAN = '>';
-    private static final char LESS_THAN = '<';
 
     @Override
     public String transform(final String line) {
@@ -850,6 +869,49 @@ public class ExchangeSymbolsDownloader {
       lines.clear();
       lines.addAll(shorterLines);
       return super.transform(lines);
+    }
+
+  }
+
+  private static class AsmaTextTransformer extends TextTransformer {
+
+    private final TextTransform transform;
+
+    private static final String DATA_START_TAG = "onmouseover";
+    private static final String DATA_END_TAG   = "</tr>";
+
+    public AsmaTextTransformer(final TextTransform transform) {
+      super(transform);
+      this.transform = transform;
+    }
+
+    @Override
+    public List<String> transform(final List<String> lines) {
+      final List<String> symbols = new ArrayList<>();
+
+      final ListIterator<String> iterator = lines.listIterator();
+      while (iterator.hasNext()) {
+        String line = iterator.next();
+        if (line.contains(DATA_START_TAG)) {
+          while (iterator.hasNext()) {
+            line = iterator.next();
+            if (line.contains(DATA_END_TAG)) {
+              iterator.previous();
+              iterator.previous();
+              line = iterator.previous(); // backtrack
+              symbols.add(transform.transform(line));
+              iterator.next();
+              iterator.next();
+              iterator.next();
+              break;
+            }
+          }
+        }
+      }
+
+      lines.clear();
+      lines.addAll(symbols);
+      return lines;
     }
 
   }
